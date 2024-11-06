@@ -1,3 +1,4 @@
+import React from 'react'
 import classNames from 'classnames'
 
 interface Props extends React.ComponentPropsWithoutRef<'span'> {
@@ -24,6 +25,8 @@ interface Props extends React.ComponentPropsWithoutRef<'span'> {
     // Set the font weight of the text. (default: normal)
     // 텍스트의 굵기를 설정합니다. (기본값: normal)
     weight?: 'light' | 'normal' | 'bold'
+
+    fontFamily?: string // 폰트 패밀리 설정 추가
 }
 
 // A component for displaying generic text
@@ -32,14 +35,17 @@ export default function Text({
     size = 'md',
     color = 'black',
     weight = 'normal',
+    fontFamily = "'Black Han Sans', sans-serif", // 기본 폰트 패밀리 설정
     ...props
 }: Props) {
     return (
         <span
             {...props}
+            style={{ fontFamily }} // 세미콜론 없이 fontFamily 설정
             className={classNames(
                 props.className,
                 {
+                    // Size classes
                     'text-4xl': size === '4xl',
                     'text-3xl': size === '3xl',
                     'text-2xl': size === '2xl',
@@ -50,6 +56,7 @@ export default function Text({
                     'text-xs': size === 'xs',
                 },
                 {
+                    // Color classes
                     'text-black': color === 'black',
                     'text-zinc-400': color === 'grey',
                     'text-red-500': color === 'red',
@@ -64,11 +71,14 @@ export default function Text({
                     'text-darkerGold': color === 'darkerGold',
                 },
                 {
+                    // Font weight classes
                     'font-light': weight === 'light',
                     'font-normal': weight === 'normal',
                     'font-bold': weight === 'bold',
                 },
             )}
-        />
+        >
+            {props.children}
+        </span>
     )
 }

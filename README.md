@@ -15,11 +15,11 @@
 
 ## Reference Site
 
--   Design System : primer.style/components
--   tailwindcss : tailwindcss.com/docs
--   storybook : https://storybook.js.org/
--   Google material Symbol: https://developers.google.com/fonts/docs/material_symbols
--   Day.js : day.js.org
+-   [Design System](https://primer.style/components)
+-   [tailwindcss](https://tailwindcss.com/docs)
+-   [storybook](https://storybook.js.org/)
+-   [Google material Symbol](https://fonts.google.com/iconss)
+-   [Day.js](https://day.js.org/docs/en/installation/installation)
 
 ---
 
@@ -31,7 +31,7 @@
 
 -   **Issues** : [task-1-layout](https://github.com/ld5ehom/store-web/tree/task-1-layout)
 -   **Details** :
-    -   **Common Components**
+    -   **Common Components** [06f0a07](https://github.com/ld5ehom/store-web/commit/06f0a07516407c89948ee87821ab0400d50abde5) :
         -   Components to be created: Text, Button, Input, Product components
         -   Installation needed:
             -   npm install next@14 --save
@@ -40,6 +40,9 @@
             -   npm install dayjs --save
         -   Extensions:
             -   Tailwind CSS IntelliSense
+    -   **Header Layout**
+        -   Header Layout Implementation Created the Header component and set up a basic layout including the logo, menu, and search bar.
+        -   Added Search Bar Added the Search component within the Header to implement a search field. Used Tailwind CSS to style and adjust the width of the search bar.
 
 **Task 2: Mock Client**
 
@@ -87,26 +90,10 @@ brew install git
 brew install node
 ```
 
--   **firebase**:
-
-```
-npm install firebase
-```
-
 -   **ESLint and Prettier**:
 
 ```
 npm install eslint prettier -D
-```
-
--   **Prisma (local test)**:
-
-```
-npm install -D prisma
-```
-
-```
-npx prisma init
 ```
 
 -   **react hook form**:
