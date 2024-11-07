@@ -5,11 +5,10 @@ import Wrapper from '@/components/layout/Wrapper'
 export default function Footer() {
     return (
         <Wrapper>
-            <aside className="border-t border-slate-300">
+            <aside className="border-t border-uclaBlue bg-lightestBlue">
                 <Container>
-                    <div className="py-5 flex gap-5">
-                        <Text>UCLA Linguistics and Computer Science</Text>|
-                        <Text>Taewook Park</Text>|{/* <Text></Text> */}
+                    <div className="py-5 justify-center flex gap-5">
+                        <Text>Taewook Park</Text>
                     </div>
                 </Container>
             </aside>

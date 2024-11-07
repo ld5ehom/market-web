@@ -5,7 +5,7 @@
         "plugin:storybook/recommended"
     ],
     "rules": {
-        "import/order": "off", // import 순서 규칙 비활성화
-        "indent": ["error", 4] // 4칸 들여쓰기
+        "import/order": "off",
+        "indent": "off"
     }
 }

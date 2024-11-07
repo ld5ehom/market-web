@@ -20,8 +20,7 @@
 -   [storybook](https://storybook.js.org/)
 -   [Google material Symbol](https://fonts.google.com/iconss)
 -   [Day.js](https://day.js.org/docs/en/installation/installation)
-
----
+-   [Scroll-lock](https://www.npmjs.com/package/scroll-lock)
 
 ## Task List
 
@@ -40,9 +39,18 @@
             -   npm install dayjs --save
         -   Extensions:
             -   Tailwind CSS IntelliSense
-    -   **Header Layout**
+    -   **Header Layout** [c681062](https://github.com/ld5ehom/store-web/commit/c68106225df491d02d25a7b849599c608581b5e4) :
         -   Header Layout Implementation Created the Header component and set up a basic layout including the logo, menu, and search bar.
         -   Added Search Bar Added the Search component within the Header to implement a search field. Used Tailwind CSS to style and adjust the width of the search bar.
+    -   **Footer Layout** [d1ceec9](https://github.com/ld5ehom/store-web/commit/d1ceec9a45e517182dd0709adba1567c8d891715) :
+        -   Footer UI Update using github desktop
+    -   **Login/Signup Modal and Sidebar Implementation**
+        -   Login and Signup Modal: When the login or signup button is clicked, a modal window opens, displaying the respective screen within the modal.
+        -   Used scroll-lock to prevent scrolling when the login/signup modal is open.
+            -   npm install scroll-lock
+            -   npm install --save-dev @types/scroll-lock
+        -   Created a sidebar using SASS to display the Cart and Recently Viewed items list on the right side of the screen.
+            -   npm install sass
 
 **Task 2: Mock Client**
 
@@ -119,6 +127,13 @@ npm install classnames
 
 ```
 npm install dayjs --save
+```
+
+-   **Scroll-lock**:
+
+```
+npm install scroll-lock
+npm install --save-dev @types/scroll-lock
 ```
 
 ---
