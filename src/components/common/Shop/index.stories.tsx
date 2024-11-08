@@ -1,5 +1,7 @@
+import { faker } from '@faker-js/faker'
 import type { Meta, StoryObj } from '@storybook/react'
 import Shop from '.'
+
 const meta = {
     title: 'Shop',
     component: Shop,
@@ -13,8 +15,10 @@ const meta = {
         ),
     ],
 } satisfies Meta<typeof Shop>
+
 export default meta
 type Story = StoryObj<typeof meta>
+
 export const DefaultShop: Story = {
     args: {
         name: 'Shop',
@@ -23,12 +27,13 @@ export const DefaultShop: Story = {
         type: 'row',
     },
 }
+
 export const ImagedShop: Story = {
     args: {
         name: 'Shop',
         productCount: 999,
         followerCount: 999,
         type: 'row',
-        profileImageUrl: 'https://picsum.photos/200',
+        profileImageUrl: faker.image.dataUri(),
     },
 }

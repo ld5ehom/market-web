@@ -1,9 +1,18 @@
+import { useEffect, useState } from 'react'
+
+import ProductList from './_components/ProductList'
+import Container from '@/components/layout/Container'
 import ShopLayout from '@/components/layout/ShopLayout'
+import Wrapper from '@/components/layout/Wrapper'
 
 export default function Home() {
     return (
         <ShopLayout>
-            <div className="bg-lightestBlue" style={{ height: '150vh' }} />
+            <Wrapper>
+                <Container>
+                    <ProductList />
+                </Container>
+            </Wrapper>
         </ShopLayout>
     )
 }

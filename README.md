@@ -21,6 +21,7 @@
 -   [Google material Symbol](https://fonts.google.com/iconss)
 -   [Day.js](https://day.js.org/docs/en/installation/installation)
 -   [Scroll-lock](https://www.npmjs.com/package/scroll-lock)
+-   [Faker.js](https://fakerjs.dev/guide/)
 
 ## Task List
 
@@ -44,7 +45,7 @@
         -   Added Search Bar Added the Search component within the Header to implement a search field. Used Tailwind CSS to style and adjust the width of the search bar.
     -   **Footer Layout** [d1ceec9](https://github.com/ld5ehom/store-web/commit/d1ceec9a45e517182dd0709adba1567c8d891715) :
         -   Footer UI Update using github desktop
-    -   **Login/Signup Modal and Sidebar Implementation**
+    -   **Login/Signup Modal and Sidebar Implementation** [42234e3](https://github.com/ld5ehom/store-web/commit/42234e3cb411a12140f626490d3fcce5e06c5c43) :
         -   Login and Signup Modal: When the login or signup button is clicked, a modal window opens, displaying the respective screen within the modal.
         -   Used scroll-lock to prevent scrolling when the login/signup modal is open.
             -   npm install scroll-lock
@@ -52,29 +53,35 @@
         -   Created a sidebar using SASS to display the Cart and Recently Viewed items list on the right side of the screen.
             -   npm install sass
 
-**Task 2: Mock Client**
+**Task 2: Main Page**
 
-**Task 3: Main Page**
+-   **Issues** : [task-2-main](https://github.com/ld5ehom/store-web/tree/task-2-main)
+-   **Details** :
+    -   **Set up Mock Client to Implement Product Components on the Main Page**
+        -   Used the Faker.js API to generate mock data.
+            -   npm install @faker-js/faker --save-dev
+        -   Defined product data types to facilitate parallel development of the frontend and backend.
+        -   Displayed and arranged product information on the main page using mock data.
 
-**Task 4: Product Search Page**
+**Task 3: Search Page**
 
-**Task 5: Product Details Page**
+**Task 4: Product Details Page**
 
-**Task 6: Shopping Cart Page**
+**Task 5: Shopping Cart Page**
 
-**Task 7: Implementing the Product Management Page**
+**Task 6: Implementing the Product Management Page**
 
 ---
 
 ### Milestone 2: Advanced Features and Testing
 
-**Task 8: Chat Page**
+**Task 7: Chat Page**
 
-**Task 9: Finalizing the Mock API Application**
+**Task 8: Finalizing the Mock API Application**
 
-**Task 10: Integrating with Supabase**
+**Task 9: Integrating with Supabase**
 
-**Task 11: Deploying the Project**
+**Task 10: Deploying the Project**
 
 ---
 

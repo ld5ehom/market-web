@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import type { Meta, StoryObj } from '@storybook/react'
 import Product from '.'
 
@@ -23,7 +24,7 @@ export const DefaultProduct: Story = {
         title: 'Sample Product',
         price: 50.0, // Ensure price is passed as a number
         createdAt: '2024-12-01',
-        imageUrl: 'https://picsum.photos/200',
+        imageUrl: faker.image.dataUri(),
     },
 }
 
@@ -32,7 +33,7 @@ export const SoldOutProduct: Story = {
         title: 'Sample Product',
         price: 50.0, // Ensure price is passed as a number
         createdAt: '2024-12-01',
-        imageUrl: 'https://picsum.photos/200',
+        imageUrl: faker.image.dataUri(),
         isSoldOut: true,
     },
 }
