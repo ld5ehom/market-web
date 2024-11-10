@@ -35,3 +35,12 @@ export function getMockProductData(defaultValue?: Partial<Product>) {
     }
     return data
 }
+
+// A utility function that returns a promise that resolves after a specified timeout
+// 지정된 시간(ms) 후에 해결되는 프로미스를 반환하는 유틸리티 함수 (3/sec)
+export const timeout = (ms = 3000) =>
+    new Promise((resolve) => {
+        // Use setTimeout to wait for the given number of milliseconds before resolving the promise
+        // setTimeout을 사용하여 지정된 밀리초(ms)만큼 대기한 후 프로미스를 해결
+        setTimeout(resolve, ms)
+    })

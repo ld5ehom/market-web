@@ -13,5 +13,6 @@ export async function getProducts({
     const data: Product[] = Array.from({
         length: (toPage - fromPage) * 10,
     }).map(() => getMockProductData({ purchaseBy: null }))
+
     return Promise.resolve({ data })
 }

@@ -6,13 +6,6 @@
 
 ---
 
-## Milestones
-
--   M1 : App Basic Functionality Development
--   M2 : Advanced Features and Testing
-
----
-
 ## Reference Site
 
 -   [Design System](https://primer.style/components)
@@ -22,10 +15,22 @@
 -   [Day.js](https://day.js.org/docs/en/installation/installation)
 -   [Scroll-lock](https://www.npmjs.com/package/scroll-lock)
 -   [Faker.js](https://fakerjs.dev/guide/)
+-   [Intersection Observer Docs](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
+-   [React Intersection Observer](https://www.npmjs.com/package/react-intersection-observer)
+-   [React Responsive Carousel](https://react-responsive-carousel.js.org/)
+
+---
+
+## Milestones
+
+-   M1 : App Basic Functionality Development
+-   M2 : Advanced Features and Testing
+
+---
 
 ## Task List
 
-### M1: App Basic Functionality Development
+### Milestone 1 : App Basic Functionality Development
 
 **Task 1. Common Layout**
 
@@ -57,11 +62,19 @@
 
 -   **Issues** : [task-2-main](https://github.com/ld5ehom/store-web/tree/task-2-main)
 -   **Details** :
-    -   **Set up Mock Client to Implement Product Components on the Main Page**
+
+    -   **Set up Mock Client to Implement Product Components on the Main Page** [f2efaf7](https://github.com/ld5ehom/store-web/commit/f2efaf72df928caa2b73c5638d6c7e48a8dcb0c0) :
         -   Used the Faker.js API to generate mock data.
             -   npm install @faker-js/faker --save-dev
         -   Defined product data types to facilitate parallel development of the frontend and backend.
         -   Displayed and arranged product information on the main page using mock data.
+    -   **Main Page Carousel Banner and Product List Implementation**
+        -   Implemented the product infinite scroll feature using the React Intersection Observer API to load recommended products as the user scrolls.
+        -   Added an infinite scroll functionality that automatically loads more products as the user scrolls down the page.
+            -   npm i react-intersection-observer
+        -   Created a banner on the main page using react-responsive-carousel.
+            -   npm install react-responsive-carousel --save
+        -   Added getServerSideProps in the Product component for server-side rendering.
 
 **Task 3: Search Page**
 
@@ -82,6 +95,24 @@
 **Task 9: Integrating with Supabase**
 
 **Task 10: Deploying the Project**
+
+---
+
+## Start
+
+```
+npm install --legacy-peer-deps
+```
+
+```
+npm run dev
+```
+
+-   **storybook start**:
+
+```
+npm run storybook
+```
 
 ---
 
@@ -143,30 +174,16 @@ npm install scroll-lock
 npm install --save-dev @types/scroll-lock
 ```
 
----
-
-## Start
+-   **Mock Data Setup**:
 
 ```
-npx create-next-app
+npm install @faker-js/faker --save-dev
 ```
 
-```
-✔ Would you like to use TypeScript? … Yes
-✔ Would you like to use ESLint? … Yes
-✔ Would you like to use Tailwind CSS? … Yes
-✔ Would you like your code inside a `src/` directory? … Yes
-✔ Would you like to use App Router? (recommended) … No
-✔ Would you like to customize the import alias (@/* by default)? … No
-Creating a new Next.js app in /Users/teo/Desktop/store-web.
-```
+-   **Infinite Scroll and Carousel**:
 
 ```
-npm run dev
-```
+npm install react-intersection-observer
+npm install react-responsive-carousel --save
 
--   **storybook start**:
-
-```
-npm run storybook
 ```
