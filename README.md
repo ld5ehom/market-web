@@ -68,7 +68,7 @@
             -   npm install @faker-js/faker --save-dev
         -   Defined product data types to facilitate parallel development of the frontend and backend.
         -   Displayed and arranged product information on the main page using mock data.
-    -   **Main Page Carousel Banner and Product List Implementation**
+    -   **Main Page Carousel Banner and Product List Implementation** [3c9cebf](https://github.com/ld5ehom/store-web/commit/3c9cebff237641772eaab2cf7280fcd32eaf0664) :
         -   Implemented the product infinite scroll feature using the React Intersection Observer API to load recommended products as the user scrolls.
         -   Added an infinite scroll functionality that automatically loads more products as the user scrolls down the page.
             -   npm i react-intersection-observer
@@ -78,7 +78,14 @@
 
 **Task 3: Search Page**
 
-**Task 4: Product Details Page**
+-   **Issues** : [task-3-main](https://github.com/ld5ehom/store-web/tree/task-3-search)
+-   **Details** :
+
+    -   **Recent Searches and Auto-Complete Implementation**
+        -   Utilized react-intersection-observer and state management to build features for recent searches and auto-complete.
+        -   Managed search input focus and state using React hooks like useState, and ensured the search bar can be easily closed with a close button.
+
+    **Task 4: Product Details Page**
 
 **Task 5: Shopping Cart Page**
 
