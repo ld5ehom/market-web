@@ -1,8 +1,8 @@
 import classNames from 'classnames'
 import { useState } from 'react'
-
 import AutoComplete from './_components/AutoComplete'
 import Recent from './_components/Recent'
+import { addRecentKeyword } from '@/utils/localstorage'
 
 // Search Bar Component
 export default function Search() {
@@ -16,19 +16,24 @@ export default function Search() {
             {/* Search input container with styling */}
             {/* 스타일이 적용된 검색 입력 컨테이너 */}
             <div className="w-[450px] border-2 border-uclaBlue px-4 py-2 rounded-lg">
-                <form className="flex justify-between">
+                <form
+                    className="flex justify-between"
+                    onSubmit={(e) => {
+                        e.preventDefault() // Prevent the default form submission behavior
+                        // Add the current search term to the list of recent keywords
+                        addRecentKeyword(search)
+                    }}
+                >
                     {/* Search input field */}
-                    {/* 검색 입력 필드 */}
                     <input
                         className="w-full text-sm font-light outline-0 bg-lightestBlue px-2"
                         type="text"
-                        placeholder="Enter product or store name" // Placeholder for search input
+                        placeholder="Search Product" // Placeholder for search input
                         value={search}
                         onFocus={() => setIsFocused(true)}
                         onChange={(e) => setSearch(e.target.value)}
                     />
                     {/* Search button */}
-                    {/* 검색 버튼 */}
                     <button className="flex justify-center items-center">
                         <span className="material-symbols-outlined">
                             search
@@ -41,7 +46,7 @@ export default function Search() {
             {/* 검색 제안 목록을 위한 드롭다운 컨테이너 */}
             <div
                 className={classNames(
-                    'absolute w-full bg-white border border-grey-300 mt-2 h-96',
+                    'absolute w-full bg-white border border-lighterBlue mt-2 h-96 rounded-lg',
                     { hidden: !isFocused },
                 )}
             >
