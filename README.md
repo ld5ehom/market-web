@@ -18,6 +18,7 @@
 -   [Intersection Observer Docs](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API)
 -   [React Intersection Observer](https://www.npmjs.com/package/react-intersection-observer)
 -   [React Responsive Carousel](https://react-responsive-carousel.js.org/)
+-   [Lodash](https://lodash.com/docs/#throttle)
 
 ---
 
@@ -62,7 +63,6 @@
 
 -   **Issues** : [task-2-main](https://github.com/ld5ehom/store-web/tree/task-2-main)
 -   **Details** :
-
     -   **Set up Mock Client to Implement Product Components on the Main Page** [f2efaf7](https://github.com/ld5ehom/store-web/commit/f2efaf72df928caa2b73c5638d6c7e48a8dcb0c0) :
         -   Used the Faker.js API to generate mock data.
             -   npm install @faker-js/faker --save-dev
@@ -84,12 +84,15 @@
     -   **Recent Searches and Auto-Complete Implementation** [013c6c5](https://github.com/ld5ehom/store-web/commit/013c6c5bd01fc5799b6faf924acdab8f18aa79c1) :
         -   Utilized react-intersection-observer and state management to build features for recent searches and auto-complete.
         -   Managed search input focus and state using React hooks like useState, and ensured the search bar can be easily closed with a close button.
-    -   **Recent Searches and Auto-Complete Update**
+    -   **Recent Searches and Auto-Complete Update** [fb90d46](https://github.com/ld5ehom/store-web/commit/fb90d4619d9ecf1190d5fc07b931f23af1a68f1f) :
         -   utils/localstorage : This module provides utility functions for managing recent search keywords using localStorage, allowing efficient retrieval, addition, and clearing of keywords to enhance the search experience.
         -   getProductsByKeyword: This function generates and returns mock product data using faker and a provided search query. The data is paginated based on the specified range (fromPage to toPage), enhancing the search simulation experience.
         -   Search : Added functionality to the search form to prevent default form submission and to store the current search term in the list of recent keywords using addRecentKeyword.
         -   Recent : The Recent component now fetches and displays recent search terms from local storage using useState and useEffect. It includes a "Clear All Searches" button to let users manage their search history efficiently.
         -   AutoComplete : The AutoComplete component has been enhanced to dynamically fetch and display search suggestions based on user input using an API call. By incorporating useState and useEffect, the component now retrieves relevant product information with the getProductsByKeyword function, updating the autocomplete keywords in real time. Additionally, the title from the product data is used for display, and long text is trimmed with the truncate class for a clean and organized UI.
+    -   **AutoComplete : Search Component Optimization Using Throttle**
+        -   Implemented throttle using the Lodash library to prevent sending API requests for every keystroke, reducing unnecessary server calls. Instead, API requests are made every 500 milliseconds, ensuring that incomplete words or typing pauses don't trigger excessive network requests, leading to a smoother and more efficient search experience.
+            -   npm i lodash
 
 **Task 4: Product Details Page**
 

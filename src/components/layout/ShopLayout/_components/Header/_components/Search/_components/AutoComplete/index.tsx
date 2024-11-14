@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { throttle } from 'lodash'
+import { useEffect, useMemo, useState } from 'react'
 
 import Text from '@/components/common/Text'
 import { getProductsByKeyword } from '@/repository/products/getProductsByKeyword'
@@ -17,26 +18,29 @@ export default function AutoComplete({ query, handleClose }: Props) {
     // 자동 완성 키워드를 저장하는 상태
     const [keywords, setKeywords] = useState<string[]>([])
 
+    // lodash throttle
+    const handleSearch = useMemo(
+        () =>
+            throttle(async (query: string) => {
+                if (!query) {
+                    setKeywords([])
+                    return
+                }
+                const { data } = await getProductsByKeyword({
+                    query,
+                    fromPage: 0,
+                    toPage: 2,
+                })
+                setKeywords(data.map(({ title }) => title))
+            }, 500),
+        [],
+    )
+
     // Effect to fetch keywords based on the query
     // 검색어에 따라 키워드를 가져오는 효과
     useEffect(() => {
-        ;(async () => {
-            if (!query) {
-                // Clear keywords if the query is empty
-                // 검색어가 비어 있으면 키워드를 초기화
-                setKeywords([])
-                return
-            }
-            const { data } = await getProductsByKeyword({
-                query, // The search query  검색어
-                fromPage: 0, // Start page for fetching data   데이터를 가져오는 시작 페이지
-                toPage: 2, // End page for fetching data   데이터를 가져오는 종료 페이지
-            })
-            // Update keywords with product titles
-            // 상품 제목으로 키워드를 업데이트
-            setKeywords(data.map(({ title }) => title))
-        })()
-    }, [query])
+        handleSearch(query)
+    }, [handleSearch, query]) // lodash
 
     return (
         <div className="flex flex-col h-full">
