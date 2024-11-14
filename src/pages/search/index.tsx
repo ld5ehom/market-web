@@ -1,10 +1,13 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import { useEffect, useState } from 'react'
 
+import Pagination from '@/components/common/Pagination'
 import Product from '@/components/common/Product'
 import Text from '@/components/common/Text'
 import Container from '@/components/layout/Container'
 import Wrapper from '@/components/layout/Wrapper'
 import { getProductsByKeyword } from '@/repository/products/getProductsByKeyword'
+import { getProductsByKeywordCount } from '@/repository/products/getProductsByKeywordCount'
 import { Product as TProduct } from '@/types'
 
 // Fetch products on the server side before rendering the page
@@ -12,6 +15,7 @@ import { Product as TProduct } from '@/types'
 export const getServerSideProps: GetServerSideProps<{
     products: TProduct[] // Array of products to be displayed  (화면에 표시할 제품 배열)
     query: string // The search query string  (검색어 문자열)
+    count: number // Pagination
 }> = async (context) => {
     const originalQuery = context.query.query as string | undefined
 
@@ -29,16 +33,34 @@ export const getServerSideProps: GetServerSideProps<{
         fromPage: 0,
         toPage: 1,
     })
+    const { data: count } = await getProductsByKeywordCount(query)
 
     // Return the fetched products and query as props (가져온 제품과 검색어를 props로 반환)
-    return { props: { products, query } }
+    return { props: { products, query, count } }
 }
 
 // Main component for displaying search results (검색 결과를 표시하는 메인 컴포넌트)
 export default function Search({
-    products,
+    products: initialProducts,
     query,
+    count,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    const [products, setProducts] = useState<TProduct[]>(initialProducts)
+    // The page displayed to the user starts from 1
+    const [currentPage, setCurrentPage] = useState(1)
+
+    useEffect(() => {
+        ;(async () => {
+            const { data: products } = await getProductsByKeyword({
+                query,
+                // The page processed on the server starts from 0
+                fromPage: currentPage - 1,
+                toPage: currentPage,
+            })
+            setProducts(products)
+        })()
+    }, [currentPage, query])
+
     return (
         <Wrapper>
             <Container>
@@ -49,7 +71,6 @@ export default function Search({
                     </Text>
                     <Text size="lg"> Results</Text>
                 </div>
-
                 <div className="grid grid-cols-5 gap-4 my-3">
                     {products.length === 0 ? (
                         // If no products found, show a message  (검색 결과가 없을 경우 메시지를 표시)
@@ -72,6 +93,16 @@ export default function Search({
                             ),
                         )
                     )}
+                </div>
+                {/* Pagination */}
+                <div className="my-6 flex justify-center">
+                    <Pagination
+                        currentPage={currentPage}
+                        count={count}
+                        handlePageChange={(pageNumber) => {
+                            setCurrentPage(pageNumber)
+                        }}
+                    />
                 </div>
             </Container>
         </Wrapper>
