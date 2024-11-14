@@ -90,15 +90,9 @@
         -   Search : Added functionality to the search form to prevent default form submission and to store the current search term in the list of recent keywords using addRecentKeyword.
         -   Recent : The Recent component now fetches and displays recent search terms from local storage using useState and useEffect. It includes a "Clear All Searches" button to let users manage their search history efficiently.
         -   AutoComplete : The AutoComplete component has been enhanced to dynamically fetch and display search suggestions based on user input using an API call. By incorporating useState and useEffect, the component now retrieves relevant product information with the getProductsByKeyword function, updating the autocomplete keywords in real time. Additionally, the title from the product data is used for display, and long text is trimmed with the truncate class for a clean and organized UI.
-    -   **Product Search Page Optimization and Implementation**
-        -   AutoComplete : Search Component Optimization Using Throttle
-            -   Implemented throttle using the Lodash library to prevent sending API requests for every keystroke, reducing unnecessary server calls. Instead, API requests are made every 500 milliseconds, ensuring that incomplete words or typing pauses don't trigger excessive network requests, leading to a smoother and more efficient search experience.
+    -   **AutoComplete : Search Component Optimization Using Throttle**
+        -   Implemented throttle using the Lodash library to prevent sending API requests for every keystroke, reducing unnecessary server calls. Instead, API requests are made every 500 milliseconds, ensuring that incomplete words or typing pauses don't trigger excessive network requests, leading to a smoother and more efficient search experience.
             -   npm i lodash
-        -   Server-Side Rendering for Search Results
-            -   Utilized Next.js's getServerSideProps to implement server-side rendering for the search page, fetching product data based on the user query.
-        -   Pagination Component Development
-            -   Developed pagination for the product search page, enabling users to efficiently navigate through pages of search results.
-            -   Optimized the pagination logic in the ProductList component. The currentPage state starts at 1 to align with user expectations, while the server-side API utilizes a page offset beginning from 0. This ensures seamless synchronization between client-side navigation and server-side data fetching.
 
 **Task 4: Product Details Page**
 

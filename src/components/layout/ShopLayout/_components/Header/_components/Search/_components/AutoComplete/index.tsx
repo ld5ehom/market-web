@@ -1,6 +1,6 @@
 import { throttle } from 'lodash'
-import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
+
 import Text from '@/components/common/Text'
 import { getProductsByKeyword } from '@/repository/products/getProductsByKeyword'
 import { addRecentKeyword } from '@/utils/localstorage'
@@ -22,7 +22,7 @@ export default function AutoComplete({ query, handleClose }: Props) {
     // 자동 완성 키워드를 저장하는 상태
     const [keywords, setKeywords] = useState<string[]>([])
 
-    // Lodash Throttle
+    // lodash throttle
     const handleSearch = useMemo(
         () =>
             throttle(async (query: string) => {
@@ -40,10 +40,11 @@ export default function AutoComplete({ query, handleClose }: Props) {
         [],
     )
 
-    // Lodash throttle
+    // Effect to fetch keywords based on the query
+    // 검색어에 따라 키워드를 가져오는 효과
     useEffect(() => {
         handleSearch(query)
-    }, [handleSearch, query])
+    }, [handleSearch, query]) // lodash
 
     return (
         <div className="flex flex-col h-full">
