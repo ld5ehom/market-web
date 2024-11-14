@@ -1,21 +1,23 @@
 import { throttle } from 'lodash'
+import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 
 import Text from '@/components/common/Text'
 import { getProductsByKeyword } from '@/repository/products/getProductsByKeyword'
+import { addRecentKeyword } from '@/utils/localstorage'
 
-// Props type for the AutoComplete component
-// AutoComplete 컴포넌트의 Props 타입 정의
+// Props type for the AutoComplete component (AutoComplete 컴포넌트의 Props 타입 정의)
 type Props = {
-    query: string // The search query entered by the user
-    // 사용자가 입력한 검색어
-    handleClose: () => void // Function to handle closing the component
-    // 컴포넌트를 닫는 함수를 정의
+    query: string // The search query entered by the user (사용자가 입력한 검색어)
+    handleClose: () => void // Function to handle closing the component (컴포넌트를 닫는 함수를 정의)
 }
 
 export default function AutoComplete({ query, handleClose }: Props) {
-    // State to store autocomplete keywords
-    // 자동 완성 키워드를 저장하는 상태
+    // Use the Next.js router to handle page navigation
+    // Next.js 라우터를 사용하여 페이지 이동을 처리
+    const router = useRouter()
+
+    // State to store autocomplete keywords (자동 완성 키워드를 저장하는 상태)
     const [keywords, setKeywords] = useState<string[]>([])
 
     // lodash throttle
@@ -36,8 +38,7 @@ export default function AutoComplete({ query, handleClose }: Props) {
         [],
     )
 
-    // Effect to fetch keywords based on the query
-    // 검색어에 따라 키워드를 가져오는 효과
+    // Effect to fetch keywords based on the query (검색어에 따라 키워드를 가져오는 효과)
     useEffect(() => {
         handleSearch(query)
     }, [handleSearch, query]) // lodash
@@ -80,13 +81,19 @@ export default function AutoComplete({ query, handleClose }: Props) {
                     // If there are autocomplete keywords, display them in a scrollable container
                     // 자동 완성 키워드가 있을 경우 스크롤 가능한 컨테이너에 표시
                     <div className="h-full overflow-scroll pb-8">
-                        {keywords.map((recent, idx) => (
+                        {keywords.map((keyword) => (
                             <Text
                                 size="sm"
-                                key={idx}
-                                className="block my-1 truncate"
+                                key={keyword}
+                                className="block my-1 truncate cursor-pointer"
+                                onClick={() => {
+                                    addRecentKeyword(keyword)
+                                    router.push(
+                                        `/search?query=${encodeURIComponent(keyword)}`,
+                                    )
+                                }}
                             >
-                                {recent}
+                                {keyword}
                             </Text>
                         ))}
                     </div>

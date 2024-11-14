@@ -8,10 +8,10 @@ const getArray = (key: string) => {
         if (items) {
             return JSON.parse(items)
         }
-        // Return an empty array if there are no items 항목이 없으면 빈 배열을 반환
+        // Return an empty array if there are no items (항목이 없으면 빈 배열을 반환)
         return []
     } catch {
-        // Return an empty array in case of error 오류가 발생한 경우 빈 배열을 반환
+        // Return an empty array in case of error (오류가 발생한 경우 빈 배열을 반환)
         return []
     }
 }

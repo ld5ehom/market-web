@@ -1,18 +1,26 @@
+import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 
 import Text from '@/components/common/Text'
-import { getRecentKeywords, clearRecentKeyword } from '@/utils/localstorage'
+import {
+    addRecentKeyword,
+    clearRecentKeyword,
+    getRecentKeywords,
+} from '@/utils/localstorage'
 
-// Props type for the Recent component
-// Recent 컴포넌트의 Props 타입 정의
+// Recent Searches Bar (최근 검색어 창)
+
+// Props type for the Recent component (Recent 컴포넌트의 Props 타입)
 type Props = {
-    handleClose: () => void // Function to handle closing the component
-    // 컴포넌트를 닫는 함수를 정의
+    handleClose: () => void // Function to handle closing the component (컴포넌트를 닫는 함수)
 }
 
 export default function Recent({ handleClose }: Props) {
-    // Array to store recent search terms
-    // 최근 검색어를 저장하는 배열
+    // Use the Next.js router to handle page navigation
+    // Next.js 라우터를 사용하여 페이지 이동을 처리
+    const router = useRouter()
+
+    // Array to store recent search terms (최근 검색어를 저장하는 배열)
     const [recents, setRecents] = useState<string[]>([])
 
     useEffect(() => {
@@ -43,11 +51,17 @@ export default function Recent({ handleClose }: Props) {
                     // If there are recent searches, display them in a scrollable container
                     // 최근 검색어가 있을 경우 스크롤 가능한 컨테이너에 표시
                     <div className="h-full overflow-scroll pb-8">
-                        {recents.map((recent, idx) => (
+                        {recents.map((recent) => (
                             <Text
                                 size="sm"
-                                key={idx}
-                                className="block my-1 truncate"
+                                key={recent}
+                                className="block my-1 truncate cursor-pointer"
+                                onClick={() => {
+                                    addRecentKeyword(recent)
+                                    router.push(
+                                        `/search?query=${encodeURIComponent(recent)}`,
+                                    )
+                                }}
                             >
                                 {recent}
                             </Text>
