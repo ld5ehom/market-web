@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
-
+import { throttle } from 'lodash'
+import { useRouter } from 'next/router'
+import { useEffect, useMemo, useState } from 'react'
 import Text from '@/components/common/Text'
 import { getProductsByKeyword } from '@/repository/products/getProductsByKeyword'
+import { addRecentKeyword } from '@/utils/localstorage'
 
 // Props type for the AutoComplete component
 // AutoComplete 컴포넌트의 Props 타입 정의
@@ -13,30 +15,35 @@ type Props = {
 }
 
 export default function AutoComplete({ query, handleClose }: Props) {
+    // Search page router
+    const router = useRouter()
+
     // State to store autocomplete keywords
     // 자동 완성 키워드를 저장하는 상태
     const [keywords, setKeywords] = useState<string[]>([])
 
-    // Effect to fetch keywords based on the query
-    // 검색어에 따라 키워드를 가져오는 효과
+    // Lodash Throttle
+    const handleSearch = useMemo(
+        () =>
+            throttle(async (query: string) => {
+                if (!query) {
+                    setKeywords([])
+                    return
+                }
+                const { data } = await getProductsByKeyword({
+                    query,
+                    fromPage: 0,
+                    toPage: 2,
+                })
+                setKeywords(data.map(({ title }) => title))
+            }, 500),
+        [],
+    )
+
+    // Lodash throttle
     useEffect(() => {
-        ;(async () => {
-            if (!query) {
-                // Clear keywords if the query is empty
-                // 검색어가 비어 있으면 키워드를 초기화
-                setKeywords([])
-                return
-            }
-            const { data } = await getProductsByKeyword({
-                query, // The search query  검색어
-                fromPage: 0, // Start page for fetching data   데이터를 가져오는 시작 페이지
-                toPage: 2, // End page for fetching data   데이터를 가져오는 종료 페이지
-            })
-            // Update keywords with product titles
-            // 상품 제목으로 키워드를 업데이트
-            setKeywords(data.map(({ title }) => title))
-        })()
-    }, [query])
+        handleSearch(query)
+    }, [handleSearch, query])
 
     return (
         <div className="flex flex-col h-full">
@@ -74,15 +81,24 @@ export default function AutoComplete({ query, handleClose }: Props) {
                     </div>
                 ) : (
                     // If there are autocomplete keywords, display them in a scrollable container
-                    // 자동 완성 키워드가 있을 경우 스크롤 가능한 컨테이너에 표시
+                    // 자동 완성 키워드가 있는 경우, 스크롤 가능한 컨테이너에 표시
                     <div className="h-full overflow-scroll pb-8">
-                        {keywords.map((recent, idx) => (
+                        {keywords.map((keyword) => (
                             <Text
                                 size="sm"
-                                key={idx}
-                                className="block my-1 truncate"
+                                key={keyword}
+                                className="block my-1 truncate cursor-pointer"
+                                onClick={() => {
+                                    // Add the selected keyword to recent searches (선택한 키워드를 최근 검색어에 추가)
+                                    addRecentKeyword(keyword)
+                                    // Navigate to the search results page with the selected keyword
+                                    // 선택한 키워드로 검색 결과 페이지로 이동
+                                    router.push(
+                                        `/search?query=${encodeURIComponent(keyword)}`,
+                                    )
+                                }}
                             >
-                                {recent}
+                                {keyword}
                             </Text>
                         ))}
                     </div>

@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react'
-
+import { useRouter } from 'next/router'
 import Text from '@/components/common/Text'
-import { getRecentKeywords, clearRecentKeyword } from '@/utils/localstorage'
+import {
+    addRecentKeyword,
+    clearRecentKeyword,
+    getRecentKeywords,
+} from '@/utils/localstorage'
 
 // Props type for the Recent component
 // Recent 컴포넌트의 Props 타입 정의
@@ -11,6 +15,9 @@ type Props = {
 }
 
 export default function Recent({ handleClose }: Props) {
+    // Search page router
+    const router = useRouter()
+
     // Array to store recent search terms
     // 최근 검색어를 저장하는 배열
     const [recents, setRecents] = useState<string[]>([])
@@ -43,11 +50,17 @@ export default function Recent({ handleClose }: Props) {
                     // If there are recent searches, display them in a scrollable container
                     // 최근 검색어가 있을 경우 스크롤 가능한 컨테이너에 표시
                     <div className="h-full overflow-scroll pb-8">
-                        {recents.map((recent, idx) => (
+                        {recents.map((recent) => (
                             <Text
                                 size="sm"
-                                key={idx}
-                                className="block my-1 truncate"
+                                key={recent}
+                                className="block my-1 truncate cursor-pointer"
+                                onClick={() => {
+                                    addRecentKeyword(recent)
+                                    router.push(
+                                        `/search?query=${encodeURIComponent(recent)}`,
+                                    )
+                                }}
                             >
                                 {recent}
                             </Text>

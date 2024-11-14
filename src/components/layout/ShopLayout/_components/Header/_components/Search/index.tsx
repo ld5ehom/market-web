@@ -1,4 +1,5 @@
 import classNames from 'classnames'
+import { useRouter } from 'next/router'
 import { useState } from 'react'
 import AutoComplete from './_components/AutoComplete'
 import Recent from './_components/Recent'
@@ -6,6 +7,9 @@ import { addRecentKeyword } from '@/utils/localstorage'
 
 // Search Bar Component
 export default function Search() {
+    // Search page router
+    const router = useRouter()
+
     // State to store search input and manage focus
     // 검색 입력을 저장하고 포커스를 관리하는 상태
     const [search, setSearch] = useState('')
@@ -22,6 +26,12 @@ export default function Search() {
                         e.preventDefault() // Prevent the default form submission behavior
                         // Add the current search term to the list of recent keywords
                         addRecentKeyword(search)
+
+                        // Navigate to the search results page with the user's search query
+                        // 사용자의 검색어를 포함한 검색 결과 페이지로 이동
+                        router.push(
+                            `/search?query=${encodeURIComponent(search)}`,
+                        )
                     }}
                 >
                     {/* Search input field */}
