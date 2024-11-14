@@ -19,7 +19,7 @@ export async function getProductsByKeyword({
     // Create an array of mock product data with length based on the page range
     // 페이지 범위를 기반으로 길이가 지정된 모의 상품 데이터 배열 생성
     const data: Product[] = Array.from({
-        length: (toPage - fromPage) * 10,
+        length: (toPage - fromPage) * 20,
     }).map(() =>
         getMockProductData({
             // Append the query to a generated product name

@@ -78,7 +78,7 @@
 
 **Task 3: Search Page**
 
--   **Issues** : [task-3-main](https://github.com/ld5ehom/store-web/tree/task-3-search)
+-   **Issues** : [task-3-search](https://github.com/ld5ehom/store-web/tree/task-3-search)
 -   **Details** :
     -   **Recent Searches and Auto-Complete Implementation** [013c6c5](https://github.com/ld5ehom/store-web/commit/013c6c5bd01fc5799b6faf924acdab8f18aa79c1) :
         -   Utilized react-intersection-observer and state management to build features for recent searches and auto-complete.
@@ -92,8 +92,10 @@
     -   **AutoComplete : Search Component Optimization Using Throttle** [ec4afb5](https://github.com/ld5ehom/store-web/commit/ec4afb57adc7d3ba991672af2b16fc704d1fa4d7) :
         -   Implemented throttle using the Lodash library to prevent sending API requests for every keystroke, reducing unnecessary server calls. Instead, API requests are made every 500 milliseconds, ensuring that incomplete words or typing pauses don't trigger excessive network requests, leading to a smoother and more efficient search experience.
             -   npm i lodash
-    -   **Server-Side Rendering for Search Results**
+    -   **Server-Side Rendering for Search Results** [3a1b79f](https://github.com/ld5ehom/store-web/commit/3a1b79faffef952f00767197e59ab4341c02bcde) :
         -   Utilized Next.js's getServerSideProps to implement server-side rendering for the search page, fetching product data based on the user query.
+    -   **Pagination Component for Search Page**
+        -   Integrated a pagination feature at the bottom of the search results page, allowing users to navigate through multiple pages of search results efficiently.
 
 **Task 4: Product Details Page**
 
