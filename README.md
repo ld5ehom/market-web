@@ -94,8 +94,14 @@
             -   npm i lodash
     -   **Server-Side Rendering for Search Results** [3a1b79f](https://github.com/ld5ehom/store-web/commit/3a1b79faffef952f00767197e59ab4341c02bcde) :
         -   Utilized Next.js's getServerSideProps to implement server-side rendering for the search page, fetching product data based on the user query.
-    -   **Pagination Component for Search Page**
+    -   **Pagination Component for Search Page** [1634cb6](https://github.com/ld5ehom/store-web/commit/1634cb600e86b16a8d11c0b08146657d794ca3ef) :
         -   Integrated a pagination feature at the bottom of the search results page, allowing users to navigate through multiple pages of search results efficiently.
+    -   **Shop Search Feature Development**
+        -   Implemented the SearchShop component, which fetches and displays shops based on the search query. Utilized server-side rendering to retrieve shop data and the total count, presenting results in a structured format.
+        -   Mock Shop Data Generator for Search Queries: Developed the getShopsByKeyword function using Faker.js to generate mock shop data based on a search query. This function simulates data fetching by returning a paginated list of shop results.
+        -   Added pagination and improved the search results UI, ensuring efficient data handling and a better user experience.
+        -   Shop Details Loading Enhancement: Introduced the SearchShopItem component to asynchronously fetch and display follower and product counts for each shop, enhancing the data presentation and user experience.
+        -   getServerSideProps Optimization: Improved performance by using Promise.all to handle multiple asynchronous function calls concurrently, avoiding the inefficiencies caused by sequential await statements. This approach reduces the overall execution time and mitigates potential delays.
 
 **Task 4: Product Details Page**
 

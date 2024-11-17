@@ -12,7 +12,7 @@ type Props = {
 
 // CSS class name for the pagination buttons 페이지네이션 버튼을 위한 CSS 클래스 이름
 const btnClassName =
-    'border border-slate-300 px-2 py-2 flex justify-center items-center leading-none disabled:opacity-30 hover:bg-slate-200'
+    'border border-uclaBlue px-2 py-2 flex justify-center items-center leading-none disabled:opacity-30 hover:bg-slate-200 rounded-lg'
 
 // Pagination component 페이지네이션 컴포넌트
 export default function Pagination({
