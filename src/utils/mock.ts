@@ -20,6 +20,7 @@ export function getMockProductData(defaultValue?: Partial<Product>) {
             ),
         isChangable: defaultValue?.isChangable ?? faker.datatype.boolean(),
         isUsed: defaultValue?.isUsed ?? faker.datatype.boolean(),
+        // tags: Array.from({ length: 5 }).map(() => faker.lorem.word()),
         tags:
             (defaultValue?.tags ?? faker.datatype.boolean())
                 ? Array.from({
