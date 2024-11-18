@@ -1,4 +1,5 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
 import Pagination from '@/components/common/Pagination'
@@ -85,9 +86,10 @@ export default function Search({
                         // If products are found, display them  (검색 결과가 있을 경우 제품을 표시)
                         products.map(
                             ({ id, title, price, createdAt, imageUrls }) => (
-                                <div
+                                <Link
                                     key={id}
                                     className="rounded-lg overflow-hidden border"
+                                    href={`/products/${id}`}
                                 >
                                     <Product
                                         title={title}
@@ -95,7 +97,7 @@ export default function Search({
                                         createdAt={createdAt}
                                         imageUrl={imageUrls[0]}
                                     />
-                                </div>
+                                </Link>
                             ),
                         )
                     )}

@@ -1,6 +1,7 @@
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
+import { useCallback } from 'react'
 import { useInView } from 'react-intersection-observer'
-
 import Product from '@/components/common/Product'
 import Spinner from '@/components/common/Spinner'
 import { getProducts } from '@/repository/products/getProducts'
@@ -13,8 +14,7 @@ type Props = {
 export default function ProductList({ initialProducts }: Props) {
     const [products, setProducts] = useState<TProduct[]>(initialProducts)
 
-    // Maximum number of items to display
-    // 표시할 최대 아이템 수
+    // Maximum number of items to display (표시할 최대 아이템 수)
     const MAX_ITEMS = 50
 
     // react-intersection-observer to detect when elements come into view
@@ -25,42 +25,39 @@ export default function ProductList({ initialProducts }: Props) {
 
     // Function to fetch products and append them to the list
     // 제품을 가져와서 목록에 추가하는 함수
-    const handleGetProducts = async ({
-        fromPage,
-        toPage,
-    }: {
-        fromPage: number
-        toPage: number
-    }) => {
-        try {
-            setIsLoading(true)
-            const { data } = await getProducts({ fromPage, toPage })
+    const handleGetProducts = useCallback(
+        async ({ fromPage, toPage }: { fromPage: number; toPage: number }) => {
+            try {
+                setIsLoading(true)
+                const { data } = await getProducts({ fromPage, toPage })
 
-            // Append new data to the previous product list, limiting to MAX_ITEMS
-            // 이전 제품 목록에 새로운 데이터를 추가하되, MAX_ITEMS로 제한
-            setProducts((prevProducts) => {
-                const updatedProducts = [...prevProducts, ...data]
-                if (updatedProducts.length > MAX_ITEMS) {
-                    return updatedProducts.slice(0, MAX_ITEMS)
+                // Append new data to the previous product list, limiting to MAX_ITEMS
+                // 이전 제품 목록에 새로운 데이터를 추가하되, MAX_ITEMS로 제한
+                setProducts((prevProducts) => {
+                    const updatedProducts = [...prevProducts, ...data]
+                    if (updatedProducts.length > MAX_ITEMS) {
+                        return updatedProducts.slice(0, MAX_ITEMS)
+                    }
+                    return updatedProducts
+                })
+
+                // If no more data or maximum items reached, set isLastPage to true
+                // 더 이상 데이터가 없거나 최대 아이템 수에 도달하면 isLastPage를 true로 설정
+                if (data.length === 0 || products.length >= MAX_ITEMS) {
+                    setIsLastPage(true)
                 }
-                return updatedProducts
-            })
-
-            // If no more data or maximum items reached, set isLastPage to true
-            // 더 이상 데이터가 없거나 최대 아이템 수에 도달하면 isLastPage를 true로 설정
-            if (data.length === 0 || products.length >= MAX_ITEMS) {
-                setIsLastPage(true)
+            } finally {
+                setIsLoading(false)
             }
-        } finally {
-            setIsLoading(false)
-        }
-    }
+        },
+        [MAX_ITEMS, products],
+    ) // Removed 'getProducts' from dependencies
 
     useEffect(() => {
         // When the component mounts, it fetches products up to page 2
         // 컴포넌트가 마운트되면 페이지 2까지의 제품을 가져옴
         handleGetProducts({ fromPage: 0, toPage: 2 })
-    }, [])
+    }, [handleGetProducts])
 
     // Assume that the products are already loaded up to page 2
     // 제품이 이미 페이지 2까지 로드되었다고 가정
@@ -82,14 +79,18 @@ export default function ProductList({ initialProducts }: Props) {
         <div className="my-8 ">
             <div className="grid grid-cols-5 gap-4 ">
                 {products?.map(({ id, title, price, imageUrls, createdAt }) => (
-                    <div key={id} className="rounded-lg overflow-hidden border">
+                    <Link
+                        key={id}
+                        className="rounded-lg overflow-hidden border"
+                        href={`/products/${id}`}
+                    >
                         <Product
                             title={title}
                             price={price}
                             imageUrl={imageUrls[0]}
                             createdAt={createdAt}
                         />
-                    </div>
+                    </Link>
                 ))}
             </div>
             {isLoading && (

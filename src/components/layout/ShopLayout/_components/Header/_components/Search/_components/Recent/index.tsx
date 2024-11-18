@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
 import Text from '@/components/common/Text'
@@ -8,7 +8,9 @@ import {
     getRecentKeywords,
 } from '@/utils/localstorage'
 
-// Recent Searches Bar (최근 검색어 창)
+/*
+ * Recent Searches Bar (최근 검색어 창)
+ */
 
 // Props type for the Recent component (Recent 컴포넌트의 Props 타입)
 type Props = {
@@ -16,10 +18,6 @@ type Props = {
 }
 
 export default function Recent({ handleClose }: Props) {
-    // Use the Next.js router to handle page navigation
-    // Next.js 라우터를 사용하여 페이지 이동을 처리
-    const router = useRouter()
-
     // Array to store recent search terms (최근 검색어를 저장하는 배열)
     const [recents, setRecents] = useState<string[]>([])
 
@@ -52,19 +50,24 @@ export default function Recent({ handleClose }: Props) {
                     // 최근 검색어가 있을 경우 스크롤 가능한 컨테이너에 표시
                     <div className="h-full overflow-scroll pb-8">
                         {recents.map((recent) => (
-                            <Text
-                                size="sm"
+                            <Link
+                                href={`/search?query=${encodeURIComponent(recent)}`}
                                 key={recent}
                                 className="block my-1 truncate cursor-pointer"
+                                prefetch={false}
                                 onClick={() => {
                                     addRecentKeyword(recent)
-                                    router.push(
-                                        `/search?query=${encodeURIComponent(recent)}`,
-                                    )
+                                    handleClose()
                                 }}
                             >
-                                {recent}
-                            </Text>
+                                <Text
+                                    size="sm"
+                                    key={recent}
+                                    className="block my-1 truncate"
+                                >
+                                    {recent}
+                                </Text>
+                            </Link>
                         ))}
                     </div>
                 )}

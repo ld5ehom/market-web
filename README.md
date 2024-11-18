@@ -96,7 +96,7 @@
         -   Utilized Next.js's getServerSideProps to implement server-side rendering for the search page, fetching product data based on the user query.
     -   **Pagination Component for Search Page** [1634cb6](https://github.com/ld5ehom/store-web/commit/1634cb600e86b16a8d11c0b08146657d794ca3ef) :
         -   Integrated a pagination feature at the bottom of the search results page, allowing users to navigate through multiple pages of search results efficiently.
-    -   **Shop Search Feature Development**
+    -   **Shop Search Feature Development** [10a5c2c](https://github.com/ld5ehom/store-web/commit/10a5c2c2a6b0b43fda3c4876b7b32e13788ba8d2) :
         -   Implemented the SearchShop component, which fetches and displays shops based on the search query. Utilized server-side rendering to retrieve shop data and the total count, presenting results in a structured format.
         -   Mock Shop Data Generator for Search Queries: Developed the getShopsByKeyword function using Faker.js to generate mock shop data based on a search query. This function simulates data fetching by returning a paginated list of shop results.
         -   Added pagination and improved the search results UI, ensuring efficient data handling and a better user experience.
@@ -105,9 +105,17 @@
 
 **Task 4: Product Details Page**
 
-**Task 5: Shopping Cart Page**
+-   **Issues** : [task-4-product](https://github.com/ld5ehom/store-web/tree/task-4-product)
+-   **Details** :
+    -   **Product Detail Page Implementation**
+        -   Navigation to Home Page: Implemented a clickable, styled element that redirects users to the home page, enhancing intuitive and efficient navigation.
+        -   Product Detail Page: Built the ProductDetail component to fetch and display comprehensive product details, including the product's image, title, price, and creation time, utilizing Day.js for relative time formatting.
+        -   Related Products Feature: Introduced a feature to show a list of similar products based on shared tags, displaying up to three related items with their title, price, creation date, and image, enhancing the shopping experience.
+        -   Link Component: Added functionality using the Link component, enabling navigation to the product detail page when a product is clicked.
 
-**Task 6: Implementing the Product Management Page**
+**Task 5: Seller Page**
+
+**Task 6: Product Management Page**
 
 ---
 
