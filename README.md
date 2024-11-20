@@ -37,15 +37,26 @@
 
 -   **Issues** : [task-1-layout](https://github.com/ld5ehom/store-web/tree/task-1-layout)
 -   **Details** :
+
     -   **Common Components** [06f0a07](https://github.com/ld5ehom/store-web/commit/06f0a07516407c89948ee87821ab0400d50abde5) :
+
         -   Components to be created: Text, Button, Input, Product components
         -   Installation needed:
-            -   npm install next@14 --save
-            -   npm install classnames
-            -   npx storybook@latest init
-            -   npm install dayjs --save
+            ```
+            npm install next@14 --save
+            ```
+            ```
+            npm install classnames
+            ```
+            ```
+            npm storybook@latest init
+            ```
+            ```
+            npm install dayjs --save
+            ```
         -   Extensions:
             -   Tailwind CSS IntelliSense
+
     -   **Header Layout** [c681062](https://github.com/ld5ehom/store-web/commit/c68106225df491d02d25a7b849599c608581b5e4) :
         -   Header Layout Implementation Created the Header component and set up a basic layout including the logo, menu, and search bar.
         -   Added Search Bar Added the Search component within the Header to implement a search field. Used Tailwind CSS to style and adjust the width of the search bar.
@@ -54,10 +65,16 @@
     -   **Login/Signup Modal and Sidebar Implementation** [42234e3](https://github.com/ld5ehom/store-web/commit/42234e3cb411a12140f626490d3fcce5e06c5c43) :
         -   Login and Signup Modal: When the login or signup button is clicked, a modal window opens, displaying the respective screen within the modal.
         -   Used scroll-lock to prevent scrolling when the login/signup modal is open.
-            -   npm install scroll-lock
-            -   npm install --save-dev @types/scroll-lock
+            ```
+            npm install scroll-lock
+            ```
+            ```
+            npm install --save-dev @types/scroll-lock
+            ```
         -   Created a sidebar using SASS to display the Cart and Recently Viewed items list on the right side of the screen.
-            -   npm install sass
+            ```
+            npm install sass
+            ```
 
 **Task 2: Main Page**
 
@@ -65,21 +82,28 @@
 -   **Details** :
     -   **Set up Mock Client to Implement Product Components on the Main Page** [f2efaf7](https://github.com/ld5ehom/store-web/commit/f2efaf72df928caa2b73c5638d6c7e48a8dcb0c0) :
         -   Used the Faker.js API to generate mock data.
-            -   npm install @faker-js/faker --save-dev
+            ```
+            npm install @faker-js/faker --save-dev
+            ```
         -   Defined product data types to facilitate parallel development of the frontend and backend.
         -   Displayed and arranged product information on the main page using mock data.
     -   **Main Page Carousel Banner and Product List Implementation** [3c9cebf](https://github.com/ld5ehom/store-web/commit/3c9cebff237641772eaab2cf7280fcd32eaf0664) :
         -   Implemented the product infinite scroll feature using the React Intersection Observer API to load recommended products as the user scrolls.
         -   Added an infinite scroll functionality that automatically loads more products as the user scrolls down the page.
-            -   npm i react-intersection-observer
+            ```
+            npm install react-intersection-observer
+            ```
         -   Created a banner on the main page using react-responsive-carousel.
-            -   npm install react-responsive-carousel --save
+            ```
+            npm install react-responsive-carousel --save
+            ```
         -   Added getServerSideProps in the Product component for server-side rendering.
 
 **Task 3: Search Page**
 
 -   **Issues** : [task-3-search](https://github.com/ld5ehom/store-web/tree/task-3-search)
 -   **Details** :
+
     -   **Recent Searches and Auto-Complete Implementation** [013c6c5](https://github.com/ld5ehom/store-web/commit/013c6c5bd01fc5799b6faf924acdab8f18aa79c1) :
         -   Utilized react-intersection-observer and state management to build features for recent searches and auto-complete.
         -   Managed search input focus and state using React hooks like useState, and ensured the search bar can be easily closed with a close button.
@@ -91,7 +115,9 @@
         -   AutoComplete : The AutoComplete component has been enhanced to dynamically fetch and display search suggestions based on user input using an API call. By incorporating useState and useEffect, the component now retrieves relevant product information with the getProductsByKeyword function, updating the autocomplete keywords in real time. Additionally, the title from the product data is used for display, and long text is trimmed with the truncate class for a clean and organized UI.
     -   **AutoComplete : Search Component Optimization Using Throttle** [ec4afb5](https://github.com/ld5ehom/store-web/commit/ec4afb57adc7d3ba991672af2b16fc704d1fa4d7) :
         -   Implemented throttle using the Lodash library to prevent sending API requests for every keystroke, reducing unnecessary server calls. Instead, API requests are made every 500 milliseconds, ensuring that incomplete words or typing pauses don't trigger excessive network requests, leading to a smoother and more efficient search experience.
-            -   npm i lodash
+            ```
+            npm i lodash
+            ```
     -   **Server-Side Rendering for Search Results** [3a1b79f](https://github.com/ld5ehom/store-web/commit/3a1b79faffef952f00767197e59ab4341c02bcde) :
         -   Utilized Next.js's getServerSideProps to implement server-side rendering for the search page, fetching product data based on the user query.
     -   **Pagination Component for Search Page** [1634cb6](https://github.com/ld5ehom/store-web/commit/1634cb600e86b16a8d11c0b08146657d794ca3ef) :
@@ -107,11 +133,14 @@
 
 -   **Issues** : [task-4-product](https://github.com/ld5ehom/store-web/tree/task-4-product)
 -   **Details** :
-    -   **Product Detail Page Implementation**
+    -   **Product Detail Page Implementation** [7f17c96](https://github.com/ld5ehom/store-web/commit/7f17c96d28c7c259dc88731b1b9d54eb2a3238b0) :
         -   Navigation to Home Page: Implemented a clickable, styled element that redirects users to the home page, enhancing intuitive and efficient navigation.
         -   Product Detail Page: Built the ProductDetail component to fetch and display comprehensive product details, including the product's image, title, price, and creation time, utilizing Day.js for relative time formatting.
         -   Related Products Feature: Introduced a feature to show a list of similar products based on shared tags, displaying up to three related items with their title, price, creation date, and image, enhancing the shopping experience.
         -   Link Component: Added functionality using the Link component, enabling navigation to the product detail page when a product is clicked.
+    -   **Seller Information Implementation**:
+        -   Added a section to display detailed information about the seller, including the shop name, profile image, product count, and follower count.
+        -   Seller Review Component: Displays a single review item, including the reviewer's shop profile image, name, the content of the review, and how long ago the review was created.
 
 **Task 5: Seller Page**
 
@@ -218,5 +247,4 @@ npm install @faker-js/faker --save-dev
 ```
 npm install react-intersection-observer
 npm install react-responsive-carousel --save
-
 ```
