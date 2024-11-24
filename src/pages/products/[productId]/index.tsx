@@ -1,12 +1,11 @@
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import 'dayjs/locale/en'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ProductImage from './_components/ProductImage'
 import ReviewItem from './_components/ReviewItem'
 import Button from '@/components/common/Button'
@@ -27,6 +26,7 @@ import { getShopProducts } from '@/repository/shops/getShopProducts'
 import { getShopReviewCount } from '@/repository/shops/getShopReviewCount'
 import { getShopReviews } from '@/repository/shops/getShopReviews'
 import { Review, Product as TProduct, Shop as TShop } from '@/types'
+import { addRecentItemId } from '@/utils/localstorage'
 
 /**
  * Fetch product details, user information, and like status from the server
@@ -175,6 +175,11 @@ export default function ProductDetail({
         // TODO : Send request to the server (서버에 요청을 보냄)
     })
 
+    // Recent View history
+    useEffect(() => {
+        addRecentItemId(product.id)
+    }, [product.id])
+
     return (
         <Wrapper>
             <Container>
@@ -194,6 +199,7 @@ export default function ProductDetail({
                                     {product.title}
                                 </Text>
                             </div>
+
                             {/* Product price */}
                             <div className="my-6">
                                 <Text size="2xl"> $ </Text>
@@ -201,6 +207,7 @@ export default function ProductDetail({
                                     {product.price.toLocaleString()}
                                 </Text>
                             </div>
+
                             {/* Product creation date */}
                             <div className="border-t border-lightestBlue py-4 flex gap-1 items-center">
                                 <Text color="uclaBlue" className="flex">
@@ -280,8 +287,10 @@ export default function ProductDetail({
                         <div className="border-b border-lighterBlue pb-3">
                             <Text size="xl">Product Information</Text>{' '}
                         </div>
+
                         {/* Description */}
                         <div className="mt-5 mb-10">{product.description}</div>
+
                         <div className="border-y border-lighterBlue justify-center py-4 flex gap-2 ">
                             {/* Used or New Product */}
                             <div className="rounded-full bg-lightestBlue px-3 py-1 text-sm ">
@@ -297,8 +306,10 @@ export default function ProductDetail({
                                     : 'Not Exchangeable'}{' '}
                             </div>
                         </div>
+
                         {/* Location and Tag */}
                         <div className="flex py-4 border-b mb-10 border-lighterBlue">
+                            {/* Location */}
                             <div className="flex-1 flex flex-col items-center gap-2">
                                 <Text size="lg" color="darkerBlue">
                                     Location
@@ -308,6 +319,8 @@ export default function ProductDetail({
                                     {product.address}{' '}
                                 </Text>{' '}
                             </div>
+
+                            {/* Tags */}
                             <div className="flex-1 flex flex-col items-center gap-2">
                                 <Text size="lg" color="darkerBlue">
                                     Tags
@@ -355,18 +368,22 @@ export default function ProductDetail({
                                                 createdAt,
                                                 imageUrls,
                                             }) => (
-                                                <Link
-                                                    key={id}
-                                                    href={`/products/${id}`}
-                                                    className="w-48"
-                                                >
-                                                    <Product
-                                                        title={title}
-                                                        price={price}
-                                                        createdAt={createdAt}
-                                                        imageUrl={imageUrls[0]}
-                                                    />
-                                                </Link>
+                                                <div key={id} className="w-48">
+                                                    <Link
+                                                        href={`/products/${id}`}
+                                                    >
+                                                        <Product
+                                                            title={title}
+                                                            price={price}
+                                                            createdAt={
+                                                                createdAt
+                                                            }
+                                                            imageUrl={
+                                                                imageUrls[0]
+                                                            }
+                                                        />
+                                                    </Link>
+                                                </div>
                                             ),
                                         )}
                                 </div>
@@ -433,11 +450,11 @@ export default function ProductDetail({
                                         <Image
                                             src={imageUrls[0]}
                                             alt=""
-                                            fill // Next.js 13에서 이미지를 fill 방식으로 설정
+                                            layout="fill"
                                             style={{ objectFit: 'cover' }} // objectFit을 style 속성으로 설정
-                                            className="w-full h-full"
+                                            className="object-cover"
                                         />
-                                        <div className="absolute bottom-0 w-full bg-lighterBlue text-center py-1">
+                                        <div className="absolute bottom-0 w-full bg-lighterBlue opacity-60 text-center py-1">
                                             <Text color="black" size="md">
                                                 {new Intl.NumberFormat(
                                                     'en-US',

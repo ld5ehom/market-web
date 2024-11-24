@@ -1,4 +1,5 @@
 import { Carousel } from 'react-responsive-carousel'
+import Image from 'next/image'
 import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
 
 type Props = {
@@ -6,29 +7,20 @@ type Props = {
 }
 
 export default function ProductImage({ imageUrls = [] }: Props) {
-    // export default function ProductImage({ imageUrls }: Props) {
     return (
         <Carousel infiniteLoop showThumbs={false} showStatus={false}>
-            {imageUrls.map((url) => (
-                <img key={url} src={url} alt="" className="w-96 h-96" />
+            {imageUrls.map((url, index) => (
+                <div key={index} className="relative w-96 h-96">
+                    {' '}
+                    {/* 부모 요소 크기 지정 */}
+                    <Image
+                        src={url}
+                        alt={`Product image ${index + 1}`}
+                        layout="fill" // 이미지가 부모 요소를 채우도록 설정
+                        className="object-cover"
+                    />
+                </div>
             ))}
         </Carousel>
     )
 }
-
-// export default function ProductImage({ imageUrls = [] }: Props) {
-//     return (
-//         <Carousel infiniteLoop showThumbs={false} showStatus={false}>
-//             {imageUrls.map((url) => (
-//                 <div key={url} className="w-96 h-96 relative">
-//                     <Image
-//                         src={url}
-//                         alt=""
-//                         layout="fill"
-//                         objectFit="cover" // Adjust to your desired fit style
-//                     />
-//                 </div>
-//             ))}
-//         </Carousel>
-//     )
-// }

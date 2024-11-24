@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker'
 import { Carousel } from 'react-responsive-carousel'
 import 'react-responsive-carousel/lib/styles/carousel.min.css' // requires a loader
+import Image from 'next/image'
 
 // Banner component that displays a carousel of images
 // 이미지를 보여주는 캐러셀 배너 컴포넌트
@@ -18,9 +19,11 @@ export default function Banner() {
                 // Creates an array of 3 items to generate three slides
                 // 3개의 아이템을 생성하여 세 개의 슬라이드를 만듦
                 <div key={idx} className="h-96">
-                    <img
+                    <Image
                         src={faker.image.dataUri()}
                         className="w-full h-full rounded-lg"
+                        layout="fill" // 이미지가 부모 요소를 채우도록 설정
+                        alt={''}
                     />
                 </div>
             ))}

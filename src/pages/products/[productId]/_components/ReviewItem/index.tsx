@@ -50,16 +50,16 @@ export default function ReviewItem({ contents, createdAt, createdBy }: Props) {
         <div className="flex my-2 py-2">
             <ShopProfileImage imageUrl={reviewer.imageUrl || undefined} />{' '}
             {/* Shop profile image (상점 프로필 이미지) */}
-            <div className="ml-4 border-b pb-2 flex-1 w-0">
+            <div className="ml-4 border-b border-lightestBlue pb-2 flex-1 w-0">
                 <div className="flex justify-between">
                     <div className="truncate pr-1">
-                        <Text color="grey" size="sm">
+                        <Text color="black" size="sm">
                             {/* Reviewer's shop name (리뷰어의 상점 이름) */}
                             {reviewer.name}{' '}
                         </Text>
                     </div>
                     <div className="shrink-0">
-                        <Text color="grey" size="sm">
+                        <Text color="uclaBlue" size="sm">
                             {/* Relative time of review creation in US format (미국 형식으로 리뷰 작성 시간 상대적 표시) */}
                             {dayjs(createdAt).fromNow()}{' '}
                         </Text>
