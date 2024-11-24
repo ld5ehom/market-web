@@ -15,7 +15,7 @@ export default function ProductList({ initialProducts }: Props) {
     const [products, setProducts] = useState<TProduct[]>(initialProducts)
 
     // Maximum number of items to display (표시할 최대 아이템 수)
-    const MAX_ITEMS = 50
+    const MAX_ITEMS = 15
 
     // react-intersection-observer to detect when elements come into view
     // react-intersection-observer를 사용하여 요소가 보일 때를 감지

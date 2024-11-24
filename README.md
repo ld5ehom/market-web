@@ -2,6 +2,11 @@
 
 ## Project Overview
 
+-   Designed and implemented a responsive product catalog layout using TailwindCSS, featuring dynamic grid views and infinite scroll for seamless performance on large datasets.
+-   Enhanced search functionality with features like recent searches, auto-complete using localStorage, and optimized API requests with Lodash Throttle for real-time responsiveness.
+-   Developed and tested reusable components (Product, Search, Pagination) using Storybook, ensuring consistent design and functionality across the application.
+-   Leveraged Server-Side Rendering (SSR) in Next.js to improve SEO, initial load times, and user experience for search results and product detail pages.
+-   Implemented advanced features, including pagination for search results and a similar products recommendation system based on shared tags, boosting user engagement.
 -   Utilized : TypeScript, Next.js, React, Supabase, tailwindCSS, Storybook, Cypress, ESLint, Prettier
 
 ---
@@ -138,9 +143,20 @@
         -   Product Detail Page: Built the ProductDetail component to fetch and display comprehensive product details, including the product's image, title, price, and creation time, utilizing Day.js for relative time formatting.
         -   Related Products Feature: Introduced a feature to show a list of similar products based on shared tags, displaying up to three related items with their title, price, creation date, and image, enhancing the shopping experience.
         -   Link Component: Added functionality using the Link component, enabling navigation to the product detail page when a product is clicked.
-    -   **Seller Information Implementation**:
+    -   **Seller Information Implementation** [3d16deb](https://github.com/ld5ehom/store-web/commit/3d16deb84ae362cdaa757165b13d8c1d2f4f253e) :
         -   Added a section to display detailed information about the seller, including the shop name, profile image, product count, and follower count.
         -   Seller Review Component: Displays a single review item, including the reviewer's shop profile image, name, the content of the review, and how long ago the review was created.
+    -   **Side Bar Update : View Browsing History**
+        -   Resolved Rendering Issues in Related Products List
+            -   Addressed rendering and styling issues in the related products list by relocating the className="w-48" styling from the Link component to an outer <div>. This adjustment ensured proper layout application and resolved the issue where related products were not displaying correctly.
+        -   Implementation of Recently Viewed Products in Side Bar
+            -   Implemented a "Recently Viewed Products" section in the side bar with real-time data fetched from local storage and efficient pagination for browsing.
+            -   Optimized performance by using Promise.all for concurrent API requests and added a loading spinner to enhance the user experience during data fetching.
+            -   Added hover functionality to display detailed product information, including the product title and price, along with an option to remove individual products from the recent items list.
+        -   Real-Time Local Storage Update with dispatchEvent
+            -   Utilized dispatchEvent to propagate changes in the RECENT_ITEM_IDS_KEY, enabling real-time data synchronization across components without relying on global state management tools. This approach ensures efficient state updates and improves user experience with up-to-date UI rendering.
+        -   Search bar : Clear All Searches
+            -   Added functionality to clear all recent search keywords stored in local storage with a single click, with a real-time update mechanism to immediately reflect the cleared state in the UI.
 
 **Task 5: Seller Page**
 
