@@ -146,7 +146,7 @@
     -   **Seller Information Implementation** [3d16deb](https://github.com/ld5ehom/store-web/commit/3d16deb84ae362cdaa757165b13d8c1d2f4f253e) :
         -   Added a section to display detailed information about the seller, including the shop name, profile image, product count, and follower count.
         -   Seller Review Component: Displays a single review item, including the reviewer's shop profile image, name, the content of the review, and how long ago the review was created.
-    -   **Side Bar Update : View Browsing History**
+    -   **Side Bar Update : View Browsing History** [0be298a](https://github.com/ld5ehom/store-web/commit/0be298a490efd55e85863b4bc35b7df444a1a22c) :
         -   Resolved Rendering Issues in Related Products List
             -   Addressed rendering and styling issues in the related products list by relocating the className="w-48" styling from the Link component to an outer <div>. This adjustment ensured proper layout application and resolved the issue where related products were not displaying correctly.
         -   Implementation of Recently Viewed Products in Side Bar
@@ -157,6 +157,14 @@
             -   Utilized dispatchEvent to propagate changes in the RECENT_ITEM_IDS_KEY, enabling real-time data synchronization across components without relying on global state management tools. This approach ensures efficient state updates and improves user experience with up-to-date UI rendering.
         -   Search bar : Clear All Searches
             -   Added functionality to clear all recent search keywords stored in local storage with a single click, with a real-time update mechanism to immediately reflect the cleared state in the UI.
+    -   **Cart Page Update**
+        -   Aside Cart : Displays the number of products added to the cart. Fetches the cart count from the server and shows a spinner during loading.
+        -   Shop Cart Page Implementation
+            -   Fetches and displays key shop data, including product count, reviews, likes, followers, and following counts, using server-side rendering (SSR). Implements a dynamic "Likes" section with efficient data loading and pagination, enhancing the user experience with a structured and responsive layout.
+        -   Implementation of Cart List with Pagination
+            -   Displays a list of liked products dynamically using pagination, ensuring efficient rendering and seamless user experience. Automatically updates the product list when the page changes, fetching data via an API and maintaining state.
+        -   Dynamic Cart Product Display Component
+            -   Fetches and displays detailed information about a liked product using the provided productId. Incorporates a loading spinner to enhance user experience during data fetching and leverages a reusable Product component for consistent presentation and functionality.
 
 **Task 5: Seller Page**
 
