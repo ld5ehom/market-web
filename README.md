@@ -138,6 +138,7 @@
 
 -   **Issues** : [task-4-product](https://github.com/ld5ehom/store-web/tree/task-4-product)
 -   **Details** :
+
     -   **Product Detail Page Implementation** [7f17c96](https://github.com/ld5ehom/store-web/commit/7f17c96d28c7c259dc88731b1b9d54eb2a3238b0) :
         -   Navigation to Home Page: Implemented a clickable, styled element that redirects users to the home page, enhancing intuitive and efficient navigation.
         -   Product Detail Page: Built the ProductDetail component to fetch and display comprehensive product details, including the product's image, title, price, and creation time, utilizing Day.js for relative time formatting.
@@ -157,12 +158,10 @@
             -   Utilized dispatchEvent to propagate changes in the RECENT_ITEM_IDS_KEY, enabling real-time data synchronization across components without relying on global state management tools. This approach ensures efficient state updates and improves user experience with up-to-date UI rendering.
         -   Search bar : Clear All Searches
             -   Added functionality to clear all recent search keywords stored in local storage with a single click, with a real-time update mechanism to immediately reflect the cleared state in the UI.
-    -   **Cart Page Update**
+    -   **Cart Page Update** [7f11507](https://github.com/ld5ehom/store-web/commit/7f1150727bf890b30793163cd262f8658e8cf923) :
         -   Aside Cart : Displays the number of products added to the cart. Fetches the cart count from the server and shows a spinner during loading.
         -   Shop Cart Page Implementation
             -   Fetches and displays key shop data, including product count, reviews, likes, followers, and following counts, using server-side rendering (SSR). Implements a dynamic "Likes" section with efficient data loading and pagination, enhancing the user experience with a structured and responsive layout.
-        -   Implementation of Cart List with Pagination
-            -   Displays a list of liked products dynamically using pagination, ensuring efficient rendering and seamless user experience. Automatically updates the product list when the page changes, fetching data via an API and maintaining state.
         -   Dynamic Cart Product Display Component
             -   Fetches and displays detailed information about a liked product using the provided productId. Incorporates a loading spinner to enhance user experience during data fetching and leverages a reusable Product component for consistent presentation and functionality.
 
