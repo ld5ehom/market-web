@@ -16,7 +16,7 @@ export default function ProductImage({ imageUrls = [] }: Props) {
                     <Image
                         src={url}
                         alt={`Product image ${index + 1}`}
-                        layout="fill" // 이미지가 부모 요소를 채우도록 설정
+                        fill // 이미지가 부모 요소를 채우도록 설정
                         className="object-cover"
                     />
                 </div>

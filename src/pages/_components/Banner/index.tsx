@@ -22,7 +22,7 @@ export default function Banner() {
                     <Image
                         src={faker.image.dataUri()}
                         className="w-full h-full rounded-lg"
-                        layout="fill" // 이미지가 부모 요소를 채우도록 설정
+                        fill // 이미지가 부모 요소를 채우도록 설정
                         alt={''}
                     />
                 </div>
