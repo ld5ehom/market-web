@@ -18,7 +18,7 @@ type Props = {
  */
 export default function LikeList({ initialLikes, count, shopId }: Props) {
     const [likes, setLikes] = useState(
-        initialLikes.map((item) => ({ ...item, quantity: 1 })),
+        (initialLikes || []).map((item) => ({ ...item, quantity: 1 })),
     ) // Add quantity to each liked product
     const [totalPrice, setTotalPrice] = useState<number>(0) // State to track the total price of liked items
 

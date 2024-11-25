@@ -164,6 +164,8 @@
             -   Fetches and displays key shop data, including product count, reviews, likes, followers, and following counts, using server-side rendering (SSR). Implements a dynamic "Likes" section with efficient data loading and pagination, enhancing the user experience with a structured and responsive layout.
         -   Dynamic Cart Product Display Component
             -   Fetches and displays detailed information about a liked product using the provided productId. Incorporates a loading spinner to enhance user experience during data fetching and leverages a reusable Product component for consistent presentation and functionality.
+    -   **Default Value for initialLikes Code Update**
+        -   Ensured initialLikes defaults to an empty array (|| []) to handle potential undefined values safely.
 
 **Task 5: Seller Page**
 
