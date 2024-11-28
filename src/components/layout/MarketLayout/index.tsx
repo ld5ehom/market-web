@@ -9,8 +9,8 @@ interface Props {
     children: ReactNode
 }
 
-// Shop layout
-export default function ShopLayout({ children }: Props) {
+// Market layout
+export default function MarketLayout({ children }: Props) {
     return (
         <div style={{ minWidth: 1000 }}>
             <UserInfo />
