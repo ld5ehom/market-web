@@ -127,10 +127,10 @@ export default function ProductDetail({
     isLiked: initialIsLiked,
     isFollowed: initialIsFollowed,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    const router = useRouter() // Next.js 라우터 사용
     const [isLiked, setIsLiked] = useState(initialIsLiked)
     const [isFollowed, setIsFollowed] = useState(initialIsFollowed)
 
-    const router = useRouter() // Next.js 라우터 사용
     const { productId } = router.query // URL에서 productId 가져오기
 
     // URL의 productId가 변경될 때 데이터를 다시 가져오는 로직 추가
@@ -404,16 +404,16 @@ export default function ProductDetail({
                                 followerCount={followerCount}
                                 type="row"
                                 handleClickTitle={() =>
-                                    alert('handleClickTitle')
+                                    router.push(`/shops/${shop.id}`)
                                 }
                                 handleClickProfileImage={() =>
-                                    alert('handleClickProfileImage')
+                                    router.push(`/shops/${shop.id}`)
                                 }
                                 handleClickProductCount={() =>
-                                    alert('handleClickProductCount')
+                                    router.push(`/shops/${shop.id}/products`)
                                 }
-                                handleClickFollowerCount={() =>
-                                    alert('handleClickFollowerCount')
+                                handleClickFollowerCount={() => () =>
+                                    router.push(`/shops/${shop.id}/follower`)
                                 }
                             />
                         </div>

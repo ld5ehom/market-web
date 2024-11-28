@@ -4,7 +4,7 @@ import Banner from './_components/Banner'
 import ProductList from './_components/ProductList'
 
 import Container from '@/components/layout/Container'
-import ShopLayout from '@/components/layout/ShopLayout'
+import MarketLayout from '@/components/layout/MarketLayout'
 import Wrapper from '@/components/layout/Wrapper'
 
 import { getProducts } from '@/repository/products/getProducts'

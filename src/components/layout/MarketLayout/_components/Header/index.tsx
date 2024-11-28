@@ -15,26 +15,31 @@ export default function Header({ children }: Props) {
     const router = useRouter()
 
     return (
-        <div className="sticky top-0 z-10 bg-lightestBlue border-b border-b-uclaBlue">
+        <div className="sticky top-0 z-10 bg-lightestBlue border-b border-b-lighterBlue">
             <Wrapper>
                 <Container>
                     <div className="flex justify-between items-center py-8">
                         {/* Logo */}
-                        <div className="flex justify-between items-center py-8">
-                            <Link href="/" prefetch={false}>
+                        <div className="flex justify-center items-center">
+                            <Link
+                                href="/"
+                                prefetch={false}
+                                className="flex items-center gap-2"
+                            >
                                 <Image
-                                    src="/logo.jpg" // UCLA store logo image path
+                                    src="/logo.png" // UCLA store logo image path
                                     alt="Store Logo"
-                                    width={100} // Image width
-                                    height={100} // Image height
+                                    className="mb-2"
+                                    width={50} // Image width
+                                    height={50} // Image height
                                 />
                                 <Text
-                                    size="4xl"
+                                    size="xl"
                                     style={{
                                         fontFamily: `'Black Han Sans', sans-serif`,
                                     }}
                                 >
-                                    {/* Store  */}
+                                    Marketplace
                                 </Text>
                             </Link>
                         </div>

@@ -1,5 +1,5 @@
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
-
 import Shop from '@/components/common/Shop'
 import Spinner from '@/components/common/Spinner'
 import { getShopFollowerCount } from '@/repository/shops/getShopFollowerCount'
@@ -45,14 +45,16 @@ export default function SearchShopItem({ id, name, profileImageUrl }: Props) {
 
     // Render the Shop component with the loaded data (로드된 데이터로 Shop 컴포넌트를 렌더링)
     return (
-        <div className="border border-lighterBlue p-5 rounded-lg">
-            <Shop
-                type="row"
-                name={name}
-                productCount={productCount}
-                followerCount={followerCount}
-                profileImageUrl={profileImageUrl}
-            />
-        </div>
+        <Link href={`/shops/${id}`}>
+            <div className="border border-lighterBlue p-5 rounded-lg">
+                <Shop
+                    type="row"
+                    name={name}
+                    productCount={productCount}
+                    followerCount={followerCount}
+                    profileImageUrl={profileImageUrl}
+                />
+            </div>
+        </Link>
     )
 }
