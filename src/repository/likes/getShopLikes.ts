@@ -1,6 +1,6 @@
 import { Like } from '@/types'
 import { getMockLikeData } from '@/utils/mock'
-import { getShopLikeCount } from './getShopLikeCount'
+import { getShopLikeCount } from '../likes/getShopLikeCount'
 
 type Params = {
     shopId: string

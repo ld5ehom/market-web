@@ -1,50 +1,31 @@
 import { useEffect, useState } from 'react'
-
 import LikeItem from '../LikeItem'
-
 import Text from '@/components/common/Text'
 import Button from '@/components/common/Button'
-import { getShopLikes } from '@/repository/shops/getShopLikes'
+import Link from 'next/link'
+import { getShopLikes } from '@/repository/likes/getShopLikes'
 import { Like } from '@/types'
 
 type Props = {
-    initialLikes: Like[] // Initial liked products list fetched from server-side rendering (SSR)
-    count: number // Total number of liked products
-    shopId: string // Shop ID for fetching likes
+    initialLikes: Like[]
+    count: number
+    shopId: string
 }
 
-/**
- * cart list
- */
 export default function LikeList({ initialLikes, count, shopId }: Props) {
-    // 화면에 보이는 Page는 1부터 시작, API는 0부터 시작
-    const [currentPage, setCurrentPage] = useState(1)
-
     const [likes, setLikes] = useState(
         (initialLikes || []).map((item) => ({ ...item, quantity: 1 })),
-    ) // Add quantity to each liked product
-    const [totalPrice, setTotalPrice] = useState<number>(0) // State to track the total price of liked items
+    )
+    const [totalPrice, setTotalPrice] = useState<number>(0)
 
     useEffect(() => {
-        // Fetch the list of liked products whenever the shopId changes
-        // shopId가 변경될 때 찜한 상품 목록을 가져옴
-        ;(async () => {
-            const { data } = await getShopLikes({
-                shopId,
-                fromPage: 0, // Fetch all items on one page
-                toPage: 1,
-            })
+        const priceSum = likes.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0,
+        )
+        setTotalPrice(priceSum)
+    }, [likes])
 
-            // Add quantity field to each product and update the state
-            setLikes(data.map((item) => ({ ...item, quantity: 1 })))
-
-            // Calculate the total price of the current items
-            const priceSum = data.reduce((sum, item) => sum + item.price * 1, 0) // Assume quantity = 1 initially
-            setTotalPrice(priceSum)
-        })()
-    }, [currentPage, shopId]) // Dependencies: Re-run when shopId changes
-
-    // Update quantity and recalculate total price
     const handleQuantityChange = (id: string, delta: number) => {
         setLikes((prevLikes) =>
             prevLikes.map((item) => {
@@ -57,27 +38,13 @@ export default function LikeList({ initialLikes, count, shopId }: Props) {
         )
     }
 
-    // Recalculate total price when likes state changes
-    useEffect(() => {
-        const priceSum = likes.reduce(
-            (sum, item) => sum + item.price * item.quantity,
-            0,
-        )
-        setTotalPrice(priceSum)
-    }, [likes])
-
-    // Handle the purchase logic here
     const handlePurchase = () => {
         alert('Purchase completed!')
     }
 
-    /**
-     *  TODO:
-     *    If the quantity reaches 0, the item will be automatically removed from the cart list.
-     */
     return (
         <div>
-            {likes.length === 0 ? ( // If no liked products exist
+            {likes.length === 0 ? (
                 <Text color="uclaBlue"> Cart is empty. </Text>
             ) : (
                 <>
@@ -86,36 +53,39 @@ export default function LikeList({ initialLikes, count, shopId }: Props) {
                         {likes.map(({ id, productId, price, quantity }) => (
                             <div
                                 key={id}
-                                className="max-w-[180px] w-full mx-auto"
+                                className="max-w-[190px] w-full mx-auto p-4 hover:shadow-md transition-shadow"
                             >
-                                <LikeItem productId={productId} />
+                                {/* Link wraps the entire content to preserve layout */}
+                                <Link href={`/products/${productId}`} passHref>
+                                    <div className="block">
+                                        <LikeItem productId={productId} />
+                                    </div>
+                                </Link>
 
                                 {/* Count */}
-                                {/* TODO: If the quantity reaches 0, the item will be automatically removed from the cart list. */}
-                                <div className="flex justify-between items-center mt-2 ">
-                                    {/* - Button */}
+                                <div className="flex justify-between items-center mt-2">
                                     <Button
                                         className="p-2 bg-uclaBlue text-sm"
-                                        onClick={() =>
+                                        onClick={(e) => {
+                                            e.preventDefault()
                                             handleQuantityChange(id, -1)
-                                        }
+                                        }}
                                     >
                                         -
                                     </Button>
-
-                                    {/* quantity */}
                                     <Text size="md">{quantity}</Text>
-
-                                    {/* + Button */}
                                     <Button
                                         className="p-2 bg-uclaBlue text-sm"
-                                        onClick={() =>
+                                        onClick={(e) => {
+                                            e.preventDefault()
                                             handleQuantityChange(id, 1)
-                                        }
+                                        }}
                                     >
                                         +
                                     </Button>
                                 </div>
+
+                                {/* Product price */}
                                 <Text size="md" className="py-5 text-right">
                                     Price : ${(price * quantity).toFixed(2)}
                                 </Text>
@@ -125,7 +95,6 @@ export default function LikeList({ initialLikes, count, shopId }: Props) {
 
                     {/* Total Price and Purchase Button */}
                     <div className="mt-6 flex flex-col items-end">
-                        {/* Display total price */}
                         <Text
                             size="lg"
                             color="darkestBlue"
@@ -137,8 +106,6 @@ export default function LikeList({ initialLikes, count, shopId }: Props) {
                                 currency: 'USD',
                             }).format(totalPrice)}
                         </Text>
-
-                        {/* Purchase button */}
                         <Button
                             onClick={handlePurchase}
                             color="uclaBlue"
