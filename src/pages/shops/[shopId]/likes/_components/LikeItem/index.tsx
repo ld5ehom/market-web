@@ -22,9 +22,9 @@ export default function LikeItem({ productId }: Props) {
         })()
     }, [productId]) // Dependency array to trigger effect when productId changes
 
+    // Render a spinner if the product data is not yet loaded
+    // 상품 데이터가 아직 로드되지 않은 경우 로딩 스피너 렌더링
     if (!product) {
-        // Render a spinner if the product data is not yet loaded
-        // 상품 데이터가 아직 로드되지 않은 경우 로딩 스피너 렌더링
         return (
             <div className="border border-dashed flex justify-center items-center h-56">
                 <Spinner />

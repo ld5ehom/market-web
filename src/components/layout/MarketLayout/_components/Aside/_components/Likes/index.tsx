@@ -12,8 +12,11 @@ import { getShopLikeCount } from '@/repository/shops/getShopLikeCount'
  * 현재 사용자의 상점에서 장바구니에 추가된 상품의 수를 가져와 표시합니다.
  */
 export default function Likes() {
-    const [shopId, setShopId] = useState<string | null>(null) // User's shop ID state (사용자의 상점 ID 상태)
-    const [likeCount, setLikeCount] = useState<number>() // Number of liked products (찜한 상품 수 상태)
+    // User's shop ID state (사용자의 상점 ID 상태)
+    const [shopId, setShopId] = useState<string | null>(null)
+
+    // Number of liked products (찜한 상품 수 상태)
+    const [likeCount, setLikeCount] = useState<number>()
 
     useEffect(() => {
         // Fetch the user's shop ID and the number of liked products when the component mounts
@@ -51,19 +54,21 @@ export default function Likes() {
                 </div>
             ) : (
                 // Display the cart count once it's loaded
-                <Text
-                    size="lg"
-                    color="uclaBlue"
-                    className="flex gap-2 items-center mt-2"
-                >
-                    <span
-                        className="material-symbols-outlined"
-                        style={{ fontSize: '1.5rem' }}
+                <Link href={!shopId ? '#' : `/shops/${shopId}/likes`}>
+                    <Text
+                        size="lg"
+                        color="uclaBlue"
+                        className="flex gap-2 items-center mt-2"
                     >
-                        shopping_cart
-                    </span>
-                    {likeCount}
-                </Text>
+                        <span
+                            className="material-symbols-outlined"
+                            style={{ fontSize: '1.5rem' }}
+                        >
+                            shopping_cart
+                        </span>
+                        {likeCount}
+                    </Text>
+                </Link>
             )}
         </Link>
     )

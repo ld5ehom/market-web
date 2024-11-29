@@ -171,9 +171,13 @@
 
 -   **Issues** : [task-5-seller](https://github.com/ld5ehom/market-web/tree/task-5-seller)
 -   **Details** :
-    -   **Seller Shop Product Page**
+    -   **Seller Shop Product Page** [278b2c7](https://github.com/ld5ehom/market-web/commit/278b2c7285a86d37ed737ef28a2aeaadc003df20) :
         -   Implements a reusable layout component for seller shop pages, featuring a profile section and tab-based navigation (products, reviews, likes, following, followers). Integrates dynamic content rendering per tab and displays seller-specific details such as name, join date, product count, and introduction. Built with responsive design and efficient state management for seamless user interaction.
         -   Seller Shop Product List Component: Dynamically renders a paginated product list for a seller's shop. The component initializes with server-side data and fetches additional products via an API as users navigate through the list.
+    -   **Seller Shop Review Page Implementation**
+        -   Leverages server-side rendering (SSR) to preload shop reviews and detailed shop statistics, optimizing performance and ensuring a smooth user experience. Dynamically renders shop metrics, including product count, review count, likes, followers, and following, with efficient state and data management.
+        -   Review List Component : Dynamically displays paginated reviews for a shop. Implements client-side state for current page navigation and integrates with an API for fetching additional review pages. Includes server-side rendering (SSR) for initial review data to enhance performance and user experience.
+        -   Review Item Component : Dynamically displays individual reviews, including reviewer and product details.
 
 **Task 6: Product Management Page**
 

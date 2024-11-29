@@ -39,7 +39,7 @@ export default function ProductList({ initialProducts, count, shopId }: Props) {
     return (
         <div>
             {products.length === 0 ? ( // Display message when no products are available (등록된 상품이 없을 때 메시지 표시)
-                <Text color="grey"> No products available. </Text> // No products message (상품이 없는 경우 메시지)
+                <Text color="grey"> No products available. </Text>
             ) : (
                 <>
                     {/* Grid layout to display products */}
@@ -69,11 +69,11 @@ export default function ProductList({ initialProducts, count, shopId }: Props) {
                     {/* Pagination controls */}
                     <div className="flex justify-center mt-2">
                         <Pagination
-                            currentPage={currentPage} // Current page (현재 페이지)
+                            currentPage={currentPage}
                             handlePageChange={(pageNumber) =>
                                 setCurrentPage(pageNumber)
-                            } // Function to update page (페이지를 업데이트하는 함수)
-                            count={count} // Total number of products (총 상품 수)
+                            }
+                            count={count}
                         />
                     </div>
                 </>

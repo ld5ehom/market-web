@@ -132,7 +132,7 @@ export default function ShopLayout({
                     </Link>
 
                     {/* Likes Tab */}
-                    <Link
+                    {/* <Link
                         href={`/shops/${shop.id}/likes`}
                         className={classNames(
                             'flex-1 border flex justify-center items-center cursor-pointer',
@@ -145,10 +145,10 @@ export default function ShopLayout({
                         <Text className="ml-2">
                             {likeCount.toLocaleString()}
                         </Text>
-                    </Link>
+                    </Link> */}
 
                     {/* Following Tab */}
-                    <Link
+                    {/* <Link
                         href={`/shops/${shop.id}/following`}
                         className={classNames(
                             'flex-1 border flex justify-center items-center cursor-pointer',
@@ -161,10 +161,10 @@ export default function ShopLayout({
                         <Text className="ml-2">
                             {followingCount.toLocaleString()}
                         </Text>
-                    </Link>
+                    </Link> */}
 
                     {/* Follower Tab */}
-                    <Link
+                    {/* <Link
                         href={`/shops/${shop.id}/follower`}
                         className={classNames(
                             'flex-1 border flex justify-center items-center cursor-pointer',
@@ -177,7 +177,7 @@ export default function ShopLayout({
                         <Text className="ml-2">
                             {followerCount.toLocaleString()}
                         </Text>
-                    </Link>
+                    </Link> */}
                 </div>
 
                 {/* Content Section */}

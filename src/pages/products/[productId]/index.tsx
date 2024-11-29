@@ -517,7 +517,7 @@ export default function ProductDetail({
                             {/* See more reviews */}
                             <div>
                                 <Link
-                                    href="" // TODO
+                                    href={`/shops/${shop.id}/reviews`}
                                     className="block border-y border-lighterBlue text-center py-2"
                                 >
                                     <Text color="uclaBlue" size="sm">

@@ -73,11 +73,13 @@ export default function ShopProducts({
             currentTab="products"
         >
             <div className="mt-9 mb-5 text-center">
-                <Text size="lg"> Products </Text>
-                <Text size="lg" color="uclaBlue">
+                <Text size="lg"> Products : </Text>
+                <Text size="2xl" color="uclaBlue">
                     {productCount.toLocaleString()}
                 </Text>
             </div>
+
+            {/* Seller Shop Product List */}
             <ProductList
                 initialProducts={products}
                 count={productCount}
