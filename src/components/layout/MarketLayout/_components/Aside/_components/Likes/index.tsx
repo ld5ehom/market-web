@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Spinner from '@/components/common/Spinner'
 import Text from '@/components/common/Text'
 import { getMe } from '@/repository/me/getMe'
-import { getShopLikeCount } from '@/repository/shops/getShopLikeCount'
+import { getShopLikeCount } from '@/repository/likes/getShopLikeCount'
 
 /**
  * Likes Component (Cart Component)
@@ -40,7 +40,7 @@ export default function Likes() {
 
     return (
         <Link
-            href={!shopId ? '#' : `/shops/${shopId}/likes`}
+            href="/like" // Updated to point to /cart
             className="border border-uclaBlue bg-white p-4 flex flex-col items-center cursor-pointer hover:shadow-md transition-shadow"
             aria-label="Cart Section"
         >
@@ -54,21 +54,19 @@ export default function Likes() {
                 </div>
             ) : (
                 // Display the cart count once it's loaded
-                <Link href={!shopId ? '#' : `/shops/${shopId}/likes`}>
-                    <Text
-                        size="lg"
-                        color="uclaBlue"
-                        className="flex gap-2 items-center mt-2"
+                <Text
+                    size="lg"
+                    color="uclaBlue"
+                    className="flex gap-2 items-center mt-2"
+                >
+                    <span
+                        className="material-symbols-outlined"
+                        style={{ fontSize: '1.5rem' }}
                     >
-                        <span
-                            className="material-symbols-outlined"
-                            style={{ fontSize: '1.5rem' }}
-                        >
-                            shopping_cart
-                        </span>
-                        {likeCount}
-                    </Text>
-                </Link>
+                        shopping_cart
+                    </span>
+                    {likeCount}
+                </Text>
             )}
         </Link>
     )

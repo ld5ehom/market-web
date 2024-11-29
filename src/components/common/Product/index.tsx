@@ -63,10 +63,10 @@ export default function Product({
                                 }).format(price)}
                         </Text>
                     </div>
-                    <Text weight="light" color="grey" size="sm">
-                        {dayjs(createdAt).fromNow()}
-                    </Text>
                 </div>
+                <Text weight="light" color="lighterBlue" size="sm">
+                    {dayjs(createdAt).fromNow()}
+                </Text>
             </div>
         </div>
     )

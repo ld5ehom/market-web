@@ -3,8 +3,8 @@ import LikeList from './_components/LikeList'
 
 import Text from '@/components/common/Text'
 import { getShop } from '@/repository/shops/getShop'
-import { getShopLikeCount } from '@/repository/shops/getShopLikeCount'
-import { getShopLikes } from '@/repository/shops/getShopLikes'
+import { getShopLikeCount } from '@/repository/likes/getShopLikeCount'
+import { getShopLikes } from '@/repository/likes/getShopLikes'
 import { getShopProductCount } from '@/repository/shops/getShopProductCount'
 import { Like, Shop } from '@/types'
 
@@ -46,7 +46,7 @@ export const getServerSideProps: GetServerSideProps<{
 /**
  * Cart Page Component (카트 페이지 컴포넌트)
  */
-export default function CartPage({
+export default function LikePage({
     shop, // Shop information (상점 정보)
     productCount, // Product count (상품 수)
     likeCount, // Like count (찜한 상품 수)
