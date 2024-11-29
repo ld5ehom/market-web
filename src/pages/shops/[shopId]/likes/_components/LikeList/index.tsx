@@ -17,6 +17,9 @@ type Props = {
  * cart list
  */
 export default function LikeList({ initialLikes, count, shopId }: Props) {
+    // 화면에 보이는 Page는 1부터 시작, API는 0부터 시작
+    const [currentPage, setCurrentPage] = useState(1)
+
     const [likes, setLikes] = useState(
         (initialLikes || []).map((item) => ({ ...item, quantity: 1 })),
     ) // Add quantity to each liked product
@@ -39,7 +42,7 @@ export default function LikeList({ initialLikes, count, shopId }: Props) {
             const priceSum = data.reduce((sum, item) => sum + item.price * 1, 0) // Assume quantity = 1 initially
             setTotalPrice(priceSum)
         })()
-    }, [shopId]) // Dependencies: Re-run when shopId changes
+    }, [currentPage, shopId]) // Dependencies: Re-run when shopId changes
 
     // Update quantity and recalculate total price
     const handleQuantityChange = (id: string, delta: number) => {
