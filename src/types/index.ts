@@ -39,3 +39,10 @@ export type Like = {
     createdAt: string
     price: number
 }
+
+export type Follow = {
+    id: string
+    followingShopId: string
+    createdBy: string
+    createdAt: string
+}

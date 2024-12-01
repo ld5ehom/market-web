@@ -2,6 +2,7 @@ import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import ShopLayout from '../../_components/ShopLayout'
 import ReviewList from './_components/ReviewList'
 import Text from '@/components/common/Text'
+import { getMe } from '@/repository/me/getMe'
 import { getShop } from '@/repository/shops/getShop'
 import { getShopFollowerCount } from '@/repository/shops/getShopFollowerCount'
 import { getShopFollowingCount } from '@/repository/shops/getShopFollowingCount'
@@ -17,6 +18,7 @@ import { Review, Shop } from '@/types'
  * (상점 세부정보, 상품/리뷰/찜/팔로잉/팔로워 수, 후기를 가져옵니다.)
  */
 export const getServerSideProps: GetServerSideProps<{
+    isMyShop: boolean
     shop: Shop // Shop information (상점 정보)
     productCount: number // Total product count (총 상품 수)
     reviewCount: number // Total review count (총 리뷰 수)
@@ -28,6 +30,9 @@ export const getServerSideProps: GetServerSideProps<{
     const shopId = context.query.shopId as string
 
     const [
+        {
+            data: { shopId: myShopId },
+        },
         { data: shop },
         { data: productCount },
         { data: reviewCount },
@@ -36,6 +41,7 @@ export const getServerSideProps: GetServerSideProps<{
         { data: followerCount },
         { data: reviews },
     ] = await Promise.all([
+        getMe(),
         getShop(shopId), // Fetch shop details (상점 세부정보 가져오기)
         getShopProductCount(shopId), // Fetch product count (상품 수 가져오기)
         getShopReviewCount(shopId), // Fetch review count (리뷰 수 가져오기)
@@ -47,6 +53,7 @@ export const getServerSideProps: GetServerSideProps<{
 
     return {
         props: {
+            isMyShop: myShopId === shopId,
             shop,
             productCount,
             reviewCount,
@@ -64,6 +71,7 @@ export const getServerSideProps: GetServerSideProps<{
  * (상점에 대한 리뷰 섹션과 동적 상점 세부정보를 표시)
  */
 export default function ShopReviews({
+    isMyShop,
     shop,
     productCount,
     reviewCount,
@@ -74,6 +82,7 @@ export default function ShopReviews({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     return (
         <ShopLayout
+            isMyShop={isMyShop}
             shop={shop}
             productCount={productCount}
             reviewCount={reviewCount}
