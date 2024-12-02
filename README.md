@@ -180,12 +180,18 @@
         -   Review Item Component : Dynamically displays individual reviews, including reviewer and product details.
     -   **Cart(Like) Page Update** [8ba42e5](https://github.com/ld5ehom/market-web/commit/8ba42e5776a0813bd206d4d274be198f548b79a9) :
         -   Allows users to view product details by clicking on items and adjust product quantities directly within the cart.
-    -   **Follow Page Update**
+    -   **Follow Page Update** [a22f8f8](https://github.com/ld5ehom/market-web/commit/a22f8f89c92bf777cb81fb7b8375745512eeaba4) :
         -   Following Page: Implements a server-side rendered (SSR) page displaying a seller's following shops. Integrates a dynamic list of followed shops using FollowingList, while showcasing shop metrics such as product count, review count, likes, and followers.
         -   Follower Page: Implements a server-side rendered (SSR) page displaying a list of followers for a specific shop. It includes follower metrics, such as follower count, and integrates a dynamic, paginated list of followers using FollowerList.
         -   Edit Functionality for Own Shop: Implements features allowing shop owners to modify shop descriptions and names through input fields and action buttons, providing a seamless editing experience.
 
 **Task 6: Product Management Page**
+
+-   **Issues** : [task-6-manage](https://github.com/ld5ehom/market-web/tree/task-6-manage)
+-   **Details** :
+    -   **Product Management Page Layout**
+        -   Products Layout Tab Component : Provides a tabbed navigation layout for product-related pages, including New Product, Manage Products, and Purchase/Sales History tabs.
+        -   Products Manage Page Component : Provides a product management interface where shop owners can view, edit, and delete their products.
 
 ---
 
