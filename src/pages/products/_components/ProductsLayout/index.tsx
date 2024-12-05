@@ -6,7 +6,7 @@ import Wrapper from '@/components/layout/Wrapper'
 
 type Props = {
     children: ReactNode // ReactNode type for rendering child components (자식 컴포넌트를 렌더링하기 위한 ReactNode 타입)
-    currentTab: 'new' | 'manage' | 'history' // Current active tab (현재 활성 탭)
+    currentTab?: 'new' | 'manage' | 'history' // Current active tab (현재 활성 탭)
 }
 
 // Provides a tabbed navigation layout for product pages,
