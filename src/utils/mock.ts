@@ -10,7 +10,7 @@ export function getMockProductData(defaultValue?: Partial<Product>) {
             Number(
                 (faker.number.int({ min: 10, max: 1000 }) * 0.01).toFixed(2),
             ), // $ 00.00
-        address: defaultValue?.address ?? faker.location.city(),
+        address: defaultValue?.address ?? 'UCLA Royce Hall',
         description:
             defaultValue?.description ?? faker.lorem.sentences(10, '\n'),
         imageUrls:
