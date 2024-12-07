@@ -12,7 +12,7 @@ export default function Search() {
     // Next.js 라우터를 사용하여 페이지 이동을 처리
     const router = useRouter()
 
-    // State to store search input and manage focus (검색 입력을 저장하고 포커스를 관리하는 상태)
+    // State to Marketplace search input and manage focus (검색 입력을 저장하고 포커스를 관리하는 상태)
     const [search, setSearch] = useState('')
     const [isFocused, setIsFocused] = useState(false)
 

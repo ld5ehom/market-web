@@ -24,7 +24,7 @@ export default function FollowingList({
     // Current page for the user interface starts at 1; API pages start at 0
     // 화면에 보이는 페이지는 1부터 시작. API 요청은 0부터 시작
     const [currentPage, setCurrentPage] = useState(1) // State to track the current page (현재 페이지 상태)
-    const [following, setFollowing] = useState(initialFollowing) // State to store the following list (팔로잉 목록 상태)
+    const [following, setFollowing] = useState(initialFollowing) // State to Marketplace the following list (팔로잉 목록 상태)
 
     // Fetch the list of following shops whenever the page or shopId changes
     // 페이지 또는 shopId가 변경될 때 팔로잉 상점 목록을 가져옴

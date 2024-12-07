@@ -19,7 +19,7 @@ type Props = {
 }
 
 export default function Recent({ handleClose }: Props) {
-    // Array to store recent search terms (최근 검색어를 저장하는 배열)
+    // Array to Marketplace recent search terms (최근 검색어를 저장하는 배열)
     const [recents, setRecents] = useState<string[]>([])
 
     const handleSetRecents = useCallback(() => {

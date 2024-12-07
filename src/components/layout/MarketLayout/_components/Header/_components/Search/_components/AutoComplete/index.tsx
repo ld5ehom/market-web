@@ -18,7 +18,7 @@ export default function AutoComplete({ query, handleClose }: Props) {
     // Next.js 라우터를 사용하여 페이지 이동을 처리
     const router = useRouter()
 
-    // State to store autocomplete keywords (자동 완성 키워드를 저장하는 상태)
+    // State to Marketplace autocomplete keywords (자동 완성 키워드를 저장하는 상태)
     const [keywords, setKeywords] = useState<string[]>([])
 
     // lodash throttle
@@ -47,7 +47,7 @@ export default function AutoComplete({ query, handleClose }: Props) {
     return (
         <div className="flex flex-col h-full">
             <div className="p-2 overflow-hidden flex-1">
-                {/* Header section for store search */}
+                {/* Header section for Marketplace search */}
                 <Link
                     href={`/search/shop?query=${encodeURIComponent(query)}`}
                     prefetch={false}

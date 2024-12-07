@@ -14,10 +14,10 @@ type Props = {
 // SearchShopItem component to display shop information and load counts
 // 상점 정보를 표시하고 팔로워 및 상품 수를 로드하는 SearchShopItem 컴포넌트
 export default function SearchShopItem({ id, name, profileImageUrl }: Props) {
-    // State to store the follower count (팔로워 수를 저장하는 상태)
+    // State to Marketplace the follower count (팔로워 수를 저장하는 상태)
     const [followerCount, setFollowerCount] = useState<number | undefined>()
 
-    // State to store the product count (상품 수를 저장하는 상태)
+    // State to Marketplace the product count (상품 수를 저장하는 상태)
     const [productCount, setProductCount] = useState<number | undefined>()
 
     useEffect(() => {

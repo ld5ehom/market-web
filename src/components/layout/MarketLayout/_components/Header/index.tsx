@@ -27,8 +27,8 @@ export default function Header({ children }: Props) {
                                 className="flex items-center gap-2"
                             >
                                 <Image
-                                    src="/logo.png" // UCLA store logo image path
-                                    alt="Store Logo"
+                                    src="/logo.png" // UCLA Marketplace logo image path
+                                    alt="Marketplace Logo"
                                     className="mb-2"
                                     width={50} // Image width
                                     height={50} // Image height

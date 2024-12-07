@@ -192,8 +192,11 @@
     -   **Product Management Page Layout** [737d862](https://github.com/ld5ehom/market-web/commit/737d8620c15b3ebd49510ce359dea80b864078a1)
         -   Products Layout Tab Component : Provides a tabbed navigation layout for product-related pages, including New Product, Manage Products, and Purchase/Sales History tabs.
         -   Products Manage Page Component : Provides a product management interface where shop owners can view, edit, and delete their products.
-    -   **Product Creation and Editing Page Component**
+    -   **Product Creation and Editing Page Component** [d7d0fb3](https://github.com/ld5ehom/market-web/commit/d7d0fb314b9551f05c63a8b4384cfee57b8921e0)
         -   Provides an interface for users to create new products by uploading images, specifying product details (name, condition, exchange availability, and price), and selecting a trading location (city and district).
+    -   **My History Page Components**
+        -   Products History Sell Page Component: Implements server-side data fetching to retrieve sold products and their total count. Features a tab navigation for switching between history types. Uses a dynamic table structure to display product images, names, and prices in a paginated format.
+        -   Products History Buy Page Component: Implements server-side data fetching to retrieve purchased products and their total count. Features a tab navigation for switching between history types. Includes a dynamic table structure to display product images, names, prices, and an action column for additional functionality, all in a paginated format.
 
 ---
 
