@@ -118,7 +118,7 @@ export default function ProductList({ initialProducts, count, shopId }: Props) {
                                         </Button>
                                         <Button
                                             size="sm"
-                                            color="red"
+                                            color="uclaBlue"
                                             className="h-8 w-15"
                                             disabled={!!purchaseBy} // Disable delete button if sold (판매완료 시 삭제 비활성화)
                                             onClick={() =>

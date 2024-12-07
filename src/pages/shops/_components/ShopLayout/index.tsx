@@ -106,7 +106,7 @@ export default function ShopLayout({
                                     </form>
 
                                     {/* TODO : Link to manage the shop */}
-                                    <Link href="/">
+                                    <Link href="/products">
                                         <div className="border border-black text-black px-3 py-2 my-2">
                                             Manage Image
                                         </div>

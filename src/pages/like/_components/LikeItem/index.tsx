@@ -10,7 +10,7 @@ type Props = {
 }
 
 export default function LikeItem({ productId }: Props) {
-    // State to store the fetched product details
+    // State to Marketplace the fetched product details
     const [product, setProduct] = useState<TProduct>()
 
     useEffect(() => {

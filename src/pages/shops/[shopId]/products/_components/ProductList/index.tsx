@@ -21,7 +21,7 @@ export default function ProductList({ initialProducts, count, shopId }: Props) {
     // State to manage the current page (UI starts at 1, API starts at 0)
     // 현재 페이지를 관리하는 상태 (UI는 1부터 시작, API는 0부터 시작)
     const [currentPage, setCurrentPage] = useState(1)
-    const [products, setProducts] = useState(initialProducts) // State to store the current list of products (현재 상품 목록을 저장하는 상태)
+    const [products, setProducts] = useState(initialProducts) // State to  the current list of products (현재 상품 목록을 저장하는 상태)
 
     // Fetch products dynamically when the page or shopId changes
     // 페이지나 상점 ID가 변경될 때 동적으로 상품을 가져옵니다.
