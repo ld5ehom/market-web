@@ -7,3 +7,8 @@
         font-family: 'Noto Sans', 'Noto Sans KR', sans-serif;
     }
 }
+
+/* Markdown Toast UI test*/
+.tui--large .toastui-editor-contents {
+    font-size: 1rem !important;
+}

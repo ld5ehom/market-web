@@ -1,10 +1,12 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/en'
+import dynamic from 'next/dynamic'
 import { useEffect, useState } from 'react'
 import ShopProfileImage from '@/components/common/ShopProfileImage'
 import Spinner from '@/components/common/Spinner'
 import Text from '@/components/common/Text'
+import MarkdownViewerSkeleton from '@/components/shared/MarkdownViewer/Skeleton'
 import { getShop } from '@/repository/shops/getShop'
 import { Shop } from '@/types'
 
@@ -18,8 +20,15 @@ type Props = {
 // dayjs에 relativeTime 플러그인을 추가하고 로케일을 미국 영어로 설정
 dayjs.extend(relativeTime).locale('en')
 
-// Main component for displaying a review item
-// 리뷰 아이템을 표시하는 메인 컴포넌트
+const MarkdownViewer = dynamic(
+    () => import('@/components/shared/MarkdownViewer'),
+    {
+        ssr: false,
+        loading: () => <MarkdownViewerSkeleton />,
+    },
+)
+
+// Main component for displaying a review item (리뷰 아이템을 표시하는 메인 컴포넌트)
 export default function ReviewItem({ contents, createdAt, createdBy }: Props) {
     const [reviewer, setReviewer] = useState<Shop>() // State to hold the reviewer's shop data (리뷰 작성자의 상점 데이터를 저장하는 상태)
 
@@ -52,22 +61,24 @@ export default function ReviewItem({ contents, createdAt, createdBy }: Props) {
             {/* Shop profile image (상점 프로필 이미지) */}
             <div className="ml-4 border-b border-lightestBlue pb-2 flex-1 w-0">
                 <div className="flex justify-between">
+                    {/* Reviewer's shop name (리뷰어의 상점 이름) */}
                     <div className="truncate pr-1">
                         <Text color="black" size="sm">
-                            {/* Reviewer's shop name (리뷰어의 상점 이름) */}
                             {reviewer.name}{' '}
                         </Text>
                     </div>
+
+                    {/* Relative time of review creation in US format (미국 형식으로 리뷰 작성 시간 상대적 표시) */}
                     <div className="shrink-0">
                         <Text color="uclaBlue" size="sm">
-                            {/* Relative time of review creation in US format (미국 형식으로 리뷰 작성 시간 상대적 표시) */}
                             {dayjs(createdAt).fromNow()}{' '}
                         </Text>
                     </div>
                 </div>
+
+                {/* Review contents (리뷰 내용) */}
                 <div className="py-2">
-                    {/* Review contents (리뷰 내용) */}
-                    {contents}
+                    <MarkdownViewer value={contents} />
                 </div>
             </div>
         </div>
