@@ -1,11 +1,9 @@
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import BuyProductItem from '../BuyProductItem'
 import Pagination from '@/components/common/Pagination'
 import Text from '@/components/common/Text'
 import { getShopSells } from '@/repository/shops/getShopSells'
 import { Product } from '@/types'
-import Button from '@/components/common/Button'
-import Image from 'next/image'
 
 type Props = {
     initialProducts: Product[]
@@ -45,43 +43,13 @@ export default function BuyProductList({
                 <>
                     {/* Maps over products to display a list of purchased items (상품 목록을 순회하여 구매 내역을 표시) */}
                     {products.map(({ id, imageUrls, title, price }) => (
-                        <div
+                        <BuyProductItem
                             key={id}
-                            className="flex text-center border-y-2 my-4 py-2"
-                        >
-                            <div className="w-28 h-28 relative">
-                                <Image
-                                    src={imageUrls[0]}
-                                    alt={title}
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-                            <div className="flex-1 flex justify-center items-center">
-                                <Link href={`/products/${id}`}>
-                                    <Text>{title}</Text>
-                                </Link>
-                            </div>
-                            <div className="w-28 flex justify-center items-center">
-                                <Text>{price.toLocaleString()}</Text>
-                            </div>
-
-                            {/* Button to write a review for the purchased product (구매한 상품에 대한 후기를 작성하는 버튼) */}
-                            <div className="w-44 flex justify-center items-center">
-                                <Button
-                                    color="uclaBlue"
-                                    className="flex justify-center items-center gap-1 rounded-full"
-                                >
-                                    <span
-                                        style={{ fontSize: '1rem' }}
-                                        className="material-symbols-outlined"
-                                    >
-                                        rate_review
-                                    </span>
-                                    Write a Review {/* 후기작성 */}
-                                </Button>
-                            </div>
-                        </div>
+                            id={id}
+                            title={title}
+                            price={price}
+                            imageUrl={imageUrls[0]}
+                        />
                     ))}
 
                     {/* Pagination */}

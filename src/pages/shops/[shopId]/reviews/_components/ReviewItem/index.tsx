@@ -1,11 +1,13 @@
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/en'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import ShopProfileImage from '@/components/common/ShopProfileImage'
 import Spinner from '@/components/common/Spinner'
 import Text from '@/components/common/Text'
+import MarkdownViewerSkeleton from '@/components/shared/MarkdownViewer/Skeleton'
 import { getProduct } from '@/repository/products/getProduct'
 import { getShop } from '@/repository/shops/getShop'
 import { Product, Shop } from '@/types'
@@ -19,6 +21,14 @@ type Props = {
 
 // Initialize dayjs with relative time plugin
 dayjs.extend(relativeTime).locale('en')
+
+const MarkdownViewer = dynamic(
+    () => import('@/components/shared/MarkdownViewer'),
+    {
+        ssr: false,
+        loading: () => <MarkdownViewerSkeleton />,
+    },
+)
 
 /**
  * Review Item Component
@@ -92,7 +102,9 @@ export default function ReviewItem({
                     </Link>
 
                     {/* User Review */}
-                    <div>{contents}</div>
+                    <div>
+                        <MarkdownViewer value={contents} />
+                    </div>
                 </div>
             </div>
         </div>

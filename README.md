@@ -24,6 +24,7 @@
 -   [React Intersection Observer](https://www.npmjs.com/package/react-intersection-observer)
 -   [React Responsive Carousel](https://react-responsive-carousel.js.org/)
 -   [Lodash](https://lodash.com/docs/#throttle)
+-   [Toast UI](https://nhn.github.io/tui.editor/latest/)
 
 ---
 
@@ -31,6 +32,7 @@
 
 -   M1 : App Basic Functionality Development
 -   M2 : Advanced Features and Testing
+-   M3 : Bug Fixes and Updates
 
 ---
 
@@ -189,14 +191,22 @@
 
 -   **Issues** : [task-6-manage](https://github.com/ld5ehom/market-web/tree/task-6-manage)
 -   **Details** :
+
     -   **Product Management Page Layout** [737d862](https://github.com/ld5ehom/market-web/commit/737d8620c15b3ebd49510ce359dea80b864078a1)
         -   Products Layout Tab Component : Provides a tabbed navigation layout for product-related pages, including New Product, Manage Products, and Purchase/Sales History tabs.
         -   Products Manage Page Component : Provides a product management interface where shop owners can view, edit, and delete their products.
     -   **Product Creation and Editing Page Component** [d7d0fb3](https://github.com/ld5ehom/market-web/commit/d7d0fb314b9551f05c63a8b4384cfee57b8921e0)
         -   Provides an interface for users to create new products by uploading images, specifying product details (name, condition, exchange availability, and price), and selecting a trading location (city and district).
-    -   **My History Page Components**
+    -   **My History Page Components** [35d6118](https://github.com/ld5ehom/market-web/commit/35d61188247f5394b431a8a32d635a2c4609664d)
         -   Products History Sell Page Component: Implements server-side data fetching to retrieve sold products and their total count. Features a tab navigation for switching between history types. Uses a dynamic table structure to display product images, names, and prices in a paginated format.
         -   Products History Buy Page Component: Implements server-side data fetching to retrieve purchased products and their total count. Features a tab navigation for switching between history types. Includes a dynamic table structure to display product images, names, prices, and an action column for additional functionality, all in a paginated format.
+    -   **Review Page Components with Markdown Editor**
+        -   Review Button and Product Display Component: Dynamically displays purchased product information, including image, name, and price, while checking if a review has been posted. Features a button for writing reviews, which is disabled if a review already exists.
+        -   Review Page Component: Retrieves product and review data during server-side rendering. Includes a textarea pre-filled with review content (if available) and a submit button that is disabled when a review already exists. Displays a user-friendly header prompting review submission.
+        -   Markdown Editor and Viewer Component: Integrates the Toast UI Editor for a rich WYSIWYG and markdown editing experience with US English localization. It supports a customizable toolbar, keyboard shortcuts, and a content change callback. Additionally, includes a dynamic MarkdownViewer for rendering markdown content on the client side with ssr: false for optimized loading and performance, ensuring seamless integration between editing and viewing markdown.
+        ```
+        npm i @toast-ui/react-editor --legacy-peer-deps
+        ```
 
 ---
 
@@ -209,6 +219,10 @@
 **Task 9: Integrating with Supabase**
 
 **Task 10: Deploying the Project**
+
+---
+
+### Milestone 3: Bug Fixes and Updates
 
 ---
 

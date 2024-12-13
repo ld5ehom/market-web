@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import 'dayjs/locale/en'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -14,6 +15,7 @@ import Shop from '@/components/common/Shop'
 import Text from '@/components/common/Text'
 import Container from '@/components/layout/Container'
 import Wrapper from '@/components/layout/Wrapper'
+import MarkdownViewerSkeleton from '@/components/shared/MarkdownViewer/Skeleton'
 import { getIsFollowedByShopId } from '@/repository/followers/getIsFollowedByShopId'
 import { getIsLikedWithProductIdAndShopId } from '@/repository/likes/getIsLikedWithProductIdAndShopId'
 import { getMe } from '@/repository/me/getMe'
@@ -112,6 +114,14 @@ export const getServerSideProps: GetServerSideProps<{
 
 // Extend dayjs with the relativeTime plugin and set locale to us
 dayjs.extend(relativeTime).locale('en')
+
+const MarkdownViewer = dynamic(
+    () => import('@/components/shared/MarkdownViewer'),
+    {
+        ssr: false,
+        loading: () => <MarkdownViewerSkeleton />,
+    },
+)
 
 // Main component for the Product Detail page (상품 상세 페이지의 메인 컴포넌트)
 export default function ProductDetail({
@@ -289,7 +299,9 @@ export default function ProductDetail({
                         </div>
 
                         {/* Description */}
-                        <div className="mt-5 mb-10">{product.description}</div>
+                        <div className="mt-5 mb-10">
+                            <MarkdownViewer value={product.description} />
+                        </div>
 
                         <div className="border-y border-lighterBlue justify-center py-4 flex gap-2 ">
                             {/* Used or New Product */}
@@ -487,8 +499,8 @@ export default function ProductDetail({
                         <div>
                             {/* Reviews title */}
                             <div className="my-4 border-b border-lighterBlue pb-4 text-center">
-                                <Text color="red" size="lg">
-                                    {reviewCount}
+                                <Text color="uclaBlue" size="lg">
+                                    {reviewCount.toLocaleString()}
                                 </Text>{' '}
                                 <Text size="md">Reviews</Text>
                             </div>

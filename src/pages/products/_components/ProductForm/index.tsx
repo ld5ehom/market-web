@@ -1,9 +1,11 @@
+import dynamic from 'next/dynamic'
 import { useRef, useState } from 'react'
 import ProductsLayout from '../ProductsLayout'
 import Button from '@/components/common/Button'
 import Input from '@/components/common/Input'
 import Text from '@/components/common/Text'
 import Container from '@/components/layout/Container'
+import MarkdownEditorSkeleton from '@/components/shared/MarkdownEditor/Skeleton'
 import { City, cities, getDistricts } from '@/utils/address'
 
 type Props = {
@@ -18,6 +20,14 @@ type Props = {
     description: string
     tags: string[]
 }
+
+const MarkdownEditor = dynamic(
+    () => import('@/components/shared/MarkdownEditor'),
+    {
+        ssr: false,
+        loading: () => <MarkdownEditorSkeleton />,
+    },
+)
 
 export default function ProductForm({
     id: defaultId,
@@ -34,6 +44,9 @@ export default function ProductForm({
     const tagInputRef = useRef<HTMLInputElement>(null)
     const [tags, setTags] = useState<string[]>(defaultTags || [])
     const [city, setCity] = useState<City | undefined>(defaultCity)
+    const [description, setDescription] = useState<string>(
+        defaultDescription || '',
+    )
 
     // Handles image uploads (이미지 업로드를 처리하는 함수)
     const uploadImage = (file: File) => {
@@ -228,7 +241,7 @@ export default function ProductForm({
                     </div>
 
                     {/* Description Section (상품 설명 섹션) */}
-                    <div className="flex border-b border-grey-300 pb-7 pt-5">
+                    <div className="flex border-b border-uclaBlue pb-7 pt-5">
                         <div className="w-40">
                             <Text size="lg">Product Description</Text>{' '}
                             <Text size="md" color="red">
@@ -236,11 +249,11 @@ export default function ProductForm({
                             </Text>
                         </div>
                         <div className="flex-1">
-                            <textarea
-                                name="description"
-                                required
-                                className="p-2 border w-full outline-none"
-                                defaultValue={defaultDescription}
+                            <MarkdownEditor
+                                initialValue={description}
+                                handleOnChage={(value) => {
+                                    setDescription(value)
+                                }}
                             />
                         </div>
                     </div>
