@@ -200,7 +200,7 @@
     -   **My History Page Components** [35d6118](https://github.com/ld5ehom/market-web/commit/35d61188247f5394b431a8a32d635a2c4609664d)
         -   Products History Sell Page Component: Implements server-side data fetching to retrieve sold products and their total count. Features a tab navigation for switching between history types. Uses a dynamic table structure to display product images, names, and prices in a paginated format.
         -   Products History Buy Page Component: Implements server-side data fetching to retrieve purchased products and their total count. Features a tab navigation for switching between history types. Includes a dynamic table structure to display product images, names, prices, and an action column for additional functionality, all in a paginated format.
-    -   **Review Page Components with Markdown Editor**
+    -   **Review Page Components with Markdown Editor** [5e70b7d](https://github.com/ld5ehom/market-web/commit/5e70b7df80ded41087f8d5d3494835c121f172fd)
         -   Review Button and Product Display Component: Dynamically displays purchased product information, including image, name, and price, while checking if a review has been posted. Features a button for writing reviews, which is disabled if a review already exists.
         -   Review Page Component: Retrieves product and review data during server-side rendering. Includes a textarea pre-filled with review content (if available) and a submit button that is disabled when a review already exists. Displays a user-friendly header prompting review submission.
         -   Markdown Editor and Viewer Component: Integrates the Toast UI Editor for a rich WYSIWYG and markdown editing experience with US English localization. It supports a customizable toolbar, keyboard shortcuts, and a content change callback. Additionally, includes a dynamic MarkdownViewer for rendering markdown content on the client side with ssr: false for optimized loading and performance, ensuring seamless integration between editing and viewing markdown.
@@ -213,6 +213,13 @@
 ### Milestone 2: Advanced Features and Testing
 
 **Task 7: Chat Page**
+
+-   **Issues** : [task-7-manage](https://github.com/ld5ehom/market-web/tree/task-7-chat)
+-   **Details** :
+    -   **Chat Page Layout**
+        -   Messages Page Component: Implements server-side data fetching to retrieve the current shop's chat rooms and displays them in a sidebar with a scrollable layout. If no chat rooms are available, a placeholder message is shown to guide the user.
+        -   Chat Messages Fetching Function: Provides an asynchronous function to fetch chat messages for a specified chat room using mock data. Supports pagination with customizable starting and ending indices (fromIndex and toIndex) for efficient data management and seamless integration.
+        -   Integration of Core Components: Combines the Messages component for rendering chat messages in a scrollable layout and the ChatMessages component for handling user input, shop details, and form submissions. This modular approach ensures scalability and maintainability.
 
 **Task 8: Finalizing the Mock API Application**
 

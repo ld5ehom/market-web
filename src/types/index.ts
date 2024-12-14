@@ -46,3 +46,17 @@ export type Follow = {
     createdBy: string
     createdAt: string
 }
+
+export type ChatRoom = {
+    id: string
+    createdAt: string
+    fromShopId: string
+    toShopId: string
+}
+export type ChatMessage = {
+    id: string
+    createdAt: string
+    chatRoom: string
+    message: string
+    createdBy: string
+}
