@@ -3,7 +3,6 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { ReactNode } from 'react'
 import Search from './_components/Search'
-
 import Text from '@/components/common/Text'
 import Container from '@/components/layout/Container'
 import Wrapper from '@/components/layout/Wrapper'
@@ -49,14 +48,20 @@ export default function Header({ children }: Props) {
 
                         {/* Right menu bar */}
                         <div className="flex gap-5">
-                            <div className="flex items-center">
-                                <span className="material-symbols-outlined">
-                                    sell
-                                </span>
-                                <Text weight="light" size="sm" className="mx-1">
-                                    Sell
-                                </Text>
-                            </div>
+                            <Link href="/products/new" prefetch={false}>
+                                <div className="flex items-center">
+                                    <span className="material-symbols-outlined">
+                                        sell
+                                    </span>
+                                    <Text
+                                        weight="light"
+                                        size="sm"
+                                        className="mx-1"
+                                    >
+                                        Sell
+                                    </Text>
+                                </div>
+                            </Link>
 
                             <Link href="/my-shop" prefetch={false}>
                                 <div className="flex items-center">
@@ -73,14 +78,20 @@ export default function Header({ children }: Props) {
                                 </div>
                             </Link>
 
-                            <div className="flex items-center">
-                                <span className="material-symbols-outlined">
-                                    chat_bubble
-                                </span>
-                                <Text weight="light" size="sm" className="mx-1">
-                                    Chat
-                                </Text>
-                            </div>
+                            <Link href="/messages" prefetch={false}>
+                                <div className="flex items-center">
+                                    <span className="material-symbols-outlined">
+                                        chat_bubble
+                                    </span>
+                                    <Text
+                                        weight="light"
+                                        size="sm"
+                                        className="mx-1"
+                                    >
+                                        Chat
+                                    </Text>
+                                </div>
+                            </Link>
                         </div>
                     </div>
                 </Container>
