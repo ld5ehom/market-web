@@ -17,7 +17,11 @@ export async function getChatMessages({
 }> {
     // Generates mock chat messages for the specified range (지정된 범위에 대한 가짜 채팅 메시지를 생성)
     const data: ChatMessage[] = Array.from({ length: toIndex - fromIndex }).map(
-        () => getMockChatMessageData({ chatRoom: chatRoomId }),
+        (_, idx) =>
+            getMockChatMessageData({
+                chatRoom: chatRoomId,
+                message: `fromIndex: ${fromIndex}, toIndex: ${toIndex}, curIndex: ${idx}`,
+            }),
     )
 
     // Resolves with the generated mock chat messages (생성된 가짜 채팅 메시지로 Promise 반환)

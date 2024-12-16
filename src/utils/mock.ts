@@ -30,17 +30,17 @@ export function getMockProductData(defaultValue?: Partial<Product>) {
         isUsed: defaultValue?.isUsed ?? faker.datatype.boolean(),
         // tags: Array.from({ length: 5 }).map(() => faker.lorem.word()),
         tags:
-            (defaultValue?.tags ?? faker.datatype.boolean())
+            defaultValue?.tags ??
+            (faker.datatype.boolean()
                 ? Array.from({
                       length: faker.number.int({ min: 1, max: 5 }),
                   }).map(() => faker.lorem.word())
-                : null,
+                : null),
         createdAt: defaultValue?.createdAt ?? faker.date.past().toString(),
         createdBy: defaultValue?.createdBy ?? faker.string.uuid(),
         purchaseBy:
-            (defaultValue?.purchaseBy ?? faker.datatype.boolean())
-                ? faker.string.uuid()
-                : null,
+            defaultValue?.purchaseBy ??
+            (faker.datatype.boolean() ? faker.string.uuid() : null),
     }
     return data
 }
@@ -108,9 +108,10 @@ export function getMockChatMessageData(defaultValue?: Partial<ChatMessage>) {
         createdAt: defaultValue?.createdAt ?? faker.date.past().toString(),
         chatRoom: defaultValue?.chatRoom ?? faker.string.uuid(),
         message:
-            (defaultValue?.message ?? faker.datatype.boolean())
+            defaultValue?.message ??
+            (faker.datatype.boolean()
                 ? faker.lorem.sentences(3, '\n')
-                : faker.image.dataUri(),
+                : faker.image.dataUri()),
         createdBy: defaultValue?.createdBy ?? faker.string.uuid(),
     }
     return data

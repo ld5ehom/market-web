@@ -1,5 +1,6 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
+import { Virtuoso } from 'react-virtuoso'
 import ChatMessages from './_components/ChatMessages'
 import ChatPreview from './_components/ChatPreview'
 import Text from '@/components/common/Text'
@@ -62,22 +63,31 @@ export default function Messages({
                         ) : (
                             <div className="flex flex-col flex-1">
                                 {/* Renders a list of chat room previews (채팅방 미리보기를 렌더링) */}
-                                {chatRooms.map(
-                                    ({ id, fromShopId, toShopId }) => {
-                                        return (
-                                            // Determines which shop ID to display (표시할 상점 ID를 결정)
-                                            <ChatPreview
-                                                key={id}
-                                                chatRoomId={id}
-                                                shopId={
-                                                    fromShopId === shopId
-                                                        ? toShopId
-                                                        : fromShopId
-                                                }
-                                            />
-                                        )
-                                    },
-                                )}
+                                <Virtuoso
+                                    initialTopMostItemIndex={Math.max(
+                                        chatRooms.findIndex(
+                                            ({ id }) =>
+                                                id === currentChatRoomId,
+                                        ),
+                                        0,
+                                    )}
+                                    data={chatRooms}
+                                    itemContent={(
+                                        _,
+                                        { id, fromShopId, toShopId },
+                                    ) => (
+                                        <ChatPreview
+                                            key={id}
+                                            chatRoomId={id}
+                                            shopId={
+                                                fromShopId === shopId
+                                                    ? toShopId
+                                                    : fromShopId
+                                            }
+                                            isActive={currentChatRoomId === id}
+                                        />
+                                    )}
+                                />
                             </div>
                         )}
                     </div>
