@@ -25,6 +25,7 @@
 -   [React Responsive Carousel](https://react-responsive-carousel.js.org/)
 -   [Lodash](https://lodash.com/docs/#throttle)
 -   [Toast UI](https://nhn.github.io/tui.editor/latest/)
+-   [React Virtuoso](https://virtuoso.dev/)
 
 ---
 
@@ -216,10 +217,17 @@
 
 -   **Issues** : [task-7-manage](https://github.com/ld5ehom/market-web/tree/task-7-chat)
 -   **Details** :
-    -   **Chat Page Layout**
+    -   **Chat Page Layout** [c8cd970](https://github.com/ld5ehom/market-web/commit/c8cd970478ec67af9e4c0541161796da12b55500)
         -   Messages Page Component: Implements server-side data fetching to retrieve the current shop's chat rooms and displays them in a sidebar with a scrollable layout. If no chat rooms are available, a placeholder message is shown to guide the user.
         -   Chat Messages Fetching Function: Provides an asynchronous function to fetch chat messages for a specified chat room using mock data. Supports pagination with customizable starting and ending indices (fromIndex and toIndex) for efficient data management and seamless integration.
         -   Integration of Core Components: Combines the Messages component for rendering chat messages in a scrollable layout and the ChatMessages component for handling user input, shop details, and form submissions. This modular approach ensures scalability and maintainability.
+    -   **Chat Page Virtual List**
+        -   Implements efficient rendering of chat messages using lazy loading and virtualization with react-virtuoso, ensuring smooth scrolling and performance optimization for large datasets.
+        -   Supports infinite scrolling to dynamically fetch and prepend older messages when the user scrolls to the top of the list.
+        -   Automatically adjusts the scroll position to focus on the most recent message when new data is loaded, enhancing the user experience in real-time chats.
+        ```
+        npm install react-virtuoso --legacy-peer-deps
+        ```
 
 **Task 8: Finalizing the Mock API Application**
 
@@ -247,77 +255,4 @@ npm run dev
 
 ```
 npm run storybook
-```
-
----
-
-## Setup
-
--   **Homebrew (macOS terminal)**:
-
-```
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
--   **git (homebrew)**:
-
-```
-brew install git
-```
-
--   **node.js (homebrew)**:
-
-```
-brew install node
-```
-
--   **ESLint and Prettier**:
-
-```
-npm install eslint prettier -D
-```
-
--   **react hook form**:
-
-```
-npm install react-hook-form --legacy-peer-deps
-```
-
--   **storybook**:
-
-```
-npx storybook@latest init
-npm install storybook@latest
-```
-
--   **classnames**:
-
-```
-npm install classnames
-```
-
--   **day.js**:
-
-```
-npm install dayjs --save
-```
-
--   **Scroll-lock**:
-
-```
-npm install scroll-lock
-npm install --save-dev @types/scroll-lock
-```
-
--   **Mock Data Setup**:
-
-```
-npm install @faker-js/faker --save-dev
-```
-
--   **Infinite Scroll and Carousel**:
-
-```
-npm install react-intersection-observer
-npm install react-responsive-carousel --save
 ```

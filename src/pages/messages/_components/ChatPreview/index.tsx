@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import ShopProfileImage from '@/components/common/ShopProfileImage'
@@ -11,9 +12,10 @@ import { checkIsImage } from '@/utils/image'
 type Props = {
     chatRoomId: string // Unique identifier for the chat room
     shopId: string // Identifier for the shop associated with the chat
+    isActive: boolean
 }
 
-export default function ChatPreview({ chatRoomId, shopId }: Props) {
+export default function ChatPreview({ chatRoomId, shopId, isActive }: Props) {
     const [shop, setShop] = useState<Shop>() // State to store shop details
     const [lastMessage, setLastMessage] = useState<ChatMessage>() // State to store the last chat message
 
@@ -49,7 +51,12 @@ export default function ChatPreview({ chatRoomId, shopId }: Props) {
 
     return (
         <Link href={`/messages/${chatRoomId}`} prefetch={false} shallow>
-            <div className="flex py-3 hover:bg-lightestBlue  h-20 shrink-0">
+            <div
+                className={classNames(
+                    'flex py-3 hover:bg-gray-100 h-20 shrink-0',
+                    isActive && 'bg-gray-200 hover:bg-gray-200',
+                )}
+            >
                 {/* Displays the shop's profile image */}
                 <div className="mx-3">
                     <ShopProfileImage imageUrl={shop.imageUrl || undefined} />
