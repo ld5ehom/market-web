@@ -7,27 +7,47 @@ import { getMe } from '@/repository/me/getMe'
 import { getShopSellCount } from '@/repository/shops/getShopSellCount'
 import { getShopSells } from '@/repository/shops/getShopSells'
 import { Product } from '@/types'
+import { AuthError } from '@/utils/error'
 
 // Server-side rendering function to fetch initial data (초기 데이터를 가져오는 서버사이드 렌더링 함수)
 export const getServerSideProps: GetServerSideProps<{
-    products: Product[]
-    count: number
-    shopId: string
+    products: Product[] // List of products for the shop (상점의 상품 목록)
+    count: number // Total number of sales (총 판매 개수)
+    shopId: string // The ID of the shop (상점 ID)
 }> = async (context) => {
-    const {
-        data: { shopId },
-    } = await getMe() // Fetches user data to get the shop ID (사용자 데이터를 가져와 상점 ID를 얻음)
+    try {
+        // Fetches user data to get the shop ID (사용자 데이터를 가져와 상점 ID를 얻음)
+        const {
+            data: { shopId },
+        } = await getMe()
 
-    if (!shopId) {
-        throw new Error('Login required') // Throws an error if the user is not logged in (로그인하지 않은 경우 오류 발생)
+        // If no shop ID is found, throw an authentication error (상점 ID가 없으면 인증 오류 발생)
+        if (!shopId) {
+            throw new AuthError()
+        }
+
+        // Fetch products and total sales count in parallel using Promise.all (Promise.all을 사용하여 상품과 총 판매 개수를 동시에 가져옴)
+        const [{ data: products }, { data: count }] = await Promise.all([
+            getShopSells({ shopId, fromPage: 0, toPage: 1 }), // Fetch the products of the shop (상점의 상품을 가져옴)
+            getShopSellCount(shopId), // Fetch the total sales count for the shop (상점의 총 판매 개수를 가져옴)
+        ])
+
+        // Return the fetched data as props (가져온 데이터를 props로 반환)
+        return { props: { products, count, shopId } }
+    } catch (e) {
+        // Handle authentication errors by redirecting to the login page (인증 오류 발생 시 로그인 페이지로 리디렉션)
+        if (e instanceof AuthError) {
+            return {
+                redirect: {
+                    destination: `/login?next=${encodeURIComponent(context.resolvedUrl)}`, // Append the current URL to the login page (현재 URL을 로그인 페이지에 추가)
+                    permanent: false, // Temporary redirect (임시 리디렉션)
+                },
+            }
+        }
+
+        // Rethrow other errors to be handled by Next.js (다른 오류는 Next.js가 처리하도록 다시 던짐)
+        throw e
     }
-
-    // Fetches products and the total count of sales using Promise.all (Promise.all을 사용하여 상품과 총 판매 개수를 가져옴)
-    const [{ data: products }, { data: count }] = await Promise.all([
-        getShopSells({ shopId, fromPage: 0, toPage: 1 }),
-        getShopSellCount(shopId),
-    ])
-    return { props: { products, count, shopId } } // Passes data as props to the page (데이터를 props로 페이지에 전달)
 }
 
 export default function ProductsHistorySell({
