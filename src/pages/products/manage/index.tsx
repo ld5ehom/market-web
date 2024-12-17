@@ -7,6 +7,7 @@ import { getMe } from '@/repository/me/getMe'
 import { getShopProductCount } from '@/repository/shops/getShopProductCount'
 import { getShopProducts } from '@/repository/shops/getShopProducts'
 import { Product } from '@/types'
+import { AuthError } from '@/utils/error'
 
 // Provides a product management interface where shop owners can view, edit,and delete their products.
 // ( 상점 주인이 상품을 확인, 수정 및 삭제할 수 있는 관리 인터페이스 제공.)
@@ -15,25 +16,39 @@ export const getServerSideProps: GetServerSideProps<{
     count: number // Total product count (전체 상품 수)
     shopId: string // Shop ID (상점 ID)
 }> = async (context) => {
-    const {
-        data: { shopId }, // Extract shopId from user data (사용자 데이터에서 shopId 추출)
-    } = await getMe()
+    // Extract shopId from user data (사용자 데이터에서 shopId 추출)
+    try {
+        const {
+            data: { shopId },
+        } = await getMe()
 
-    if (!shopId) {
-        throw new Error('Login is required. ')
-    }
+        // Login is required.
+        if (!shopId) {
+            throw new AuthError()
+        }
 
-    const [{ data: products }, { data: count }] = await Promise.all([
-        getShopProducts({ shopId, fromPage: 0, toPage: 1 }), // Fetch initial products (초기 상품 리스트 가져오기)
-        getShopProductCount(shopId), // Fetch total product count (전체 상품 수 가져오기)
-    ])
+        const [{ data: products }, { data: count }] = await Promise.all([
+            getShopProducts({ shopId, fromPage: 0, toPage: 1 }), // Fetch initial products (초기 상품 리스트 가져오기)
+            getShopProductCount(shopId), // Fetch total product count (전체 상품 수 가져오기)
+        ])
 
-    return {
-        props: {
-            shopId, // Shop ID (상점 ID)
-            products, // Initial product list (초기 상품 리스트)
-            count, // Total product count (전체 상품 수)
-        },
+        return {
+            props: {
+                shopId,
+                products,
+                count,
+            },
+        }
+    } catch (e) {
+        if (e instanceof AuthError) {
+            return {
+                redirect: {
+                    destination: `/login?next=${encodeURIComponent(context.resolvedUrl)}`,
+                    permanent: false,
+                },
+            }
+        }
+        throw e
     }
 }
 

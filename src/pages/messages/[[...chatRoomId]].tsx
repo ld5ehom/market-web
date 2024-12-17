@@ -9,26 +9,46 @@ import Wrapper from '@/components/layout/Wrapper'
 import { getChatRooms } from '@/repository/chatRooms/getChatRooms'
 import { getMe } from '@/repository/me/getMe'
 import { ChatRoom } from '@/types'
+import { AuthError } from '@/utils/error'
 
-// Fetches chat room data and shop ID during server-side rendering (서버사이드 렌더링 중 채팅방 데이터와 상점 ID를 가져옴)
+// Fetches chat room data and shop ID during server-side rendering
+// (서버사이드 렌더링 중 채팅방 데이터와 상점 ID를 가져옴)
 export const getServerSideProps: GetServerSideProps<{
-    chatRooms: ChatRoom[]
-    shopId: string
+    chatRooms: ChatRoom[] // List of chat rooms for the shop (상점의 채팅방 목록)
+    shopId: string // The ID of the shop (상점 ID)
 }> = async (context) => {
-    const {
-        data: { shopId },
-    } = await getMe() // Fetch user data to get the shop ID (사용자 데이터를 가져와 상점 ID를 얻음)
+    try {
+        // Fetch user information to retrieve the shop ID (사용자 정보를 가져와 상점 ID 확인)
+        const {
+            data: { shopId },
+        } = await getMe()
 
-    // Throws an error if the user is not logged in (로그인하지 않은 경우 오류 발생)
-    if (!shopId) {
-        throw new Error('Login required')
-    }
+        // If the shop ID is missing, throw an authentication error (상점 ID가 없으면 인증 오류 발생)
+        if (!shopId) {
+            throw new AuthError()
+        }
 
-    // Fetch chat rooms for the shop (상점의 채팅방 데이터를 가져옴)
-    const { data: chatRooms } = await getChatRooms(shopId)
+        // Fetch chat rooms for the shop using the shop ID (상점 ID를 사용해 채팅방 데이터를 가져옴)
+        const { data: chatRooms } = await getChatRooms(shopId)
 
-    return {
-        props: { chatRooms, shopId }, // Passes chat rooms and shop ID as props (채팅방과 상점 ID를 props로 전달)
+        // Return the chat room data and shop ID as props (채팅방 데이터와 상점 ID를 props로 반환)
+        return {
+            props: { chatRooms, shopId },
+        }
+    } catch (e) {
+        // Handle authentication errors by redirecting to the login page
+        // (인증 오류 발생 시 로그인 페이지로 리디렉션 처리)
+        if (e instanceof AuthError) {
+            return {
+                redirect: {
+                    destination: `/login?next=${encodeURIComponent(context.resolvedUrl)}`, // Append the current URL as a query parameter (현재 URL을 쿼리 파라미터로 추가)
+                    permanent: false, // Temporary redirect (임시 리디렉션)
+                },
+            }
+        }
+
+        // Rethrow other errors to be handled by Next.js (다른 오류는 Next.js가 처리하도록 다시 던짐)
+        throw e
     }
 }
 

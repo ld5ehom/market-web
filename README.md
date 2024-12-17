@@ -221,7 +221,7 @@
         -   Messages Page Component: Implements server-side data fetching to retrieve the current shop's chat rooms and displays them in a sidebar with a scrollable layout. If no chat rooms are available, a placeholder message is shown to guide the user.
         -   Chat Messages Fetching Function: Provides an asynchronous function to fetch chat messages for a specified chat room using mock data. Supports pagination with customizable starting and ending indices (fromIndex and toIndex) for efficient data management and seamless integration.
         -   Integration of Core Components: Combines the Messages component for rendering chat messages in a scrollable layout and the ChatMessages component for handling user input, shop details, and form submissions. This modular approach ensures scalability and maintainability.
-    -   **Chat Page Virtual List**
+    -   **Chat Page Virtual List** [cbfce34](https://github.com/ld5ehom/market-web/commit/cbfce34e3a3bbcc5e5170405dbfd7919442b4887)
         -   Implements efficient rendering of chat messages using lazy loading and virtualization with react-virtuoso, ensuring smooth scrolling and performance optimization for large datasets.
         -   Supports infinite scrolling to dynamically fetch and prepend older messages when the user scrolls to the top of the list.
         -   Automatically adjusts the scroll position to focus on the most recent message when new data is loaded, enhancing the user experience in real-time chats.
@@ -230,6 +230,13 @@
         ```
 
 **Task 8: Finalizing the Mock API Application**
+
+-   **Issues** : [task-8-api](https://github.com/ld5ehom/market-web/tree/task-8-api)
+-   **Details** :
+    -   **Implement Login Authentication Check**
+        -   Implements server-side authentication using the getMe API to verify if the user is authenticated by checking the presence of a shopId.
+        -   Redirects unauthenticated users to the login page with a next query parameter that records the original destination URL, ensuring they can return after logging in.
+        -   Handles authenticated users by redirecting them to the specified next destination URL if provided, or to the default home page (/) otherwise.
 
 **Task 9: Integrating with Supabase**
 

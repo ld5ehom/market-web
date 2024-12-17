@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { disablePageScroll, enablePageScroll } from 'scroll-lock'
-
+import Spinner from '@/components/common/Spinner'
 import Text from '@/components/common/Text'
 import LoginPannel from '@/components/shared/LoginPannel'
 import Container from '@/components/layout/Container'
+import { getMe } from '@/repository/me/getMe'
 
 export default function Login() {
     const [showModal, setShowModal] = useState(false)
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean | undefined>()
 
     useEffect(() => {
         if (showModal) {
@@ -16,19 +18,48 @@ export default function Login() {
         }
     }, [showModal])
 
+    // Login API
+    useEffect(() => {
+        ;(async () => {
+            const {
+                data: { shopId },
+            } = await getMe()
+            setIsLoggedIn(!!shopId)
+        })()
+    }, [])
+    const handleLogOut = () => {
+        alert('Log Out')
+    }
+
     return (
         <>
             {/* 고정된 로그인 바 */}
             <div className="fixed top-0 left-0 w-full z-50 ">
                 <Container className="flex justify-end items-center py-2">
-                    <Text
-                        size="sm"
-                        color="darkestBlue"
-                        onClick={() => setShowModal(true)}
-                        className="cursor-pointer"
-                    >
-                        Sign in / register
-                    </Text>
+                    {/* Sign in / register */}
+                    {isLoggedIn === undefined ? (
+                        <Text size="sm" color="darkestBlue">
+                            <Spinner size="xs" />
+                        </Text>
+                    ) : isLoggedIn === false ? (
+                        <Text
+                            size="sm"
+                            color="grey"
+                            onClick={() => setShowModal(true)}
+                            className="cursor-pointer"
+                        >
+                            Sign in / register
+                        </Text>
+                    ) : (
+                        <Text
+                            size="sm"
+                            color="darkestBlue"
+                            onClick={handleLogOut}
+                            className="cursor-pointer"
+                        >
+                            Log Out
+                        </Text>
+                    )}
                 </Container>
             </div>
 

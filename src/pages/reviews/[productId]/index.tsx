@@ -6,25 +6,44 @@ import Text from '@/components/common/Text'
 import Container from '@/components/layout/Container'
 import Wrapper from '@/components/layout/Wrapper'
 import MarkdownEditorSkeleton from '@/components/shared/MarkdownEditor/Skeleton'
+import { getMe } from '@/repository/me/getMe'
 import { getProduct } from '@/repository/products/getProduct'
 import { getReviewByProductId } from '@/repository/reviews/getReviewByProductId'
 import { Product, Review } from '@/types'
+import { AuthError } from '@/utils/error'
 
 // Fetches product and review data during server-side rendering (서버사이드 렌더링 중 상품 및 리뷰 데이터를 가져옴)
 export const getServerSideProps: GetServerSideProps<{
     product: Product
     review: Review | null
 }> = async (context) => {
-    const productId = context.query.productId as string
+    try {
+        const {
+            data: { shopId },
+        } = await getMe()
 
-    // Fetches product and review data concurrently (상품과 리뷰 데이터를 동시에 가져옴)
-    const [{ data: product }, { data: review }] = await Promise.all([
-        getProduct(productId),
-        getReviewByProductId(productId),
-    ])
+        if (!shopId) {
+            throw new AuthError()
+        }
 
-    return {
-        props: { product, review }, // Passes data as props to the page (데이터를 props로 페이지에 전달)
+        const productId = context.query.productId as string
+        const [{ data: product }, { data: review }] = await Promise.all([
+            getProduct(productId),
+            getReviewByProductId(productId),
+        ])
+        return {
+            props: { product, review },
+        }
+    } catch (e) {
+        if (e instanceof AuthError) {
+            return {
+                redirect: {
+                    destination: `/login?next=${encodeURIComponent(context.resolvedUrl)}`,
+                    permanent: false,
+                },
+            }
+        }
+        throw e
     }
 }
 
