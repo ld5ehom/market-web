@@ -233,10 +233,14 @@
 
 -   **Issues** : [task-8-api](https://github.com/ld5ehom/market-web/tree/task-8-api)
 -   **Details** :
-    -   **Implement Login Authentication Check**
+    -   **Implement Login Authentication Check** [3ac1ceb](https://github.com/ld5ehom/market-web/commit/3ac1ceb404f13a4aa95ba0227382f46012f3d344)
         -   Implements server-side authentication using the getMe API to verify if the user is authenticated by checking the presence of a shopId.
         -   Redirects unauthenticated users to the login page with a next query parameter that records the original destination URL, ensuring they can return after logging in.
         -   Handles authenticated users by redirecting them to the specified next destination URL if provided, or to the default home page (/) otherwise.
+    -   **Mock API Update**
+        -   Added SEO features to enhance product visibility on search engines: Dynamically set the page title using the product name and added Open Graph meta tags (og:title, og:image) to enhance product visibility on search engines and improve social media sharing previews.
+        -   Added custom 404 (Not Found) and 500 (Internal Server Error) error pages to improve user experience during unexpected scenarios.
+        -   Removed faker library as part of API update preparation to streamline and optimize the backend integration.
 
 **Task 9: Integrating with Supabase**
 

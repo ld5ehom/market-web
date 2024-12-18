@@ -93,16 +93,21 @@ export default function Shop({
                         type === 'column' && 'justify-center',
                     )}
                 >
+                    {/* Products */}
                     <div
                         className={classNames(
+                            'text-center',
                             handleClickProductCount && 'cursor-pointer',
                         )}
                         onClick={handleClickProductCount}
                     >
                         Products {productCount.toLocaleString()}
                     </div>
+
+                    {/* Followers */}
                     <div
                         className={classNames(
+                            'text-center',
                             handleClickFollowerCount && 'cursor-pointer',
                         )}
                         onClick={handleClickFollowerCount}
