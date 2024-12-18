@@ -20,11 +20,14 @@ export async function getProductsByKeyword({
     // 페이지 범위를 기반으로 길이가 지정된 모의 상품 데이터 배열 생성
     const data: Product[] = Array.from({
         length: (toPage - fromPage) * 20,
-    }).map(() =>
-        getMockProductData({
-            // Append the query to a generated product name
-            title: `${query} - ${faker.commerce.productName()}`,
-        }),
+    }).map(
+        // () =>
+        (_, index) =>
+            getMockProductData({
+                // Append the query to a generated product name
+                // title: `${query} - ${faker.commerce.productName()}`,
+                title: `${query} - ${index}`,
+            }),
     )
 
     // Return the mock data as a resolved promise 모의 데이터를 해결된 프로미스로 반환

@@ -20,10 +20,12 @@ export async function getShopsByKeyword({
     // Create an array of mock shop data, with 10 shops per page
     // 페이지당 20개의 상점을 포함하는 모의 상점 데이터 배열 생성
     const data: Shop[] = Array.from({ length: (toPage - fromPage) * 10 }).map(
-        () =>
+        // () =>
+        (_, idx) =>
             getMockShopData({
                 // Generate a shop name with the query appended (쿼리가 추가된 상점 이름을 생성)
-                name: `${query} - ${faker.internet.displayName()}`,
+                // name: `${query} - ${faker.internet.displayName()}`,
+                name: `${query} - ${idx}`,
             }),
     )
 

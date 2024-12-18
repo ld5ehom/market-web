@@ -5,32 +5,25 @@ import Text from '../Text'
 
 interface Props {
     // Product name
-    // 상품 이름
     title: string
 
     // Product price
-    // 상품 가격
     price: number
 
     // Product registration time
-    // 상품 등록 시간
     createdAt: string
 
     // Product main image URL
-    // 상품 대표 이미지 주소
     imageUrl: string
 
-    // Whether the product is sold out
-    // 상품 판매 여부
+    // Whether the product is sold out (상품 판매 여부)
     isSoldOut?: boolean
 }
 
-// Extend dayjs with relativeTime
-// dayjs의 relativeTime 플러그인을 확장
+// Extend dayjs with relativeTime (dayjs의 relativeTime 플러그인을 확장)
 dayjs.extend(relativeTime).locale('en')
 
-// Component for displaying a product preview
-// 상품 미리보기 컴포넌트
+// Component for displaying a product preview (상품 미리보기 컴포넌트)
 export default function Product({
     title,
     price,
@@ -53,7 +46,7 @@ export default function Product({
                 <Text className="text-ellipsis overflow-hidden whitespace-nowrap block">
                     {title}
                 </Text>
-                <div className="flex justify-between">
+                <div className="flex justify-between items-center flex-wrap">
                     <div>
                         <Text weight="bold">
                             {'$ ' +
