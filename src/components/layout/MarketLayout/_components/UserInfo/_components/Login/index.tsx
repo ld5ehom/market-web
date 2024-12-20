@@ -5,6 +5,7 @@ import Text from '@/components/common/Text'
 import LoginPannel from '@/components/shared/LoginPannel'
 import Container from '@/components/layout/Container'
 import { getMe } from '@/repository/me/getMe'
+import supabase from '@/utils/supabase'
 
 export default function Login() {
     const [showModal, setShowModal] = useState(false)
@@ -27,8 +28,9 @@ export default function Login() {
             setIsLoggedIn(!!shopId)
         })()
     }, [])
-    const handleLogOut = () => {
-        alert('Log Out')
+    const handleLogOut = async () => {
+        await supabase.auth.signOut()
+        location.reload()
     }
 
     return (
