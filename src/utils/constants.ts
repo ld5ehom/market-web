@@ -1,0 +1,3 @@
+export const supabaseUrl = 'https://qlmggcngjauqncighoun.supabase.co'
+export const supabaseKey =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsbWdnY25namF1cW5jaWdob3VuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ1Njk2MTQsImV4cCI6MjA1MDE0NTYxNH0.v7JUQOO8Wz6ymT0SAZaEedakfKhKq5xjDqJ42LAm2zw'

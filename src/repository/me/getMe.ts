@@ -1,6 +1,8 @@
-import supabase from '@/utils/supabase'
+import { SupabaseClient } from '@supabase/supabase-js'
 
-export async function getMe(): Promise<{ data: { shopId: string | null } }> {
+export async function getMe(
+    supabase: SupabaseClient,
+): Promise<{ data: { shopId: string | null } }> {
     // return Promise.resolve({ data: { shopId: 'mock-shop-id' } })
 
     // null = need to login

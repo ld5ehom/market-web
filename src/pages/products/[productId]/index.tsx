@@ -30,6 +30,7 @@ import { getShopReviewCount } from '@/repository/shops/getShopReviewCount'
 import { getShopReviews } from '@/repository/shops/getShopReviews'
 import { Review, Product as TProduct, Shop as TShop } from '@/types'
 import { addRecentItemId } from '@/utils/localstorage'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 /**
  * Fetch product details, user information, and like status from the server
@@ -48,13 +49,14 @@ export const getServerSideProps: GetServerSideProps<{
     reviews: Review[]
     reviewCount: number
 }> = async (context) => {
+    const supabase = getServerSupabase(context)
     const productId = context.query.productId as string
 
     // Fetch product data from the repository (리포지토리에서 제품 데이터를 가져옴)
     const { data: product } = await getProduct(productId)
     const {
         data: { shopId: myShopId },
-    } = await getMe()
+    } = await getMe(supabase)
 
     // Check if the product is liked by the user's shop (사용자의 상점이 제품을 찜했는지 확인)
     const [

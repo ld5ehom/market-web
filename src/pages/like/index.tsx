@@ -1,32 +1,40 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import LikeList from './_components/LikeList'
-
 import Text from '@/components/common/Text'
+import { getMe } from '@/repository/me/getMe'
 import { getShop } from '@/repository/shops/getShop'
 import { getShopLikeCount } from '@/repository/likes/getShopLikeCount'
 import { getShopLikes } from '@/repository/likes/getShopLikes'
 import { getShopProductCount } from '@/repository/shops/getShopProductCount'
 import { Like, Shop } from '@/types'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 /**
  * Server-side data fetching for cart-related information
  * 카트 관련 정보를 서버에서 가져오는 함수
  */
 export const getServerSideProps: GetServerSideProps<{
+    isMyShop: boolean
     shop: Shop // Shop information (상점 정보)
     productCount: number // Number of products in the shop (상점 내 상품 수)
     likeCount: number // Number of liked items in the cart (카트 내 찜한 상품 수)
     likes: Like[] // List of liked products in the cart (카트 내 찜한 상품 목록)
 }> = async (context) => {
+    const supabase = getServerSupabase(context)
+
     const shopId = context.query.shopId as string // Extract shopId from query parameters (쿼리에서 shopId 추출)
 
     // Fetch shop-related data in parallel (병렬로 상점 관련 데이터 가져오기)
     const [
+        {
+            data: { shopId: myShopId },
+        },
         { data: shop },
         { data: productCount },
         { data: likeCount },
         { data: likes },
     ] = await Promise.all([
+        getMe(supabase),
         getShop(shopId), // Fetch shop information (상점 정보 가져오기)
         getShopProductCount(shopId), // Fetch product count (상품 수 가져오기)
         getShopLikeCount(shopId), // Fetch like count (찜한 상품 수 가져오기)
@@ -35,6 +43,7 @@ export const getServerSideProps: GetServerSideProps<{
 
     return {
         props: {
+            isMyShop: myShopId === shopId,
             shop, // Shop information (상점 정보)
             productCount, // Product count (상품 수)
             likeCount, // Like count (찜한 상품 수)

@@ -8,6 +8,7 @@ import { getShopBuyCount } from '@/repository/shops/getShopBuyCount'
 import { getShopBuys } from '@/repository/shops/getShopBuys'
 import { Product } from '@/types'
 import { AuthError } from '@/utils/error'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 // Server-side rendering function to fetch initial data (초기 데이터를 가져오는 서버사이드 렌더링 함수)
 export const getServerSideProps: GetServerSideProps<{
@@ -15,11 +16,13 @@ export const getServerSideProps: GetServerSideProps<{
     count: number // Total number of purchases (총 구매 개수)
     shopId: string // The ID of the shop (상점 ID)
 }> = async (context) => {
+    const supabase = getServerSupabase(context)
+
     try {
         // Fetches user data to get the shop ID (사용자 데이터를 가져와 상점 ID를 얻음)
         const {
             data: { shopId },
-        } = await getMe()
+        } = await getMe(supabase)
 
         // If no shop ID is found, throw an authentication error (상점 ID가 없으면 인증 오류 발생)
         if (!shopId) {

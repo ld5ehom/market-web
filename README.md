@@ -247,9 +247,14 @@
 
 -   **Issues** : [task-9-supabase](https://github.com/ld5ehom/market-web/tree/task-9-supabase)
 -   **Details** :
-    -   Authentication with Supabase: Login and Signup Integration
+    -   **Authentication with Supabase: Login and Signup Integration** [4b18a82](https://github.com/ld5ehom/market-web/commit/4b18a8277ab54b2304ae0d056a0288f728be7bfc)
         ```
         npm i @supabase/supabase-js --legacy-peer-deps
+        ```
+    -   **Server-Side Authentication Implementation**
+        -   Implemented SSR-based authentication flow to ensure secure server-side login session handling and provide seamless user experience by synchronizing authentication state across client and server
+        ```
+        npm i @supabase/ssr @supabase/supabase-js --legacy-peer-deps
         ```
 
 **Task 10: Deploying the Project**

@@ -1,15 +1,18 @@
 import { GetServerSideProps } from 'next'
 import { getMe } from '@/repository/me/getMe'
 import { AuthError } from '@/utils/error'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 // Server-side logic for fetching user shop and handling redirection
 // (사용자 상점 정보를 가져오고 리디렉션을 처리하는 서버사이드 로직)
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    const supabase = getServerSupabase(context)
+
     try {
         // Fetch user information to retrieve the shop ID (사용자 정보를 가져와 상점 ID 확인)
         const {
             data: { shopId },
-        } = await getMe()
+        } = await getMe(supabase)
 
         // If the user is not logged in or does not have a shop, throw an authentication error
         // (사용자가 로그인하지 않았거나 상점이 없는 경우 인증 오류 발생)

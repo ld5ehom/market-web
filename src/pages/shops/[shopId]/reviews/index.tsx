@@ -11,6 +11,7 @@ import { getShopProductCount } from '@/repository/shops/getShopProductCount'
 import { getShopReviewCount } from '@/repository/shops/getShopReviewCount'
 import { getShopReviews } from '@/repository/shops/getShopReviews'
 import { Review, Shop } from '@/types'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 /**
  * Fetches shop data for the review page (후기 페이지를 위한 상점 데이터 가져오기)
@@ -27,6 +28,7 @@ export const getServerSideProps: GetServerSideProps<{
     followerCount: number // Total follower count (총 팔로워 수)
     reviews: Review[] // List of reviews (리뷰 목록)
 }> = async (context) => {
+    const supabase = getServerSupabase(context)
     const shopId = context.query.shopId as string
 
     const [
@@ -41,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<{
         { data: followerCount },
         { data: reviews },
     ] = await Promise.all([
-        getMe(),
+        getMe(supabase),
         getShop(shopId), // Fetch shop details (상점 세부정보 가져오기)
         getShopProductCount(shopId), // Fetch product count (상품 수 가져오기)
         getShopReviewCount(shopId), // Fetch review count (리뷰 수 가져오기)

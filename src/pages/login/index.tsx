@@ -1,14 +1,17 @@
 import { GetServerSideProps } from 'next'
 import LoginPannel from '@/components/shared/LoginPannel'
 import { getMe } from '@/repository/me/getMe'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 // Server-side rendering function to handle login redirection
 // (로그인 리디렉션을 처리하는 서버사이드 렌더링 함수)
 export const getServerSideProps: GetServerSideProps = async (context) => {
+    const supabase = getServerSupabase(context)
+
     // Fetch user information to check shop ID (사용자 정보를 가져와 상점 ID 확인)
     const {
         data: { shopId },
-    } = await getMe()
+    } = await getMe(supabase)
 
     // If the user already has a shop ID, redirect to the destination or home page
     // (사용자가 이미 상점 ID를 가지고 있다면 리디렉션 처리)

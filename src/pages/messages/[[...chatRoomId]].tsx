@@ -10,6 +10,7 @@ import { getChatRooms } from '@/repository/chatRooms/getChatRooms'
 import { getMe } from '@/repository/me/getMe'
 import { ChatRoom } from '@/types'
 import { AuthError } from '@/utils/error'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 // Fetches chat room data and shop ID during server-side rendering
 // (서버사이드 렌더링 중 채팅방 데이터와 상점 ID를 가져옴)
@@ -17,11 +18,13 @@ export const getServerSideProps: GetServerSideProps<{
     chatRooms: ChatRoom[] // List of chat rooms for the shop (상점의 채팅방 목록)
     shopId: string // The ID of the shop (상점 ID)
 }> = async (context) => {
+    const supabase = getServerSupabase(context)
+
     try {
         // Fetch user information to retrieve the shop ID (사용자 정보를 가져와 상점 ID 확인)
         const {
             data: { shopId },
-        } = await getMe()
+        } = await getMe(supabase)
 
         // If the shop ID is missing, throw an authentication error (상점 ID가 없으면 인증 오류 발생)
         if (!shopId) {

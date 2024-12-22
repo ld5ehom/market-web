@@ -37,3 +37,6 @@ yarn-error.log*
 next-env.d.ts
 
 *storybook.log
+
+# utils 폴더 내 constants.js 파일 무시
+utils/constants.js
