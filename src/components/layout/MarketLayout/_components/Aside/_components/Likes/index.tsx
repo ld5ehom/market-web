@@ -5,6 +5,7 @@ import Spinner from '@/components/common/Spinner'
 import Text from '@/components/common/Text'
 import { getMe } from '@/repository/me/getMe'
 import { getShopLikeCount } from '@/repository/likes/getShopLikeCount'
+import supabase from '@/utils/supabase/browserSupabase'
 
 /**
  * Likes Component (Cart Component)
@@ -24,7 +25,7 @@ export default function Likes() {
         ;(async () => {
             const {
                 data: { shopId },
-            } = await getMe()
+            } = await getMe(supabase)
 
             if (!shopId) {
                 setLikeCount(0) // If the user doesn't have a shop, set the like count to 0

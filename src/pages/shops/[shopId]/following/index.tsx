@@ -11,6 +11,7 @@ import { getShopLikeCount } from '@/repository/shops/getShopLikeCount'
 import { getShopProductCount } from '@/repository/shops/getShopProductCount'
 import { getShopReviewCount } from '@/repository/shops/getShopReviewCount'
 import { Follow, Shop } from '@/types'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 /**
  * Server-side data fetching for the following page
@@ -26,6 +27,7 @@ export const getServerSideProps: GetServerSideProps<{
     followerCount: number // Total follower count (총 팔로워 수)
     following: Follow[] // List of followed shops (팔로우한 상점 목록)
 }> = async (context) => {
+    const supabase = getServerSupabase(context)
     const shopId = context.query.shopId as string // Extract shopId from query parameters (쿼리에서 shopId 추출)
 
     // Fetch all required data in parallel
@@ -42,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<{
         { data: followerCount },
         { data: following },
     ] = await Promise.all([
-        getMe(),
+        getMe(supabase),
         getShop(shopId), // Fetch shop details (상점 정보 가져오기)
         getShopProductCount(shopId), // Fetch total product count (총 상품 수 가져오기)
         getShopReviewCount(shopId), // Fetch total review count (총 리뷰 수 가져오기)

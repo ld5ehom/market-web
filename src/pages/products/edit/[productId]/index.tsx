@@ -5,16 +5,19 @@ import { getProduct } from '@/repository/products/getProduct'
 import { Product } from '@/types'
 import { City } from '@/utils/address'
 import { AuthError } from '@/utils/error'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 // Server-side rendering function to fetch product details (상품 정보를 가져오는 서버사이드 렌더링 함수)
 export const getServerSideProps: GetServerSideProps<{
     product: Product // The product details to be passed as props (props로 전달될 상품 정보)
 }> = async (context) => {
+    const supabase = getServerSupabase(context)
+
     try {
         // Fetch user data to get the shop ID (사용자 데이터를 가져와 상점 ID를 확인)
         const {
             data: { shopId },
-        } = await getMe()
+        } = await getMe(supabase)
 
         // If shop ID is missing, throw an authentication error (상점 ID가 없으면 인증 오류 발생)
         if (!shopId) {

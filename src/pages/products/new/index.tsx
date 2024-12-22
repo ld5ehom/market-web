@@ -2,14 +2,17 @@ import { GetServerSideProps } from 'next'
 import ProductForm from '../_components/ProductForm'
 import { getMe } from '@/repository/me/getMe'
 import { AuthError } from '@/utils/error'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 // Define server-side logic to handle authentication and authorization (서버 측에서 인증 및 권한 처리를 수행)
 export const getServerSideProps: GetServerSideProps<{}> = async (context) => {
+    const supabase = getServerSupabase(context)
+
     try {
         // Fetch the current user's data to check shop ID (현재 사용자의 데이터를 가져와 상점 ID 확인)
         const {
             data: { shopId },
-        } = await getMe()
+        } = await getMe(supabase)
 
         // If shop ID is missing, throw an AuthError to trigger a redirect (상점 ID가 없으면 AuthError를 발생시켜 리디렉션 처리)
         if (!shopId) {

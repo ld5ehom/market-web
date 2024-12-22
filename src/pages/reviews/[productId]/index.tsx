@@ -11,16 +11,19 @@ import { getProduct } from '@/repository/products/getProduct'
 import { getReviewByProductId } from '@/repository/reviews/getReviewByProductId'
 import { Product, Review } from '@/types'
 import { AuthError } from '@/utils/error'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 // Fetches product and review data during server-side rendering (서버사이드 렌더링 중 상품 및 리뷰 데이터를 가져옴)
 export const getServerSideProps: GetServerSideProps<{
     product: Product
     review: Review | null
 }> = async (context) => {
+    const supabase = getServerSupabase(context)
+
     try {
         const {
             data: { shopId },
-        } = await getMe()
+        } = await getMe(supabase)
 
         if (!shopId) {
             throw new AuthError()

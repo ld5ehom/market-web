@@ -11,6 +11,7 @@ import { getShopLikeCount } from '@/repository/shops/getShopLikeCount'
 import { getShopProductCount } from '@/repository/shops/getShopProductCount'
 import { getShopReviewCount } from '@/repository/shops/getShopReviewCount'
 import { Follow, Shop } from '@/types'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 // Server-side rendering for fetching shop and follower data
 // (서버사이드 렌더링으로 상점 및 팔로워 데이터 가져오기)
@@ -24,6 +25,7 @@ export const getServerSideProps: GetServerSideProps<{
     followerCount: number // Number of followers (팔로워 수)
     follower: Follow[] // Follower data (팔로워 데이터)
 }> = async (context) => {
+    const supabase = getServerSupabase(context)
     const shopId = context.query.shopId as string
 
     const [
@@ -38,7 +40,7 @@ export const getServerSideProps: GetServerSideProps<{
         { data: followerCount }, // Fetch follower count (팔로워 수 가져오기)
         { data: follower }, // Fetch initial follower list (초기 팔로워 리스트 가져오기)
     ] = await Promise.all([
-        getMe(),
+        getMe(supabase),
         getShop(shopId),
         getShopProductCount(shopId),
         getShopReviewCount(shopId),

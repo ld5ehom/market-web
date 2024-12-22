@@ -8,6 +8,7 @@ import { getShopProductCount } from '@/repository/shops/getShopProductCount'
 import { getShopProducts } from '@/repository/shops/getShopProducts'
 import { Product } from '@/types'
 import { AuthError } from '@/utils/error'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 // Provides a product management interface where shop owners can view, edit,and delete their products.
 // ( 상점 주인이 상품을 확인, 수정 및 삭제할 수 있는 관리 인터페이스 제공.)
@@ -16,11 +17,13 @@ export const getServerSideProps: GetServerSideProps<{
     count: number // Total product count (전체 상품 수)
     shopId: string // Shop ID (상점 ID)
 }> = async (context) => {
+    const supabase = getServerSupabase(context)
+
     // Extract shopId from user data (사용자 데이터에서 shopId 추출)
     try {
         const {
             data: { shopId },
-        } = await getMe()
+        } = await getMe(supabase)
 
         // Login is required.
         if (!shopId) {
