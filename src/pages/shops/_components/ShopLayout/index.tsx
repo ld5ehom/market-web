@@ -303,7 +303,7 @@ export default function ShopLayout({
                     </Link>
 
                     {/* Likes (Cart) Tab */}
-                    {/* <Link
+                    <Link
                         href={`/shops/${shop.id}/likes`}
                         className={classNames(
                             'flex-1 border flex justify-center items-center cursor-pointer',
@@ -316,7 +316,7 @@ export default function ShopLayout({
                         <Text className="ml-2">
                             {likeCount.toLocaleString()}
                         </Text>
-                    </Link> */}
+                    </Link>
 
                     {/* Following Tab */}
                     <Link

@@ -11,6 +11,7 @@ import MarkdownViewerSkeleton from '@/components/shared/MarkdownViewer/Skeleton'
 import { getProduct } from '@/repository/products/getProduct'
 import { getShop } from '@/repository/shops/getShop'
 import { Product, Shop } from '@/types'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     reviewerId: string // ID of the reviewer (리뷰 작성자 ID)
@@ -49,7 +50,7 @@ export default function ReviewItem({
         // 컴포넌트가 마운트될 때 리뷰어와 제품 데이터를 가져옵니다.
         ;(async () => {
             const [{ data: reviewer }, { data: product }] = await Promise.all([
-                getShop(reviewerId), // Fetch reviewer data (리뷰어 데이터 가져오기)
+                getShop(supabase, reviewerId), // Fetch reviewer data (리뷰어 데이터 가져오기)
                 getProduct(productId), // Fetch product data (제품 데이터 가져오기)
             ])
             setData({ reviewer, product }) // Set the fetched data to state (가져온 데이터를 상태에 설정)

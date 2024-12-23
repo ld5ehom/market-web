@@ -1,16 +1,16 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import ShopLayout from '../../_components/ShopLayout'
-import ProductList from './_components/ProductList'
+import LikeList from './_components/LikeList'
 import Text from '@/components/common/Text'
 import { getMe } from '@/repository/me/getMe'
 import { getShop } from '@/repository/shops/getShop'
 import { getShopFollowerCount } from '@/repository/shops/getShopFollowerCount'
 import { getShopFollowingCount } from '@/repository/shops/getShopFollowingCount'
-import { getShopLikeCount } from '@/repository/likes/getShopLikeCount'
+import { getShopLikeCount } from '@/repository/shops/getShopLikeCount'
+import { getShopLikes } from '@/repository/shops/getShopLikes'
 import { getShopProductCount } from '@/repository/shops/getShopProductCount'
-import { getShopProducts } from '@/repository/shops/getShopProducts'
 import { getShopReviewCount } from '@/repository/shops/getShopReviewCount'
-import { Product, Shop } from '@/types'
+import { Like, Shop } from '@/types'
 import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 export const getServerSideProps: GetServerSideProps<{
@@ -21,9 +21,10 @@ export const getServerSideProps: GetServerSideProps<{
     likeCount: number
     followingCount: number
     followerCount: number
-    products: Product[]
+    likes: Like[]
 }> = async (context) => {
     const supabase = getServerSupabase(context)
+
     const shopId = context.query.shopId as string
 
     const [
@@ -36,7 +37,7 @@ export const getServerSideProps: GetServerSideProps<{
         { data: likeCount },
         { data: followingCount },
         { data: followerCount },
-        { data: products },
+        { data: likes },
     ] = await Promise.all([
         getMe(supabase),
         getShop(supabase, shopId),
@@ -45,7 +46,7 @@ export const getServerSideProps: GetServerSideProps<{
         getShopLikeCount(shopId),
         getShopFollowingCount(shopId),
         getShopFollowerCount(shopId),
-        getShopProducts({ shopId, fromPage: 0, toPage: 1 }),
+        getShopLikes({ shopId, fromPage: 0, toPage: 1 }),
     ])
 
     return {
@@ -57,12 +58,12 @@ export const getServerSideProps: GetServerSideProps<{
             likeCount,
             followingCount,
             followerCount,
-            products,
+            likes,
         },
     }
 }
 
-export default function ShopProducts({
+export default function ShopsLikes({
     isMyShop,
     shop,
     productCount,
@@ -70,7 +71,7 @@ export default function ShopProducts({
     likeCount,
     followingCount,
     followerCount,
-    products,
+    likes: initialLikes,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     return (
         <ShopLayout
@@ -81,19 +82,17 @@ export default function ShopProducts({
             likeCount={likeCount}
             followingCount={followingCount}
             followerCount={followerCount}
-            currentTab="products"
+            currentTab="likes"
         >
-            <div className="mt-9 mb-5 text-center">
-                <Text size="lg"> Products : </Text>
-                <Text size="2xl" color="uclaBlue">
-                    {productCount.toLocaleString()}
+            <div className="mt-9 mb-5">
+                <Text size="lg"> Products </Text>
+                <Text size="lg" color="red">
+                    {likeCount.toLocaleString()}
                 </Text>
             </div>
-
-            {/* Seller Shop Product List */}
-            <ProductList
-                initialProducts={products}
-                count={productCount}
+            <LikeList
+                initialLikes={initialLikes}
+                count={likeCount}
                 shopId={shop.id}
             />
         </ShopLayout>

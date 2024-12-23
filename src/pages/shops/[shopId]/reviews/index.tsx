@@ -44,7 +44,7 @@ export const getServerSideProps: GetServerSideProps<{
         { data: reviews },
     ] = await Promise.all([
         getMe(supabase),
-        getShop(shopId), // Fetch shop details (상점 세부정보 가져오기)
+        getShop(supabase, shopId), // Fetch shop details (상점 세부정보 가져오기)
         getShopProductCount(shopId), // Fetch product count (상품 수 가져오기)
         getShopReviewCount(shopId), // Fetch review count (리뷰 수 가져오기)
         getShopLikeCount(shopId), // Fetch like count (찜 수 가져오기)

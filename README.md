@@ -251,10 +251,15 @@
         ```
         npm i @supabase/supabase-js --legacy-peer-deps
         ```
-    -   **Server-Side Authentication Implementation**
+    -   **Server-Side Authentication Implementation** [4baa7fd](https://github.com/ld5ehom/market-web/commit/4baa7fd2065fad62a03ea7e91eaa5bc28da3ddcf)
         -   Implemented SSR-based authentication flow to ensure secure server-side login session handling and provide seamless user experience by synchronizing authentication state across client and server
         ```
         npm i @supabase/ssr @supabase/supabase-js --legacy-peer-deps
+        ```
+    -   **Integrate My Store Database with Supabase and Implement RLS Policies**
+        -   Integrated the Store database with Supabase by implementing Row-Level Security (RLS) policies to ensure secure and scoped data access while using camelcase-keys to transform response data into a consistent JavaScript camelCase format.
+        ```
+        npm i camelcase-keys --legacy-peer-deps
         ```
 
 **Task 10: Deploying the Project**
