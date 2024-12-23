@@ -41,7 +41,7 @@ export const getServerSideProps: GetServerSideProps<{
         { data: follower }, // Fetch initial follower list (초기 팔로워 리스트 가져오기)
     ] = await Promise.all([
         getMe(supabase),
-        getShop(shopId),
+        getShop(supabase, shopId),
         getShopProductCount(shopId),
         getShopReviewCount(shopId),
         getShopLikeCount(shopId),

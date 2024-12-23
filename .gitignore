@@ -38,5 +38,5 @@ next-env.d.ts
 
 *storybook.log
 
-# utils 폴더 내 constants.js 파일 무시
-utils/constants.js
+# utils 폴더 내 constants.tßs 파일 무시
+utils/constants.ts

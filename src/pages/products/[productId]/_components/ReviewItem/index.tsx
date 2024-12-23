@@ -9,6 +9,7 @@ import Text from '@/components/common/Text'
 import MarkdownViewerSkeleton from '@/components/shared/MarkdownViewer/Skeleton'
 import { getShop } from '@/repository/shops/getShop'
 import { Shop } from '@/types'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     contents: string // Review contents (리뷰 내용)
@@ -36,7 +37,7 @@ export default function ReviewItem({ contents, createdAt, createdBy }: Props) {
     // 컴포넌트가 마운트될 때 리뷰 작성자의 상점 데이터를 가져옴
     useEffect(() => {
         ;(async () => {
-            const { data } = await getShop(createdBy) // Fetch the shop data (상점 데이터를 가져옴)
+            const { data } = await getShop(supabase, createdBy) // Fetch the shop data (상점 데이터를 가져옴)
             setReviewer(data) // Set the reviewer data in state (리뷰어 데이터를 상태에 설정)
         })()
     }, [createdBy])

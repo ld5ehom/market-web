@@ -9,6 +9,7 @@ import { getShopProductCount } from '@/repository/shops/getShopProductCount'
 import { getShopProducts } from '@/repository/shops/getShopProducts'
 import { Product, Shop as TShop } from '@/types'
 import Image from 'next/image'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     shopId: string
@@ -33,7 +34,7 @@ export default function FollowingItem({ shopId }: Props) {
                 { data: productCount }, // Fetch total product count (상품 총 개수 가져오기)
                 { data: followerCount }, // Fetch total follower count (팔로워 총 수 가져오기)
             ] = await Promise.all([
-                getShop(shopId),
+                getShop(supabase, shopId),
                 getShopProducts({ shopId, fromPage: 0, toPage: 1 }),
                 getShopProductCount(shopId),
                 getShopFollowerCount(shopId),
