@@ -256,10 +256,16 @@
         ```
         npm i @supabase/ssr @supabase/supabase-js --legacy-peer-deps
         ```
-    -   **Integrate My Store Database with Supabase and Implement RLS Policies**
+    -   **Integrate My Store Database with Supabase and Implement RLS Policies** [59ee963](https://github.com/ld5ehom/market-web/commit/59ee963b548793d9e7af3a0f3166c6e3a1f27cd0)
         -   Integrated the Store database with Supabase by implementing Row-Level Security (RLS) policies to ensure secure and scoped data access while using camelcase-keys to transform response data into a consistent JavaScript camelCase format.
         ```
         npm i camelcase-keys --legacy-peer-deps
+        ```
+    -   **Supabase Integration for My Store**
+        -   Integrated SDK to enable updating store name, description, and profile image.
+        -   Added a bucket in Supabase Storage for profile images and linked it for updates. Utilized the nanoid library to ensure unique file names.
+        ```
+        npm i nanoid --legacy-peer-deps
         ```
 
 **Task 10: Deploying the Project**

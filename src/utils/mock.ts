@@ -117,6 +117,11 @@ export function getMockChatMessageData(defaultValue?: Partial<ChatMessage>) {
     return data
 }
 
+// Supabase Storage Image (Mock)
+export function getMockImageDataUri() {
+    return faker.image.dataUri()
+}
+
 // A utility function that returns a promise that resolves after a specified timeout
 // 지정된 시간(ms) 후에 해결되는 프로미스를 반환하는 유틸리티 함수 (3/sec)
 export const timeout = (ms = 3000) =>
