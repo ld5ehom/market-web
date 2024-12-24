@@ -41,7 +41,7 @@ export default function Likes() {
 
     return (
         <Link
-            href="/like" // Updated to point to /cart
+            href={!shopId ? '#' : `/shops/${shopId}/likes`} // Updated to point to /cart
             className="border border-uclaBlue bg-white p-4 flex flex-col items-center cursor-pointer hover:shadow-md transition-shadow"
             aria-label="Cart Section"
         >

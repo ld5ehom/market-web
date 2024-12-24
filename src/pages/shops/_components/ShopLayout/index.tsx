@@ -2,7 +2,7 @@ import classNames from 'classnames'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import Link from 'next/link'
-import { ReactNode, useState } from 'react'
+import { FormEvent, ReactNode, useState } from 'react'
 import 'dayjs/locale/en'
 import Button from '@/components/common/Button'
 import Input from '@/components/common/Input'
@@ -10,8 +10,11 @@ import ShopProfileImage from '@/components/common/ShopProfileImage'
 import Text from '@/components/common/Text'
 import Container from '@/components/layout/Container'
 import Wrapper from '@/components/layout/Wrapper'
+import { updateShopImageUrl } from '@/repository/shops/updateShopImageUrl'
+import { updateShopIntroduce } from '@/repository/shops/updateShopIntroduce'
+import { updateShopName } from '@/repository/shops/updateShopName'
 import { Shop } from '@/types'
-import { timeout } from '@/utils/mock'
+import supabase from '@/utils/supabase/browserSupabase'
 
 // Initialize dayjs with relative time plugin
 dayjs.extend(relativeTime).locale('en')
@@ -49,22 +52,70 @@ export default function ShopLayout({
     currentTab,
     children,
 }: Props) {
+    // Supabase
+    const [shopName, setShopName] = useState(shop.name)
+    const [shopIntroduce, setShopIntroduce] = useState(shop.introduce)
+    const [shopImageUrl, setShopImageUrl] = useState(shop.imageUrl)
+
     // Shop edit
     const [shopNameStatus, setShopNameState] = useState<EDIT_STUATUS>('IDLE')
-    const [shopDescriptionStatus, setShopDescriptionState] =
+    const [shopIntroduceStatus, setShopIntroduceState] =
         useState<EDIT_STUATUS>('IDLE')
-    const handleSubmitShopName = async () => {
-        setShopNameState('LOADING')
-        await timeout(2000)
-        setShopNameState('IDLE')
+
+    // Supabase update my store(shop) name
+    const handleSubmitShopName = async (e: FormEvent<HTMLFormElement>) => {
+        try {
+            e.preventDefault()
+            setShopNameState('LOADING')
+
+            const formData = new FormData(e.currentTarget)
+            const name = formData.get('name') as string
+
+            await updateShopName(supabase, { shopId: shop.id, name })
+            setShopName(name)
+        } catch (e) {
+            alert('Failed to update the shop name.')
+        } finally {
+            setShopNameState('IDLE')
+        }
     }
-    const handleSubmitShopDescription = async () => {
-        setShopDescriptionState('LOADING')
-        await timeout(2000)
-        setShopDescriptionState('IDLE')
+
+    // Supabase update my store introduce
+    const handleSubmitShopIntroduce = async (e: FormEvent<HTMLFormElement>) => {
+        try {
+            e.preventDefault()
+            setShopIntroduceState('LOADING')
+
+            const formData = new FormData(e.currentTarget)
+            const introduce = formData.get('introduce') as string
+
+            await updateShopIntroduce(supabase, { shopId: shop.id, introduce })
+            setShopIntroduce(introduce)
+        } catch (e) {
+            alert('Failed to update the shop introduce.')
+        } finally {
+            setShopIntroduceState('IDLE')
+        }
     }
-    const handleSubmitShopProfileImage = async () => {
-        alert('Image!')
+
+    // Supabase update shop profile image
+    const handleSubmitShopProfileImage = async (
+        e: FormEvent<HTMLFormElement>,
+    ) => {
+        try {
+            e.preventDefault()
+            const formData = new FormData(e.currentTarget)
+            const imageFile = formData.get('image') as File
+            const {
+                data: { imageUrl },
+            } = await updateShopImageUrl(supabase, {
+                shopId: shop.id,
+                imageFile,
+            })
+            setShopImageUrl(imageUrl)
+        } catch (e) {
+            alert('Failed to update the profile image.')
+        }
     }
 
     return (
@@ -78,7 +129,7 @@ export default function ShopLayout({
                             {/* Display shop profile image for others, or editable profile image for shop owner */}
                             {!isMyShop ? (
                                 <ShopProfileImage
-                                    imageUrl={shop.imageUrl || undefined}
+                                    imageUrl={shopImageUrl || undefined}
                                 />
                             ) : (
                                 <>
@@ -92,7 +143,7 @@ export default function ShopLayout({
                                         >
                                             <ShopProfileImage
                                                 imageUrl={
-                                                    shop.imageUrl || undefined
+                                                    shopImageUrl || undefined
                                                 }
                                             />
                                         </label>
@@ -124,7 +175,7 @@ export default function ShopLayout({
                                     shopNameStatus === 'IDLE' ? (
                                         <>
                                             {/* Display shop name with edit button */}
-                                            <Text size="lg">{shop.name}</Text>
+                                            <Text size="lg">{shopName}</Text>
                                             <Button
                                                 size="sm" // Small button size
                                                 className="ml-6" // Margin-left for spacing
@@ -137,9 +188,10 @@ export default function ShopLayout({
                                             </Button>
                                         </>
                                     ) : (
-                                        <>
+                                        <form onSubmit={handleSubmitShopName}>
                                             {/* Input field for editing shop name */}
                                             <Input
+                                                name="name"
                                                 className="text-xs w-60" // Small text size and fixed width
                                                 placeholder="Enter a new name (at least 2 characters)"
                                                 disabled={
@@ -149,23 +201,22 @@ export default function ShopLayout({
                                                 autoComplete="off" // Turn off autocomplete
                                                 minLength={2} // Minimum length validation
                                             />
+
                                             {/* Submit button for saving the new shop name */}
                                             <Button
+                                                type="submit"
                                                 className="text-sm w-20" // Small text and fixed width
                                                 isLoading={
                                                     shopNameStatus === 'LOADING'
                                                 } // Show loading state
-                                                onClick={() =>
-                                                    handleSubmitShopName()
-                                                } // Submit handler
                                             >
                                                 Confirm
                                             </Button>
-                                        </>
+                                        </form>
                                     )
                                 ) : (
                                     // Display shop name for non-owners
-                                    <Text size="lg">{shop.name}</Text>
+                                    <Text size="lg">{shopName}</Text>
                                 )}
                             </div>
 
@@ -193,31 +244,23 @@ export default function ShopLayout({
                             </div>
 
                             {/* Shop Introduction */}
-                            {/* <div className="flex-1 px-5 py-1 overflow-hidden bg-white">
-                                <Text
-                                    size="sm"
-                                    className="block h-full overflow-auto break-words"
-                                >
-                                    {shop.introduce}
-                                </Text>
-                            </div> */}
                             <div className="flex flex-col flex-1 px-4 overflow-hidden bg-white">
                                 {isMyShop ? (
-                                    shopDescriptionStatus === 'IDLE' ? (
+                                    shopIntroduceStatus === 'IDLE' ? (
                                         <>
                                             {/* Display shop description with edit button (소개글과 수정 버튼 표시) */}
                                             <Text
                                                 size="sm"
                                                 className="block overflow-scroll h-full bg-white"
                                             >
-                                                {shop.introduce}
+                                                {shopIntroduce}
                                             </Text>
                                             <Button
                                                 size="sm"
                                                 outline
                                                 className="w-40"
                                                 onClick={() =>
-                                                    setShopDescriptionState(
+                                                    setShopIntroduceState(
                                                         'EDIT',
                                                     )
                                                 }
@@ -226,33 +269,35 @@ export default function ShopLayout({
                                             </Button>
                                         </>
                                     ) : (
-                                        <>
+                                        <form
+                                            onSubmit={handleSubmitShopIntroduce}
+                                            className="flex h-full flex-1"
+                                        >
                                             {/* Editable textarea for shop description (소개글을 입력할 수 있는 텍스트 에리어) */}
                                             <textarea
+                                                name="introduce"
                                                 className="flex-1 p-1 mb-2 text-sm border outline-none disabled:opacity-50"
                                                 placeholder="Enter shop description"
                                                 disabled={
-                                                    shopDescriptionStatus ===
+                                                    shopIntroduceStatus ===
                                                     'LOADING'
                                                 }
                                             >
-                                                {shop.introduce}
+                                                {shopIntroduce}
                                             </textarea>
                                             <Button
+                                                type="submit"
                                                 size="xs"
                                                 outline
                                                 className="w-20"
                                                 isLoading={
-                                                    shopDescriptionStatus ===
+                                                    shopIntroduceStatus ===
                                                     'LOADING'
-                                                }
-                                                onClick={() =>
-                                                    handleSubmitShopDescription()
                                                 }
                                             >
                                                 Confirm
                                             </Button>
-                                        </>
+                                        </form>
                                     )
                                 ) : (
                                     // Display shop description for non-owners (소유자가 아닌 경우 소개글 표시)
@@ -260,7 +305,7 @@ export default function ShopLayout({
                                         size="sm"
                                         className="block overflow-auto h-full bg-white" // scroll bar -> ovwerflow-scroll
                                     >
-                                        {shop.introduce}
+                                        {shopIntroduce}
                                     </Text>
                                 )}
                             </div>
