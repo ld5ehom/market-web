@@ -4,6 +4,7 @@ import Shop from '@/components/common/Shop'
 import Spinner from '@/components/common/Spinner'
 import { getShopFollowerCount } from '@/repository/shops/getShopFollowerCount'
 import { getShopProductCount } from '@/repository/shops/getShopProductCount'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     id: string // Shop ID used to fetch additional data (상점 ID, 추가 데이터를 가져오는데 사용됨)
@@ -25,8 +26,8 @@ export default function SearchShopItem({ id, name, profileImageUrl }: Props) {
             // Fetch follower and product counts asynchronously (비동기로 팔로워 및 상품 수를 가져옴)
             const [{ data: followerCount }, { data: productCount }] =
                 await Promise.all([
-                    getShopFollowerCount(id),
-                    getShopProductCount(id),
+                    getShopFollowerCount(supabase, id),
+                    getShopProductCount(supabase, id),
                 ])
 
             setFollowerCount(followerCount) // Update the follower count state (팔로워 수 상태 업데이트)

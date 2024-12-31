@@ -26,7 +26,7 @@ export function getMockProductData(defaultValue?: Partial<Product>) {
             Array.from({ length: faker.number.int({ min: 1, max: 5 }) }).map(
                 () => faker.image.dataUri(),
             ),
-        isChangable: defaultValue?.isChangable ?? faker.datatype.boolean(),
+        isChangeable: defaultValue?.isChangeable ?? faker.datatype.boolean(),
         isUsed: defaultValue?.isUsed ?? faker.datatype.boolean(),
         // tags: Array.from({ length: 5 }).map(() => faker.lorem.word()),
         tags:

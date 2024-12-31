@@ -5,6 +5,7 @@ import Product from '@/components/common/Product'
 import Text from '@/components/common/Text'
 import { getShopProducts } from '@/repository/shops/getShopProducts'
 import { Product as TProduct } from '@/types'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     initialProducts: TProduct[] // Initial list of products fetched via server-side rendering (SSR) (서버사이드 렌더링으로 가져온 초기 상품 목록)
@@ -27,7 +28,7 @@ export default function ProductList({ initialProducts, count, shopId }: Props) {
     // 페이지나 상점 ID가 변경될 때 동적으로 상품을 가져옵니다.
     useEffect(() => {
         ;(async () => {
-            const { data } = await getShopProducts({
+            const { data } = await getShopProducts(supabase, {
                 shopId,
                 fromPage: currentPage - 1,
                 toPage: currentPage,

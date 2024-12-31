@@ -1,5 +1,6 @@
+import { SupabaseClient } from '@supabase/supabase-js'
+import camelcaseKeys from 'camelcase-keys'
 import { Review } from '@/types'
-import { getMockReviewData } from '@/utils/mock'
 
 type Params = {
     shopId: string
@@ -7,14 +8,31 @@ type Params = {
     toPage?: number
 }
 
-export async function getShopReviews({
-    shopId,
-    fromPage = 0,
-    toPage = 1,
-}: Params): Promise<{ data: Review[] }> {
-    const data: Review[] = Array.from({ length: (toPage - fromPage) * 10 }).map(
-        () => getMockReviewData({ createdBy: shopId }),
-    )
+// Supabase
+export async function getShopReviews(
+    supabase: SupabaseClient,
+    { shopId, fromPage = 0, toPage = 1 }: Params,
+): Promise<{ data: Review[] }> {
+    // Mock data
+    if (process.env.USE_MOCK_DATA === 'true') {
+        const { getMockReviewData } = await import('@/utils/mock')
+        const data: Review[] = Array.from({
+            length: (toPage - fromPage) * 10,
+        }).map(() => getMockReviewData({ createdBy: shopId }))
 
-    return Promise.resolve({ data })
+        return { data }
+    }
+
+    const { data, error } = await supabase
+        .from('reviews')
+        .select('*, product_id, product: product_id!inner(created_by)')
+        .eq('product.created_by', shopId)
+        .range((fromPage ?? 0) * 10, (toPage ?? 1) * 10 - 1)
+        .order('created_at', { ascending: false })
+
+    if (error) {
+        throw error
+    }
+
+    return { data: camelcaseKeys(data, { deep: true }) }
 }

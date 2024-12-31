@@ -51,7 +51,7 @@ export default function ReviewItem({
         ;(async () => {
             const [{ data: reviewer }, { data: product }] = await Promise.all([
                 getShop(supabase, reviewerId), // Fetch reviewer data (리뷰어 데이터 가져오기)
-                getProduct(productId), // Fetch product data (제품 데이터 가져오기)
+                getProduct(supabase, productId), // Fetch product data (제품 데이터 가져오기)
             ])
             setData({ reviewer, product }) // Set the fetched data to state (가져온 데이터를 상태에 설정)
         })()

@@ -12,19 +12,35 @@ export async function uploadImage(
         return { data: { imageUrl: getMockImageDataUri() } }
     }
 
-    // Supabase Storage market image (jpeg, png)
-    const { data, error } = await supabase.storage
-        .from('market')
-        .upload(
-            `${nanoid()}.${imageFile.type === 'image/jpeg' ? 'jpeg' : 'png'}`,
-            imageFile,
-        )
+    // File format check (only jpeg and png are allowed)
+    const fileExtension =
+        imageFile.type === 'image/jpeg'
+            ? 'jpeg'
+            : imageFile.type === 'image/png'
+              ? 'png'
+              : null
 
-    if (error) {
-        throw error
+    if (!fileExtension) {
+        throw new Error('Invalid image format. Only jpeg and png are allowed.')
     }
 
-    const imageUrl = await getImageUrl(data.path)
+    try {
+        // Supabase Storage upload
+        const { data, error } = await supabase.storage
+            .from('market')
+            .upload(`${nanoid()}.${fileExtension}`, imageFile)
 
-    return { data: { imageUrl } }
+        // Handle upload error
+        if (error) {
+            throw error
+        }
+
+        // Generate image URL
+        const imageUrl = await getImageUrl(data.path)
+
+        return { data: { imageUrl } }
+    } catch (error) {
+        console.error('Image upload failed:', error)
+        throw new Error('Failed to upload image. Please try again.')
+    }
 }

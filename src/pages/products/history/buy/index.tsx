@@ -31,8 +31,8 @@ export const getServerSideProps: GetServerSideProps<{
 
         // Fetch purchased products and total purchase count using Promise.all (Promise.all을 사용하여 구매 상품과 총 구매 개수를 동시에 가져옴)
         const [{ data: products }, { data: count }] = await Promise.all([
-            getShopBuys({ shopId, fromPage: 0, toPage: 1 }), // Fetch the purchased products for the shop (상점의 구매한 상품을 가져옴)
-            getShopBuyCount(shopId), // Fetch the total purchase count for the shop (상점의 총 구매 개수를 가져옴)
+            getShopBuys(supabase, { shopId, fromPage: 0, toPage: 1 }), // Fetch the purchased products for the shop (상점의 구매한 상품을 가져옴)
+            getShopBuyCount(supabase, shopId), // Fetch the total purchase count for the shop (상점의 총 구매 개수를 가져옴)
         ])
 
         // Return the fetched data as props (가져온 데이터를 props로 반환)

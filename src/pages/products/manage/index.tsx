@@ -31,8 +31,8 @@ export const getServerSideProps: GetServerSideProps<{
         }
 
         const [{ data: products }, { data: count }] = await Promise.all([
-            getShopProducts({ shopId, fromPage: 0, toPage: 1 }), // Fetch initial products (초기 상품 리스트 가져오기)
-            getShopProductCount(shopId), // Fetch total product count (전체 상품 수 가져오기)
+            getShopProducts(supabase, { shopId, fromPage: 0, toPage: 1 }), // Fetch initial products (초기 상품 리스트 가져오기)
+            getShopProductCount(supabase, shopId), // Fetch total product count (전체 상품 수 가져오기)
         ])
 
         return {

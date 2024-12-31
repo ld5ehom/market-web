@@ -4,6 +4,7 @@ import Pagination from '@/components/common/Pagination'
 import Text from '@/components/common/Text'
 import { getShopReviews } from '@/repository/shops/getShopReviews'
 import { Review } from '@/types'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     initialReviews: Review[] // Preloaded reviews from SSR (서버사이드 렌더링으로 미리 불러온 리뷰)
@@ -26,7 +27,7 @@ export default function ReviewList({ initialReviews, count, shopId }: Props) {
         // Fetch reviews whenever the current page or shopId changes
         // currentPage나 shopId가 변경될 때 리뷰를 가져옵니다.
         ;(async () => {
-            const { data } = await getShopReviews({
+            const { data } = await getShopReviews(supabase, {
                 shopId,
                 // API requires 0-based page indices (API 요청은 0부터 시작하는 페이지 인덱스 사용)
                 fromPage: currentPage - 1,

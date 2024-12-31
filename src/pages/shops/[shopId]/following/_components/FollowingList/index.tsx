@@ -4,6 +4,7 @@ import Pagination from '@/components/common/Pagination'
 import Text from '@/components/common/Text'
 import { getShopFollowing } from '@/repository/shops/getShopFollowing'
 import { Follow } from '@/types'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     initialFollowing: Follow[] // Initial list of following shops (초기 팔로잉 상점 목록)
@@ -30,7 +31,7 @@ export default function FollowingList({
     // 페이지 또는 shopId가 변경될 때 팔로잉 상점 목록을 가져옴
     useEffect(() => {
         ;(async () => {
-            const { data } = await getShopFollowing({
+            const { data } = await getShopFollowing(supabase, {
                 shopId,
                 // Adjust API pages to match the current page
                 // API 페이지를 현재 페이지에 맞게 조정

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-
 import Product from '@/components/common/Product' // Reusable Product component
 import Spinner from '@/components/common/Spinner' // Spinner for loading state
 import { getProduct } from '@/repository/products/getProduct' // API to fetch product details
 import { Product as TProduct } from '@/types' // Type definition for product
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     productId: string // ID of the product to be displayed
@@ -17,7 +17,7 @@ export default function LikeItem({ productId }: Props) {
         // Fetch the product details when the component mounts or productId changes
         // 컴포넌트가 마운트되거나 productId가 변경될 때 상품 상세 정보를 가져옴
         ;(async () => {
-            const { data } = await getProduct(productId) // Fetch product data from API
+            const { data } = await getProduct(supabase, productId) // Fetch product data from API
             setProduct(data) // Update state with fetched product data
         })()
     }, [productId]) // Dependency array to trigger effect when productId changes

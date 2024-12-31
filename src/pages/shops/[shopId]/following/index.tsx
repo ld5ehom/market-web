@@ -46,12 +46,12 @@ export const getServerSideProps: GetServerSideProps<{
     ] = await Promise.all([
         getMe(supabase),
         getShop(supabase, shopId), // Fetch shop details (상점 정보 가져오기)
-        getShopProductCount(shopId), // Fetch total product count (총 상품 수 가져오기)
-        getShopReviewCount(shopId), // Fetch total review count (총 리뷰 수 가져오기)
-        getShopLikeCount(shopId), // Fetch total like count (총 찜 수 가져오기)
-        getShopFollowingCount(shopId), // Fetch total following count (총 팔로잉 수 가져오기)
-        getShopFollowerCount(shopId), // Fetch total follower count (총 팔로워 수 가져오기)
-        getShopFollowing({ shopId, fromPage: 0, toPage: 1 }), // Fetch followed shops (팔로우한 상점 가져오기)
+        getShopProductCount(supabase, shopId), // Fetch total product count (총 상품 수 가져오기)
+        getShopReviewCount(supabase, shopId), // Fetch total review count (총 리뷰 수 가져오기)
+        getShopLikeCount(supabase, shopId), // Fetch total like count (총 찜 수 가져오기)
+        getShopFollowingCount(supabase, shopId), // Fetch total following count (총 팔로잉 수 가져오기)
+        getShopFollowerCount(supabase, shopId), // Fetch total follower count (총 팔로워 수 가져오기)
+        getShopFollowing(supabase, { shopId, fromPage: 0, toPage: 1 }), // Fetch followed shops (팔로우한 상점 가져오기)
     ])
 
     return {

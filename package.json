@@ -29,6 +29,7 @@
         "react-virtuoso": "^4.12.3",
         "sass": "^1.80.6",
         "scroll-lock": "^2.1.5",
+        "snakecase-keys": "^8.0.1",
         "storybook": "^8.4.1"
     },
     "devDependencies": {

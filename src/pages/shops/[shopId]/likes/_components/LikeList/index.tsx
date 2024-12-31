@@ -1,118 +1,59 @@
 import { useEffect, useState } from 'react'
+
 import LikeItem from '../LikeItem'
+
+import Pagination from '@/components/common/Pagination'
 import Text from '@/components/common/Text'
-import Button from '@/components/common/Button'
-import Link from 'next/link'
-import { getShopLikes } from '@/repository/likes/getShopLikes'
+import { getShopLikes } from '@/repository/shops/getShopLikes'
 import { Like } from '@/types'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
-    initialLikes: Like[]
-    count: number
-    shopId: string
+    initialLikes: Like[] // The initial list of liked items (초기 찜한 상품 목록)
+    count: number // The total count of liked items (찜한 상품의 총 개수)
+    shopId: string // The ID of the shop (상점 ID)
 }
 
 export default function LikeList({ initialLikes, count, shopId }: Props) {
-    const [likes, setLikes] = useState(
-        (initialLikes || []).map((item) => ({ ...item, quantity: 1 })),
-    )
-    const [totalPrice, setTotalPrice] = useState<number>(0)
+    // The page number visible to the user starts from 1, but the API starts from 0
+    // 화면에 보이는 페이지 번호는 1부터 시작하지만 API는 0부터 시작합니다.
+    const [currentPage, setCurrentPage] = useState(1)
+    const [likes, setLikes] = useState(initialLikes)
 
     useEffect(() => {
-        const priceSum = likes.reduce(
-            (sum, item) => sum + item.price * item.quantity,
-            0,
-        )
-        setTotalPrice(priceSum)
-    }, [likes])
-
-    const handleQuantityChange = (id: string, delta: number) => {
-        setLikes((prevLikes) =>
-            prevLikes.map((item) => {
-                if (item.id === id) {
-                    const updatedQuantity = Math.max(1, item.quantity + delta)
-                    return { ...item, quantity: updatedQuantity }
-                }
-                return item
-            }),
-        )
-    }
-
-    const handlePurchase = () => {
-        alert('Purchase completed!')
-    }
+        ;(async () => {
+            const { data } = await getShopLikes(supabase, {
+                shopId,
+                // Adjusting the page numbers for the API request (API 요청을 위해 페이지 번호 조정)
+                fromPage: currentPage - 1,
+                toPage: currentPage,
+            })
+            setLikes(data)
+        })()
+    }, [currentPage, shopId])
 
     return (
         <div>
             {likes.length === 0 ? (
-                <Text color="uclaBlue"> Cart is empty. </Text>
+                // Display message when there are no liked items (찜한 상품이 없을 때 메시지 표시)
+                <Text color="grey"> No liked products. </Text>
             ) : (
                 <>
-                    {/* Grid layout for displaying liked products */}
-                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                        {likes.map(({ id, productId, price, quantity }) => (
-                            <div
-                                key={id}
-                                className="max-w-[190px] w-full mx-auto p-4 hover:shadow-md transition-shadow"
-                            >
-                                {/* Link wraps the entire content to preserve layout */}
-                                <Link href={`/products/${productId}`} passHref>
-                                    <div className="block">
-                                        <LikeItem productId={productId} />
-                                    </div>
-                                </Link>
-
-                                {/* Count */}
-                                <div className="flex justify-between items-center mt-2">
-                                    <Button
-                                        className="p-2 bg-uclaBlue text-sm"
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handleQuantityChange(id, -1)
-                                        }}
-                                    >
-                                        -
-                                    </Button>
-                                    <Text size="md">{quantity}</Text>
-                                    <Button
-                                        className="p-2 bg-uclaBlue text-sm"
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            handleQuantityChange(id, 1)
-                                        }}
-                                    >
-                                        +
-                                    </Button>
-                                </div>
-
-                                {/* Product price */}
-                                <Text size="md" className="py-5 text-right">
-                                    Price : ${(price * quantity).toFixed(2)}
-                                </Text>
-                            </div>
+                    {/* Grid layout for liked items (찜한 상품을 위한 그리드 레이아웃) */}
+                    <div className="w-full grid grid-cols-5 gap-4">
+                        {likes.map(({ id, productId }) => (
+                            <LikeItem key={id} productId={productId} />
                         ))}
                     </div>
-
-                    {/* Total Price and Purchase Button */}
-                    <div className="mt-6 flex flex-col items-end">
-                        <Text
-                            size="lg"
-                            color="darkestBlue"
-                            className="mb-2 mr-4"
-                        >
-                            Total Price :{' '}
-                            {new Intl.NumberFormat('en-US', {
-                                style: 'currency',
-                                currency: 'USD',
-                            }).format(totalPrice)}
-                        </Text>
-                        <Button
-                            onClick={handlePurchase}
-                            color="uclaBlue"
-                            className="rounded-full"
-                        >
-                            Proceed to checkout
-                        </Button>
+                    {/* Pagination controls (페이지네이션 컨트롤) */}
+                    <div className="flex justify-end">
+                        <Pagination
+                            currentPage={currentPage}
+                            handlePageChange={(pageNumber) =>
+                                setCurrentPage(pageNumber)
+                            }
+                            count={count}
+                        />
                     </div>
                 </>
             )}

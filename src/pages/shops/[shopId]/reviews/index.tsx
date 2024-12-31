@@ -6,7 +6,7 @@ import { getMe } from '@/repository/me/getMe'
 import { getShop } from '@/repository/shops/getShop'
 import { getShopFollowerCount } from '@/repository/shops/getShopFollowerCount'
 import { getShopFollowingCount } from '@/repository/shops/getShopFollowingCount'
-import { getShopLikeCount } from '@/repository/likes/getShopLikeCount'
+import { getShopLikeCount } from '@/repository/shops/getShopLikeCount'
 import { getShopProductCount } from '@/repository/shops/getShopProductCount'
 import { getShopReviewCount } from '@/repository/shops/getShopReviewCount'
 import { getShopReviews } from '@/repository/shops/getShopReviews'
@@ -20,13 +20,13 @@ import getServerSupabase from '@/utils/supabase/getServerSupabase'
  */
 export const getServerSideProps: GetServerSideProps<{
     isMyShop: boolean
-    shop: Shop // Shop information (상점 정보)
-    productCount: number // Total product count (총 상품 수)
-    reviewCount: number // Total review count (총 리뷰 수)
-    likeCount: number // Total like count (총 찜 수)
-    followingCount: number // Total following count (총 팔로잉 수)
-    followerCount: number // Total follower count (총 팔로워 수)
-    reviews: Review[] // List of reviews (리뷰 목록)
+    shop: Shop
+    productCount: number
+    reviewCount: number
+    likeCount: number
+    followingCount: number
+    followerCount: number
+    reviews: Review[]
 }> = async (context) => {
     const supabase = getServerSupabase(context)
     const shopId = context.query.shopId as string
@@ -45,12 +45,12 @@ export const getServerSideProps: GetServerSideProps<{
     ] = await Promise.all([
         getMe(supabase),
         getShop(supabase, shopId), // Fetch shop details (상점 세부정보 가져오기)
-        getShopProductCount(shopId), // Fetch product count (상품 수 가져오기)
-        getShopReviewCount(shopId), // Fetch review count (리뷰 수 가져오기)
-        getShopLikeCount(shopId), // Fetch like count (찜 수 가져오기)
-        getShopFollowingCount(shopId), // Fetch following count (팔로잉 수 가져오기)
-        getShopFollowerCount(shopId), // Fetch follower count (팔로워 수 가져오기)
-        getShopReviews({ shopId, fromPage: 0, toPage: 1 }), // Fetch reviews (리뷰 가져오기)
+        getShopProductCount(supabase, shopId), // Fetch product count (상품 수 가져오기)
+        getShopReviewCount(supabase, shopId), // Fetch review count (리뷰 수 가져오기)
+        getShopLikeCount(supabase, shopId), // Fetch like count (찜 수 가져오기)
+        getShopFollowingCount(supabase, shopId), // Fetch following count (팔로잉 수 가져오기)
+        getShopFollowerCount(supabase, shopId), // Fetch follower count (팔로워 수 가져오기)
+        getShopReviews(supabase, { shopId, fromPage: 0, toPage: 1 }), // Fetch reviews (리뷰 가져오기)
     ])
 
     return {
@@ -101,6 +101,7 @@ export default function ShopReviews({
                     {reviewCount.toLocaleString()} reviews
                 </Text>{' '}
             </div>
+
             <ReviewList
                 initialReviews={initialReviews} // Initial review data
                 count={reviewCount} // Total review count
