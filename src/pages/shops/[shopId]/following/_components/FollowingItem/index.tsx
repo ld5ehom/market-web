@@ -35,9 +35,9 @@ export default function FollowingItem({ shopId }: Props) {
                 { data: followerCount }, // Fetch total follower count (팔로워 총 수 가져오기)
             ] = await Promise.all([
                 getShop(supabase, shopId),
-                getShopProducts({ shopId, fromPage: 0, toPage: 1 }),
-                getShopProductCount(shopId),
-                getShopFollowerCount(shopId),
+                getShopProducts(supabase, { shopId, fromPage: 0, toPage: 1 }),
+                getShopProductCount(supabase, shopId),
+                getShopFollowerCount(supabase, shopId),
             ])
             setData({ shop, products, productCount, followerCount })
         })()

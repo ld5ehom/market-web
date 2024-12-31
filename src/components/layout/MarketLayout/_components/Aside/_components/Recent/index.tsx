@@ -5,6 +5,7 @@ import Text from '@/components/common/Text'
 import { getProduct } from '@/repository/products/getProduct' // Fetch product details API
 import { Product } from '@/types'
 import { RECENT_ITEM_IDS_KEY, getRecentItemIds } from '@/utils/localstorage'
+import supabase from '@/utils/supabase/browserSupabase'
 
 /**
  * Recent Products Component
@@ -41,7 +42,7 @@ export default function Recent() {
             setIsLoading(true) // Show loading spinner (로딩 스피너 표시)
             const recentIds = getRecentItemIds() // Get recent product IDs from local storage (로컬 저장소에서 최근 상품 ID 가져오기)
             const results = await Promise.all(
-                recentIds.map((productId) => getProduct(productId)), // Fetch product data for each ID (각 ID에 대한 상품 데이터 가져오기)
+                recentIds.map((productId) => getProduct(supabase, productId)), // Fetch product data for each ID (각 ID에 대한 상품 데이터 가져오기)
             )
             const products = results.map(({ data }) => data) // Extract product data from API results (API 결과에서 상품 데이터 추출)
             setRecentProducts(products) // Update the state with recent products (최근 본 상품으로 상태 업데이트)

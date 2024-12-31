@@ -247,6 +247,7 @@
 
 -   **Issues** : [task-9-supabase](https://github.com/ld5ehom/market-web/tree/task-9-supabase)
 -   **Details** :
+
     -   **Authentication with Supabase: Login and Signup Integration** [4b18a82](https://github.com/ld5ehom/market-web/commit/4b18a8277ab54b2304ae0d056a0288f728be7bfc)
         ```
         npm i @supabase/supabase-js --legacy-peer-deps
@@ -261,11 +262,20 @@
         ```
         npm i camelcase-keys --legacy-peer-deps
         ```
-    -   **Supabase Integration for My Store**
+    -   **Supabase Integration for My Store** [7189350](https://github.com/ld5ehom/market-web/commit/7189350512d5b824c103c8c38085692fd1f1b02c)
         -   Integrated SDK to enable updating store name, description, and profile image.
         -   Added a bucket in Supabase Storage for profile images and linked it for updates. Utilized the nanoid library to ensure unique file names.
         ```
         npm i nanoid --legacy-peer-deps
+        ```
+    -   **Integration of Product, Shop Reviews, Likes, Followers, Following, and History Data**
+
+        -   Integrated Supabase to manage and connect data for products, shop reviews, likes, followers, following, and purchase/sale transactions.
+        -   Implemented comprehensive product management features, including creation, deletion, updating.
+
+        ```
+        npm install --save snakecase-keys --legacy-peer-deps
+
         ```
 
 **Task 10: Deploying the Project**

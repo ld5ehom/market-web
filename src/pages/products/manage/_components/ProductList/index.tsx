@@ -6,9 +6,11 @@ import { useEffect, useState } from 'react'
 import Button from '@/components/common/Button'
 import Pagination from '@/components/common/Pagination'
 import Text from '@/components/common/Text'
+import { deleteProduct } from '@/repository/products/deleteProduct'
 import { getShopProducts } from '@/repository/shops/getShopProducts'
 import { Product } from '@/types'
 import Image from 'next/image' // Use next/image for optimized image handling (이미지 최적화를 위한 next/image 사용)
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     initialProducts: Product[] // Initial product list (초기 상품 리스트)
@@ -27,7 +29,7 @@ export default function ProductList({ initialProducts, count, shopId }: Props) {
     // Fetch products whenever currentPage or shopId changes (currentPage 또는 shopId 변경 시 상품 데이터 가져오기)
     useEffect(() => {
         ;(async () => {
-            const { data } = await getShopProducts({
+            const { data } = await getShopProducts(supabase, {
                 shopId,
                 fromPage: currentPage - 1, // Adjust to zero-based index (0부터 시작하는 인덱스로 조정)
                 toPage: currentPage,
@@ -36,14 +38,17 @@ export default function ProductList({ initialProducts, count, shopId }: Props) {
         })()
     }, [currentPage, shopId])
 
-    // Handle edit product action (상품 수정 액션 처리)
-    const handleEditProduct = (productId: string) => {
-        alert('EDIT')
-    }
-
-    // Handle delete product action (상품 삭제 액션 처리)
-    const handleDeleteProduct = (productId: string) => {
-        alert('DELETE')
+    // Handle delete product action
+    const handleDeleteProduct = async (productId: string) => {
+        if (window.confirm('Are you sure you want to delete this product?')) {
+            try {
+                await deleteProduct(supabase, productId)
+            } catch (e) {
+                alert('Failed to delete the product')
+            } finally {
+                window.location.reload()
+            }
+        }
     }
 
     return (
@@ -71,11 +76,16 @@ export default function ProductList({ initialProducts, count, shopId }: Props) {
                             >
                                 {/* Product image */}
                                 <div className="w-28 h-28 relative">
-                                    <Image
+                                    {/* <Image
                                         src={imageUrls[0]} // Product image URL (상품 이미지 URL)
                                         alt={title} // Product title as alt text (상품 제목을 alt로 사용)
-                                        fill
+                                        layout="fill" // Fill parent container
                                         className="object-cover" // Ensure image covers the container (이미지가 컨테이너를 채우도록 설정)
+                                    /> */}
+                                    <img
+                                        src={imageUrls[0]}
+                                        alt={title}
+                                        className="w-full h-full"
                                     />
                                 </div>
 
@@ -106,16 +116,15 @@ export default function ProductList({ initialProducts, count, shopId }: Props) {
                                 {/* Action buttons for editing and deleting */}
                                 <div className="w-32 flex justify-center items-center">
                                     <div className="flex gap-2">
-                                        <Button
-                                            size="sm"
-                                            color="uclaBlue"
-                                            className="h-8 w-15"
-                                            onClick={() =>
-                                                handleEditProduct(id)
-                                            }
-                                        >
-                                            Edit
-                                        </Button>
+                                        <Link href={`/products/edit/${id}`}>
+                                            <Button
+                                                size="sm"
+                                                color="uclaBlue"
+                                                className="h-8 w-15"
+                                            >
+                                                Edit
+                                            </Button>
+                                        </Link>
                                         <Button
                                             size="sm"
                                             color="uclaBlue"

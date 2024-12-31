@@ -1,6 +1,6 @@
+import { SupabaseClient } from '@supabase/supabase-js'
+import camelcaseKeys from 'camelcase-keys'
 import { Like } from '@/types'
-import { getMockLikeData } from '@/utils/mock'
-import { getShopLikeCount } from '../likes/getShopLikeCount'
 
 type Params = {
     shopId: string
@@ -8,19 +8,31 @@ type Params = {
     toPage?: number
 }
 
-// Like Cart page
-export async function getShopLikes({
-    shopId,
-}: Params): Promise<{ data: Like[] }> {
-    // Fetch the total number of likes dynamically
-    // 전체 찜 개수를 동적으로 가져옴
-    const { data: totalLikes } = await getShopLikeCount(shopId)
+// Supabase
+export async function getShopLikes(
+    supabase: SupabaseClient,
+    { shopId, fromPage = 0, toPage = 1 }: Params,
+): Promise<{ data: Like[] }> {
+    // Mock data
+    if (process.env.USE_MOCK_DATA === 'true') {
+        const { getMockLikeData } = await import('@/utils/mock')
+        const data: Like[] = Array.from({
+            length: (toPage - fromPage) * 10,
+        }).map(() => getMockLikeData({ createdBy: shopId }))
 
-    // Generate the number of likes based on the total count
-    // 총 개수에 따라 찜 데이터를 생성
-    const data: Like[] = Array.from({ length: totalLikes }).map(() =>
-        getMockLikeData({ createdBy: shopId }),
-    )
+        return { data }
+    }
 
-    return Promise.resolve({ data })
+    const { data, error } = await supabase
+        .from('likes')
+        .select('*, product: product_id(*)')
+        .eq('created_by', shopId)
+        .range((fromPage ?? 0) * 10, (toPage ?? 1) * 10 - 1)
+        .order('created_at', { ascending: false })
+
+    if (error) {
+        throw error
+    }
+
+    return { data: camelcaseKeys(data, { deep: true }) }
 }

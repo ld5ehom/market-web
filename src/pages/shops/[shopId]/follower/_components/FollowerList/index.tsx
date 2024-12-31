@@ -4,6 +4,7 @@ import Pagination from '@/components/common/Pagination'
 import Text from '@/components/common/Text'
 import { getShopFollower } from '@/repository/shops/getShopFollower'
 import { Follow } from '@/types'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     initialFollower: Follow[] // Initial follower data (초기 팔로워 데이터)
@@ -25,7 +26,7 @@ export default function FollowerList({
     // Fetch followers when currentPage or shopId changes (currentPage 또는 shopId 변경 시 팔로워 데이터 가져오기)
     useEffect(() => {
         ;(async () => {
-            const { data } = await getShopFollower({
+            const { data } = await getShopFollower(supabase, {
                 shopId,
                 fromPage: currentPage - 1, // API starts pages at 0 (API는 0부터 페이지 시작)
                 toPage: currentPage, // Fetch current page followers (현재 페이지 팔로워 가져오기)

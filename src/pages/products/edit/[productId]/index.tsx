@@ -28,7 +28,7 @@ export const getServerSideProps: GetServerSideProps<{
         const productId = context.query.productId as string
 
         // Fetch the product details using the product ID (상품 ID를 사용해 상품 정보를 가져옴)
-        const { data: product } = await getProduct(productId)
+        const { data: product } = await getProduct(supabase, productId)
 
         // Return the product data as props (상품 데이터를 props로 반환)
         return { props: { product } }
@@ -59,7 +59,7 @@ export default function ProductEdit({
             imageUrls={product.imageUrls}
             title={product.title}
             isUsed={product.isUsed}
-            isChangable={product.isChangable}
+            isChangeable={product.isChangeable}
             price={product.price}
             city={city as City}
             district={district}

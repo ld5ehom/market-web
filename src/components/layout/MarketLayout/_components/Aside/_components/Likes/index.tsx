@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Spinner from '@/components/common/Spinner'
 import Text from '@/components/common/Text'
 import { getMe } from '@/repository/me/getMe'
-import { getShopLikeCount } from '@/repository/likes/getShopLikeCount'
+import { getShopLikeCount } from '@/repository/shops/getShopLikeCount'
 import supabase from '@/utils/supabase/browserSupabase'
 
 /**
@@ -33,7 +33,7 @@ export default function Likes() {
             }
 
             // Fetch the like count for the user's shop
-            const { data: likeCount } = await getShopLikeCount(shopId)
+            const { data: likeCount } = await getShopLikeCount(supabase, shopId)
             setShopId(shopId)
             setLikeCount(likeCount)
         })()

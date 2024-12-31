@@ -6,7 +6,7 @@ import { getMe } from '@/repository/me/getMe'
 import { getShop } from '@/repository/shops/getShop'
 import { getShopFollowerCount } from '@/repository/shops/getShopFollowerCount'
 import { getShopFollowingCount } from '@/repository/shops/getShopFollowingCount'
-import { getShopLikeCount } from '@/repository/likes/getShopLikeCount'
+import { getShopLikeCount } from '@/repository/shops/getShopLikeCount'
 import { getShopProductCount } from '@/repository/shops/getShopProductCount'
 import { getShopProducts } from '@/repository/shops/getShopProducts'
 import { getShopReviewCount } from '@/repository/shops/getShopReviewCount'
@@ -24,6 +24,7 @@ export const getServerSideProps: GetServerSideProps<{
     products: Product[]
 }> = async (context) => {
     const supabase = getServerSupabase(context)
+
     const shopId = context.query.shopId as string
 
     const [
@@ -40,12 +41,12 @@ export const getServerSideProps: GetServerSideProps<{
     ] = await Promise.all([
         getMe(supabase),
         getShop(supabase, shopId),
-        getShopProductCount(shopId),
-        getShopReviewCount(shopId),
-        getShopLikeCount(shopId),
-        getShopFollowingCount(shopId),
-        getShopFollowerCount(shopId),
-        getShopProducts({ shopId, fromPage: 0, toPage: 1 }),
+        getShopProductCount(supabase, shopId),
+        getShopReviewCount(supabase, shopId),
+        getShopLikeCount(supabase, shopId),
+        getShopFollowingCount(supabase, shopId),
+        getShopFollowerCount(supabase, shopId),
+        getShopProducts(supabase, { shopId, fromPage: 0, toPage: 1 }),
     ])
 
     return {
@@ -83,14 +84,12 @@ export default function ShopProducts({
             followerCount={followerCount}
             currentTab="products"
         >
-            <div className="mt-9 mb-5 text-center">
+            <div className="mt-9 mb-5">
                 <Text size="lg"> Products : </Text>
-                <Text size="2xl" color="uclaBlue">
+                <Text size="lg" color="uclaBlue">
                     {productCount.toLocaleString()}
                 </Text>
             </div>
-
-            {/* Seller Shop Product List */}
             <ProductList
                 initialProducts={products}
                 count={productCount}

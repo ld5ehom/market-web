@@ -53,7 +53,7 @@ export const getServerSideProps: GetServerSideProps<{
     const productId = context.query.productId as string
 
     // Fetch product data from the repository (리포지토리에서 제품 데이터를 가져옴)
-    const { data: product } = await getProduct(productId)
+    const { data: product } = await getProduct(supabase, productId)
     const {
         data: { shopId: myShopId },
     } = await getMe(supabase)
@@ -78,17 +78,25 @@ export const getServerSideProps: GetServerSideProps<{
             : { data: false },
         Promise.all((product.tags || []).map((tag) => getProductsByTag(tag))),
         getShop(supabase, product.createdBy),
-        getShopProductCount(product.createdBy),
-        getShopFollowerCount(product.createdBy),
+        getShopProductCount(supabase, product.createdBy),
+        getShopFollowerCount(supabase, product.createdBy),
         myShopId !== null
             ? getIsFollowedByShopId({
                   followerId: myShopId,
                   followedId: product.createdBy,
               })
             : { data: false },
-        getShopProducts({ shopId: product.createdBy, fromPage: 0, toPage: 1 }),
-        getShopReviews({ shopId: product.createdBy, fromPage: 0, toPage: 1 }),
-        getShopReviewCount(product.createdBy),
+        getShopProducts(supabase, {
+            shopId: product.createdBy,
+            fromPage: 0,
+            toPage: 1,
+        }),
+        getShopReviews(supabase, {
+            shopId: product.createdBy,
+            fromPage: 0,
+            toPage: 1,
+        }),
+        getShopReviewCount(supabase, product.createdBy),
     ])
 
     /**
@@ -327,7 +335,7 @@ export default function ProductDetail({
 
                                 {/* Exchangeable */}
                                 <div className="rounded-full bg-lightestBlue px-3 py-1 text-sm">
-                                    {product.isChangable
+                                    {product.isChangeable
                                         ? 'Exchangeable'
                                         : 'Not Exchangeable'}{' '}
                                 </div>

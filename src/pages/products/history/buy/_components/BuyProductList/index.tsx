@@ -4,6 +4,7 @@ import Pagination from '@/components/common/Pagination'
 import Text from '@/components/common/Text'
 import { getShopSells } from '@/repository/shops/getShopSells'
 import { Product } from '@/types'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     initialProducts: Product[]
@@ -22,7 +23,7 @@ export default function BuyProductList({
     // Fetches purchased product data when the page or shop ID changes (페이지나 상점 ID가 변경될 때 구매 상품 데이터를 가져옴)
     useEffect(() => {
         ;(async () => {
-            const { data } = await getShopSells({
+            const { data } = await getShopSells(supabase, {
                 shopId,
                 fromPage: currentPage - 1,
                 toPage: currentPage,
