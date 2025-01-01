@@ -1,4 +1,5 @@
-import { faker } from '@faker-js/faker'
+import { SupabaseClient } from '@supabase/supabase-js'
+import camelcaseKeys from 'camelcase-keys'
 import { Product } from '@/types'
 import { getMockProductData } from '@/utils/mock'
 
@@ -11,25 +12,35 @@ type Params = {
 
 // Function to generate mock product data based on the search keyword
 // 검색 키워드를 기반으로 모의 상품 데이터를 생성하는 함수
-export async function getProductsByKeyword({
-    query,
-    fromPage = 0,
-    toPage = 1,
-}: Params): Promise<{ data: Product[] }> {
-    // Create an array of mock product data with length based on the page range
-    // 페이지 범위를 기반으로 길이가 지정된 모의 상품 데이터 배열 생성
-    const data: Product[] = Array.from({
-        length: (toPage - fromPage) * 20,
-    }).map(
-        // () =>
-        (_, index) =>
+export async function getProductsByKeyword(
+    supabase: SupabaseClient,
+    { query, fromPage = 0, toPage = 1 }: Params,
+): Promise<{ data: Product[] }> {
+    if (process.env.USE_MOCK_DATA === 'true') {
+        const { getMockProductData } = await import('@/utils/mock')
+        const data: Product[] = Array.from({
+            length: (toPage - fromPage) * 10,
+        }).map((_, index) =>
             getMockProductData({
-                // Append the query to a generated product name
-                // title: `${query} - ${faker.commerce.productName()}`,
                 title: `${query} - ${index}`,
             }),
-    )
+        )
+
+        return { data }
+    }
+
+    const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .like('title', `%${query}%`)
+        .is('purchase_by', null)
+        .range((fromPage ?? 0) * 10, (toPage ?? 1) * 10 - 1)
+        .order('created_at', { ascending: false })
+
+    if (error) {
+        throw error
+    }
 
     // Return the mock data as a resolved promise 모의 데이터를 해결된 프로미스로 반환
-    return Promise.resolve({ data })
+    return { data: camelcaseKeys(data, { deep: true }) }
 }

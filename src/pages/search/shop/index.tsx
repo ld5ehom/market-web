@@ -9,6 +9,8 @@ import Wrapper from '@/components/layout/Wrapper'
 import { getShopsByKeyword } from '@/repository/shops/getShopsByKeyword'
 import { getShopsByKeywordCount } from '@/repository/shops/getShopsByKeywordCount'
 import { Shop } from '@/types'
+import supabase from '@/utils/supabase/browserSupabase'
+import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 // Fetch shop data from the server based on the search query
 // 검색어를 기반으로 서버에서 상점 데이터를 가져옴
@@ -17,6 +19,7 @@ export const getServerSideProps: GetServerSideProps<{
     query: string // The search query string (검색어 문자열)
     count: number // Total number of shops matching the query (쿼리에 해당하는 전체 상점 수)
 }> = async (context) => {
+    const supabase = getServerSupabase(context)
     const originalQuery = context.query.query as string | undefined
 
     // Throw an error if no search query is provided (검색어가 없을 경우 에러를 발생시킴)
@@ -29,12 +32,12 @@ export const getServerSideProps: GetServerSideProps<{
 
     // Fetch shops using the search query (검색어를 사용해 shop 데이터를 가져옴)
     const [{ data: shops }, { data: count }] = await Promise.all([
-        getShopsByKeyword({
+        getShopsByKeyword(supabase, {
             query,
             fromPage: 0,
             toPage: 1,
         }),
-        getShopsByKeywordCount(query),
+        getShopsByKeywordCount(supabase, query),
     ])
 
     // Return props to the component (컴포넌트에 props 반환)
@@ -63,7 +66,7 @@ export default function SearchShop({
         // Fetch updated shop data when the current page or query changes
         // 현재 페이지나 검색어가 변경될 때 상점 데이터를 업데이트
         ;(async () => {
-            const { data: shops } = await getShopsByKeyword({
+            const { data: shops } = await getShopsByKeyword(supabase, {
                 query,
                 // Adjust page number for server-side handling, starting from 0
                 // 서버에서 처리할 때 페이지 번호는 0부터 시작

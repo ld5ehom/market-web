@@ -4,6 +4,7 @@ import Button from '@/components/common/Button'
 import Text from '@/components/common/Text'
 import { getReviewByProductId } from '@/repository/reviews/getReviewByProductId'
 import Image from 'next/image'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     id: string
@@ -18,7 +19,7 @@ export default function BuyProductItem({ id, title, price, imageUrl }: Props) {
     // Checks if a review has been posted for the product (상품에 대한 리뷰가 작성되었는지 확인)
     useEffect(() => {
         ;(async () => {
-            const { data } = await getReviewByProductId(id) // Fetches review data for the product (상품의 리뷰 데이터를 가져옴)
+            const { data } = await getReviewByProductId(supabase, id) // Fetches review data for the product (상품의 리뷰 데이터를 가져옴)
             setIsReviewPosted(!!data) // Updates state based on the review existence (리뷰 존재 여부에 따라 상태 업데이트)
         })()
     }, [id])
