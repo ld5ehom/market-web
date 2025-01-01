@@ -268,15 +268,18 @@
         ```
         npm i nanoid --legacy-peer-deps
         ```
-    -   **Integration of Product, Shop Reviews, Likes, Followers, Following, and History Data**
+    -   **Integration of Product, Shop Reviews, Likes, Followers, Following, and History Data** [8c1ade8](https://github.com/ld5ehom/market-web/commit/8c1ade84d51547c993ca197db7a5b39416d520eb)
 
         -   Integrated Supabase to manage and connect data for products, shop reviews, likes, followers, following, and purchase/sale transactions.
         -   Implemented comprehensive product management features, including creation, deletion, updating.
 
         ```
         npm install --save snakecase-keys --legacy-peer-deps
-
         ```
+
+    -   **Integrating Supabase for product list, product search, product order, product details, and review features.**
+        -   Updated the banner by fetching images from GitHub/ld5ehom and implemented automatic sliding every 5 seconds.
+        -   Resolved the issue of duplicate products on the Main page.
 
 **Task 10: Deploying the Project**
 

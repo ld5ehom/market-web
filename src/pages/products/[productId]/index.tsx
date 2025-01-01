@@ -17,9 +17,14 @@ import Text from '@/components/common/Text'
 import Container from '@/components/layout/Container'
 import Wrapper from '@/components/layout/Wrapper'
 import MarkdownViewerSkeleton from '@/components/shared/MarkdownViewer/Skeleton'
+import { createdFollow } from '@/repository/followers/createFollow'
+import { deleteFollow } from '@/repository/followers/deleteFollow'
 import { getIsFollowedByShopId } from '@/repository/followers/getIsFollowedByShopId'
+import { createLike } from '@/repository/likes/createLike'
+import { deleteLike } from '@/repository/likes/deleteLike'
 import { getIsLikedWithProductIdAndShopId } from '@/repository/likes/getIsLikedWithProductIdAndShopId'
 import { getMe } from '@/repository/me/getMe'
+import { buyProduct } from '@/repository/products/buyProduct'
 import { getProduct } from '@/repository/products/getProduct'
 import { getProductsByTag } from '@/repository/products/getProductsByTag'
 import { getShop } from '@/repository/shops/getShop'
@@ -30,6 +35,7 @@ import { getShopReviewCount } from '@/repository/shops/getShopReviewCount'
 import { getShopReviews } from '@/repository/shops/getShopReviews'
 import { Review, Product as TProduct, Shop as TShop } from '@/types'
 import { addRecentItemId } from '@/utils/localstorage'
+import supabase from '@/utils/supabase/browserSupabase'
 import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 /**
@@ -71,17 +77,19 @@ export const getServerSideProps: GetServerSideProps<{
         { data: reviewCount },
     ] = await Promise.all([
         myShopId !== null
-            ? await getIsLikedWithProductIdAndShopId({
+            ? await getIsLikedWithProductIdAndShopId(supabase, {
                   productId,
                   shopId: myShopId,
               })
             : { data: false },
-        Promise.all((product.tags || []).map((tag) => getProductsByTag(tag))),
+        Promise.all(
+            (product.tags || []).map((tag) => getProductsByTag(supabase, tag)),
+        ),
         getShop(supabase, product.createdBy),
         getShopProductCount(supabase, product.createdBy),
         getShopFollowerCount(supabase, product.createdBy),
         myShopId !== null
-            ? getIsFollowedByShopId({
+            ? getIsFollowedByShopId(supabase, {
                   followerId: myShopId,
                   followedId: product.createdBy,
               })
@@ -176,9 +184,17 @@ export default function ProductDetail({
     }
 
     // Handle like action (찜하기 동작 처리)
-    const handleToggleLike = checkAuth(() => {
-        setIsLiked((prev) => !prev)
-        // TODO : Send request to the server (서버에 요청을 보냄)
+    const handleToggleLike = checkAuth(async () => {
+        try {
+            setIsLiked(!isLiked)
+            if (!isLiked) {
+                await createLike(supabase, product.id)
+            } else {
+                await deleteLike(supabase, product.id)
+            }
+        } catch (e) {
+            setIsLiked(isLiked)
+        }
     })
 
     // Handle chat action (채팅하기 동작 처리)
@@ -187,13 +203,23 @@ export default function ProductDetail({
     })
 
     // Handle purchase action (구매하기 동작 처리)
-    const handlePruchase = checkAuth(() => {
-        alert('Purchase Now')
+    const handlePruchase = checkAuth(async () => {
+        await buyProduct(supabase, product.id)
+        location.reload()
     })
 
-    const handleToggleFollow = checkAuth(() => {
-        setIsFollowed((prev) => !prev)
-        // TODO : Send request to the server (서버에 요청을 보냄)
+    // Send request to the server (서버에 요청을 보냄)
+    const handleToggleFollow = checkAuth(async () => {
+        try {
+            setIsFollowed(!isFollowed)
+            if (!isFollowed) {
+                await createdFollow(supabase, product.createdBy)
+            } else {
+                await deleteFollow(supabase, product.createdBy)
+            }
+        } catch (e) {
+            setIsFollowed(isFollowed)
+        }
     })
 
     // Recent View history

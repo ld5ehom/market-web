@@ -352,6 +352,51 @@ export default function ProductForm({
                         </div>
                     </div>
 
+                    <div className="flex border-b border-grey-300 pb-7 pt-5">
+                        <div className="w-40">
+                            <Text size="lg"> Locate </Text>
+                            <Text size="md" color="red">
+                                *
+                            </Text>
+                        </div>
+                        <div className="flex-1 flex gap-2">
+                            <select
+                                className="border py-1 px-2 w-32"
+                                name="city"
+                                required
+                                defaultValue={defaultCity}
+                                onChange={(e) => {
+                                    if (e.currentTarget.value) {
+                                        setCity(e.currentTarget.value as City)
+                                    } else {
+                                        setCity(undefined)
+                                    }
+                                }}
+                            >
+                                <option value=""></option>
+                                {cities.map((city) => (
+                                    <option key={city} value={city}>
+                                        {city}
+                                    </option>
+                                ))}
+                            </select>
+                            {!!city && (
+                                <select
+                                    className="border py-1 px-2 w-32"
+                                    name="district"
+                                    defaultValue={defaultDistrict}
+                                >
+                                    <option value=""> Select </option>
+                                    {getDistricts(city).map((district) => (
+                                        <option key={district} value={district}>
+                                            {district}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
+                        </div>
+                    </div>
+
                     {/* Tags Section (태그 섹션) */}
                     <div className="flex border-b border-grey-300 pb-7 pt-5">
                         <div className="w-40">

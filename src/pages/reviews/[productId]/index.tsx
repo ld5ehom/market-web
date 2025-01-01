@@ -8,9 +8,11 @@ import Wrapper from '@/components/layout/Wrapper'
 import MarkdownEditorSkeleton from '@/components/shared/MarkdownEditor/Skeleton'
 import { getMe } from '@/repository/me/getMe'
 import { getProduct } from '@/repository/products/getProduct'
+import { createReview } from '@/repository/reviews/createReview'
 import { getReviewByProductId } from '@/repository/reviews/getReviewByProductId'
 import { Product, Review } from '@/types'
 import { AuthError } from '@/utils/error'
+import supabase from '@/utils/supabase/browserSupabase'
 import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 // Fetches product and review data during server-side rendering (서버사이드 렌더링 중 상품 및 리뷰 데이터를 가져옴)
@@ -32,7 +34,7 @@ export const getServerSideProps: GetServerSideProps<{
         const productId = context.query.productId as string
         const [{ data: product }, { data: review }] = await Promise.all([
             getProduct(supabase, productId),
-            getReviewByProductId(productId),
+            getReviewByProductId(supabase, productId),
         ])
         return {
             props: { product, review },
@@ -62,11 +64,23 @@ export default function ReviewPage({
     product,
     review,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [value, setValue] = useState<string>(review?.contents || '') // Initializes textarea with existing review contents (리뷰 내용으로 텍스트 영역 초기화)
 
     // Handles review submission (리뷰 제출을 처리하는 함수)
-    const handleSubmit = () => {
-        alert(value) // Displays the review contents in an alert (리뷰 내용을 알림으로 표시)
+    const handleSubmit = async () => {
+        try {
+            setIsLoading(true)
+            await createReview(supabase, {
+                productId: product.id,
+                contents: value,
+            })
+            location.reload()
+        } catch (e) {
+            alert('Failed to submit the review.')
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
@@ -97,6 +111,7 @@ export default function ReviewPage({
                             color="uclaBlue"
                             onClick={handleSubmit}
                             disabled={!!review}
+                            isLoading={isLoading}
                         >
                             Submit
                         </Button>

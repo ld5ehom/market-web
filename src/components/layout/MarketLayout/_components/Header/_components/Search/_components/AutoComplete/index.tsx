@@ -2,10 +2,10 @@ import { throttle } from 'lodash'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
-
 import Text from '@/components/common/Text'
 import { getProductsByKeyword } from '@/repository/products/getProductsByKeyword'
 import { addRecentKeyword } from '@/utils/localstorage'
+import supabase from '@/utils/supabase/browserSupabase'
 
 // Props type for the AutoComplete component (AutoComplete 컴포넌트의 Props 타입 정의)
 type Props = {
@@ -29,7 +29,7 @@ export default function AutoComplete({ query, handleClose }: Props) {
                     setKeywords([])
                     return
                 }
-                const { data } = await getProductsByKeyword({
+                const { data } = await getProductsByKeyword(supabase, {
                     query,
                     fromPage: 0,
                     toPage: 2,

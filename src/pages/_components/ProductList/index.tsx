@@ -1,73 +1,63 @@
 import Link from 'next/link'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import Product from '@/components/common/Product'
 import Spinner from '@/components/common/Spinner'
 import { getProducts } from '@/repository/products/getProducts'
 import { Product as TProduct } from '@/types'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
-    initialProducts: TProduct[]
+    initialProducts: TProduct[] // Initial list of products passed as props
 }
 
 export default function ProductList({ initialProducts }: Props) {
-    const [products, setProducts] = useState<TProduct[]>(initialProducts || [])
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [isLastPage, setIsLastPage] = useState<boolean>(false)
-    const [page, setPage] = useState<number>(2) // Initial page index
+    const [products, setProducts] = useState<TProduct[]>(initialProducts) // State to store the list of products
+    const { ref, inView } = useInView({ threshold: 1 }) // Intersection observer hook for infinite scroll
+    const [isLoading, setIsLoading] = useState<boolean>(false) // Loading state
+    const [isLastPage, setIsLastPage] = useState<boolean>(false) // Flag to check if it is the last page
 
-    // Maximum number of items to display
-    const MAX_ITEMS = 15
+    // Function to fetch products from the server
+    const handleGetProducts = async ({
+        fromPage,
+        toPage,
+    }: {
+        fromPage: number
+        toPage: number
+    }) => {
+        try {
+            setIsLoading(true) // Start loading
+            const { data } = await getProducts(supabase, { fromPage, toPage })
+            setProducts((prevProducts) => [...prevProducts, ...data]) // Append new products to the existing list
 
-    const { ref, inView } = useInView({ threshold: 1 })
-
-    // Function to fetch products and append them to the list
-    const handleGetProducts = useCallback(
-        async ({ fromPage, toPage }: { fromPage: number; toPage: number }) => {
-            if (isLastPage) return // Prevent fetching if it's the last page
-            try {
-                setIsLoading(true)
-                const { data = [] } = await getProducts({ fromPage, toPage })
-
-                setProducts((prevProducts) => {
-                    const updatedProducts = [...prevProducts, ...data]
-                    if (
-                        updatedProducts.length >= MAX_ITEMS ||
-                        data.length === 0
-                    ) {
-                        setIsLastPage(true) // Stop fetching if no more data or reached max items
-                    }
-                    return updatedProducts.slice(0, MAX_ITEMS) // Ensure limit is respected
-                })
-            } finally {
-                setIsLoading(false)
+            if (data.length === 0) {
+                setIsLastPage(true) // If no more products, set isLastPage to true
             }
-        },
-        [isLastPage, MAX_ITEMS],
-    )
-
-    // Initial fetch on component mount
-    useEffect(() => {
-        handleGetProducts({ fromPage: 0, toPage: 2 })
-    }, [handleGetProducts])
-
-    // Fetch additional products when inView is true
-    useEffect(() => {
-        if (inView && !isLastPage) {
-            handleGetProducts({ fromPage: page, toPage: page + 1 })
-            setPage((prevPage) => prevPage + 1)
+        } finally {
+            setIsLoading(false) // End loading
         }
-    }, [inView, handleGetProducts, isLastPage, page])
+    }
+
+    // Initial page starts at 2 (since first two pages are loaded initially)
+    const [page, setPage] = useState<number>(2)
+
+    useEffect(() => {
+        if (inView) {
+            // If the last product is in view, fetch the next page of products
+            ;(async () => {
+                handleGetProducts({ fromPage: page, toPage: page + 1 })
+                setPage(page + 1) // Increment the page number after fetching
+            })()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [inView]) // Only re-run if inView changes (when the last item is visible)
 
     return (
         <div className="my-8">
             <div className="grid grid-cols-5 gap-4">
-                {products.map(({ id, title, price, imageUrls, createdAt }) => (
-                    <Link
-                        key={id}
-                        className="rounded-lg overflow-hidden border"
-                        href={`/products/${id}`}
-                    >
+                {/* Render each product */}
+                {products?.map(({ id, title, price, imageUrls, createdAt }) => (
+                    <Link key={id} href={`/products/${id}`}>
                         <Product
                             title={title}
                             price={price}
@@ -78,15 +68,17 @@ export default function ProductList({ initialProducts }: Props) {
                 ))}
             </div>
 
-            {/* Loading spinner */}
+            {/* Show a loading spinner while fetching */}
             {isLoading && (
                 <div className="text-center mt-2">
                     <Spinner />
                 </div>
             )}
 
-            {/* Infinite scroll trigger */}
-            {!isLastPage && products.length < MAX_ITEMS && <div ref={ref} />}
+            {/* Infinite scroll trigger - load more products if there are more pages */}
+            {!isLastPage && !!products.length && products.length < 100 && (
+                <div ref={ref} /> // Reference to the last product for triggering the fetch
+            )}
         </div>
     )
 }

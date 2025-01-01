@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker'
-
+import { SupabaseClient } from '@supabase/supabase-js'
+import camelcaseKeys from 'camelcase-keys'
 import { Shop } from '@/types'
-import { getMockShopData } from '@/utils/mock'
 
 // Type definition for function parameters 함수 매개변수에 대한 타입 정의
 type Params = {
@@ -12,23 +12,30 @@ type Params = {
 
 // Function to generate mock shop data based on the search keyword
 // 검색어를 기반으로 모의 상점 데이터를 생성하는 함수
-export async function getShopsByKeyword({
-    query,
-    fromPage = 0,
-    toPage = 1,
-}: Params): Promise<{ data: Shop[] }> {
-    // Create an array of mock shop data, with 10 shops per page
-    // 페이지당 20개의 상점을 포함하는 모의 상점 데이터 배열 생성
-    const data: Shop[] = Array.from({ length: (toPage - fromPage) * 10 }).map(
-        // () =>
-        (_, idx) =>
+export async function getShopsByKeyword(
+    supabase: SupabaseClient,
+    { query, fromPage = 0, toPage = 1 }: Params,
+): Promise<{ data: Shop[] }> {
+    // Mock data
+    if (process.env.USE_MOCK_DATA === 'true') {
+        const { getMockShopData } = await import('@/utils/mock')
+        const data: Shop[] = Array.from({
+            length: (toPage - fromPage) * 10,
+        }).map((_, idx) =>
             getMockShopData({
-                // Generate a shop name with the query appended (쿼리가 추가된 상점 이름을 생성)
-                // name: `${query} - ${faker.internet.displayName()}`,
                 name: `${query} - ${idx}`,
             }),
-    )
+        )
+        return { data }
+    }
+    const { data, error } = await supabase
+        .from('shops')
+        .select('*')
+        .like('name', `%${query}%`)
+    if (error) {
+        throw error
+    }
 
     // Return the mock data as a resolved promise
-    return Promise.resolve({ data })
+    return { data: camelcaseKeys(data, { deep: true }) }
 }

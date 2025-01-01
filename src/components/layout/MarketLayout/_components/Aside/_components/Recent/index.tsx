@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import RecentItem from './_components/RecentItem'
 import Spinner from '@/components/common/Spinner'
 import Text from '@/components/common/Text'
-import { getProduct } from '@/repository/products/getProduct' // Fetch product details API
+import { getProduct } from '@/repository/products/getProduct'
 import { Product } from '@/types'
 import { RECENT_ITEM_IDS_KEY, getRecentItemIds } from '@/utils/localstorage'
 import supabase from '@/utils/supabase/browserSupabase'
