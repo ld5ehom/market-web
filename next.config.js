@@ -2,7 +2,7 @@
 const nextConfig = {
     reactStrictMode: false,
     env: {
-        USE_MOCK_DATA: 'false',
+        USE_MOCK_DATA: process.env.USE_MOCK_DATA === 'true' ? 'true' : 'false',
         SUPABASE_URL: process.env.SUPABASE_URL, // Securely load from .env
         SUPABASE_KEY: process.env.SUPABASE_KEY, // Securely load from .env
     },

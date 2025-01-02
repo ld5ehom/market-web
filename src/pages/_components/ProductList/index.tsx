@@ -8,10 +8,10 @@ import { Product as TProduct } from '@/types'
 import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
-    initialProducts: TProduct[] // Initial list of products passed as props
+    initialProducts?: TProduct[] // Initial list of products passed as props
 }
 
-export default function ProductList({ initialProducts }: Props) {
+export default function ProductList({ initialProducts = [] }: Props) {
     const [products, setProducts] = useState<TProduct[]>(initialProducts) // State to store the list of products
     const { ref, inView } = useInView({ threshold: 1 }) // Intersection observer hook for infinite scroll
     const [isLoading, setIsLoading] = useState<boolean>(false) // Loading state
