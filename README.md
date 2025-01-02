@@ -289,7 +289,7 @@
 
 -   **Issues** : [task-10-deploy](https://github.com/ld5ehom/market-web/tree/task-10-deploy)
 -   **Details** :
-    -   **Integrating Deployment with Vercel**
+    -   **Integrating Deployment with Vercel** [a943f69](https://github.com/ld5ehom/market-web/commit/a943f69c6671ccb9f37bd00a5531c9a1d1a72368)
         -   Resolved issues during Static Site Generation (SSG): Fixed errors that occurred while generating static pages for certain components and paths.
         ```
         npm run build:mock
