@@ -277,9 +277,13 @@
         npm install --save snakecase-keys --legacy-peer-deps
         ```
 
-    -   **Integrating Supabase for product list, product search, product order, product details, and review features.**
+    -   **Integrating Supabase for product list, product search, product order, product details, and review features.** [26e2557](https://github.com/ld5ehom/market-web/commit/26e2557d9f8e105601a1e20c52e56dde5f75705c)
+
         -   Updated the banner by fetching images from GitHub/ld5ehom and implemented automatic sliding every 5 seconds.
         -   Resolved the issue of duplicate products on the Main page.
+
+    -   **Integrated Supabase for chat functionality, enabling real-time updates for chat messages and images.**
+        -   Configured Supabase's realtime.on to enable real-time updates.
 
 **Task 10: Deploying the Project**
 
