@@ -9,6 +9,8 @@ import {
 import Messages from './_components/Messages'
 import Spinner from '@/components/common/Spinner'
 import Text from '@/components/common/Text'
+import { createChatMessage } from '@/repository/chatMessages/createChatMessage'
+import { uploadImage } from '@/repository/common/uploadImage'
 import { getShop } from '@/repository/shops/getShop'
 import { Shop } from '@/types'
 import supabase from '@/utils/supabase/browserSupabase'
@@ -35,20 +37,39 @@ export default function ChatMessages({
         })()
     }, [counterShopId])
 
-    const handleSubmitMessage: FormEventHandler<HTMLFormElement> = (e) => {
+    const handleSubmitMessage: FormEventHandler<HTMLFormElement> = async (
+        e,
+    ) => {
         e.preventDefault() // Prevent the form's default submission behavior
         if (ref.current) {
-            alert(ref.current?.value) // Show the input value in an alert
+            // Show the input value in an alert
+            await createChatMessage(supabase, {
+                chatRoomId,
+                message: ref.current.value,
+            })
             ref.current.value = '' // Clear the input field
             ref.current.focus() // Refocus the input field
         }
     }
 
-    const handleChangeImage: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const handleChangeImage: ChangeEventHandler<HTMLInputElement> = async (
+        e,
+    ) => {
         // Handle image file selection
         if (e.target.files?.[0]) {
-            console.log(e.target.files[0]) // Log the selected file
-            e.target.value = '' // Clear the input value
+            try {
+                const {
+                    data: { imageUrl },
+                } = await uploadImage(supabase, e.target.files[0])
+                await createChatMessage(supabase, {
+                    chatRoomId,
+                    message: imageUrl,
+                })
+            } catch (e) {
+                alert('Image upload failed.')
+            } finally {
+                e.target.value = ''
+            }
         }
     }
 

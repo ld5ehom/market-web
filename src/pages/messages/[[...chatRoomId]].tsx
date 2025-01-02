@@ -1,5 +1,6 @@
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next'
 import { useRouter } from 'next/router'
+import { useCallback, useEffect, useState } from 'react'
 import { Virtuoso } from 'react-virtuoso'
 import ChatMessages from './_components/ChatMessages'
 import ChatPreview from './_components/ChatPreview'
@@ -10,6 +11,7 @@ import { getChatRooms } from '@/repository/chatRooms/getChatRooms'
 import { getMe } from '@/repository/me/getMe'
 import { ChatRoom } from '@/types'
 import { AuthError } from '@/utils/error'
+import supabase from '@/utils/supabase/browserSupabase'
 import getServerSupabase from '@/utils/supabase/getServerSupabase'
 
 // Fetches chat room data and shop ID during server-side rendering
@@ -32,7 +34,7 @@ export const getServerSideProps: GetServerSideProps<{
         }
 
         // Fetch chat rooms for the shop using the shop ID (상점 ID를 사용해 채팅방 데이터를 가져옴)
-        const { data: chatRooms } = await getChatRooms(shopId)
+        const { data: chatRooms } = await getChatRooms(supabase, shopId)
 
         // Return the chat room data and shop ID as props (채팅방 데이터와 상점 ID를 props로 반환)
         return {
@@ -56,12 +58,51 @@ export const getServerSideProps: GetServerSideProps<{
 }
 
 export default function Messages({
-    chatRooms,
+    chatRooms: initialChatRooms,
     shopId,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) {
     const router = useRouter()
+    const [chatRooms, setChatRooms] = useState(initialChatRooms)
     const currentChatRoomId = router.query.chatRoomId?.[0]
     const currentChatRoom = chatRooms.find(({ id }) => id === currentChatRoomId)
+
+    // Supabase realtime on
+    const handleUpdateChatRooms = useCallback(async () => {
+        const { data } = await getChatRooms(supabase, shopId)
+        setChatRooms(data)
+    }, [shopId])
+    useEffect(() => {
+        const subscribeChatRoomsFromMe = supabase
+            .channel(`chat_rooms_from_${shopId}`)
+            .on(
+                'postgres_changes',
+                {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'chat_rooms',
+                    filter: `from_shop_id=eq.${shopId}`,
+                },
+                () => handleUpdateChatRooms(),
+            )
+        const subscribeChatRoomsToMe = supabase
+            .channel(`chat_rooms_to_${shopId}`)
+            .on(
+                'postgres_changes',
+                {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'chat_rooms',
+                    filter: `to_shop_id=eq.${shopId}`,
+                },
+                () => handleUpdateChatRooms(),
+            )
+        subscribeChatRoomsFromMe.subscribe()
+        subscribeChatRoomsToMe.subscribe()
+        return () => {
+            subscribeChatRoomsFromMe.unsubscribe()
+            subscribeChatRoomsToMe.unsubscribe()
+        }
+    }, [handleUpdateChatRooms, shopId])
 
     return (
         <Wrapper className="bg-lightestBlue">

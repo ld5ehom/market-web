@@ -1,3 +1,4 @@
+import camelcaseKeys from 'camelcase-keys'
 import classNames from 'classnames'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
@@ -18,7 +19,7 @@ type Props = {
 
 export default function ChatPreview({ chatRoomId, shopId, isActive }: Props) {
     const [shop, setShop] = useState<Shop>() // State to store shop details
-    const [lastMessage, setLastMessage] = useState<ChatMessage>() // State to store the last chat message
+    const [lastMessage, setLastMessage] = useState<ChatMessage | null>() // State to store the last chat message
 
     // Fetches shop information and the last chat message
     useEffect(() => {
@@ -30,19 +31,41 @@ export default function ChatPreview({ chatRoomId, shopId, isActive }: Props) {
                 },
             ] = await Promise.all([
                 getShop(supabase, shopId),
-                getChatMessages({
+                getChatMessages(supabase, {
                     chatRoomId,
                     fromIndex: 0,
                     toIndex: 1,
                 }),
             ])
             setShop(shop) // Updates the shop state
-            setLastMessage(lastMessage) // Updates the last message state
+            setLastMessage(lastMessage === undefined ? null : lastMessage) // Updates the last message state
         })()
     }, [chatRoomId, shopId])
 
+    // Supabase RealTime on
+    useEffect(() => {
+        const subscribeChat = supabase.channel(`preview_on_${chatRoomId}`).on(
+            'postgres_changes',
+            {
+                event: 'INSERT',
+                schema: 'public',
+                table: 'chat_messages',
+                filter: `chat_room=eq.${chatRoomId}`,
+            },
+            (payload) => {
+                setLastMessage(camelcaseKeys(payload.new) as ChatMessage)
+            },
+        )
+
+        subscribeChat.subscribe()
+
+        return () => {
+            subscribeChat.unsubscribe()
+        }
+    }, [chatRoomId])
+
     // If data is not yet loaded, render nothing
-    if (!shop || !lastMessage) {
+    if (shop === undefined || lastMessage === undefined) {
         return (
             <div className="flex justify-center items-center h-20 shrink-0">
                 <Spinner />
@@ -70,9 +93,11 @@ export default function ChatPreview({ chatRoomId, shopId, isActive }: Props) {
                     </Text>
                     <div className="truncate">
                         <Text size="sm" color="grey">
-                            {checkIsImage(lastMessage.message)
-                                ? '[Image]'
-                                : lastMessage.message}
+                            {lastMessage
+                                ? checkIsImage(lastMessage.message)
+                                    ? '[image]'
+                                    : lastMessage.message
+                                : 'No messages'}
                         </Text>
                     </div>
                 </div>

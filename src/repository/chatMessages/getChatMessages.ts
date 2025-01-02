@@ -1,5 +1,6 @@
+import { SupabaseClient } from '@supabase/supabase-js'
+import camelcaseKeys from 'camelcase-keys'
 import { ChatMessage } from '@/types'
-import { getMockChatMessageData } from '@/utils/mock'
 
 type Params = {
     chatRoomId: string // The ID of the chat room to fetch messages for (채팅방의 메시지를 가져오기 위한 ID)
@@ -8,22 +9,36 @@ type Params = {
 }
 
 // Fetches chat messages based on chatRoomId and range indices (chatRoomId와 범위 인덱스를 기반으로 채팅 메시지 가져오기)
-export async function getChatMessages({
-    chatRoomId,
-    fromIndex = 0,
-    toIndex = 1,
-}: Params): Promise<{
+export async function getChatMessages(
+    supabase: SupabaseClient,
+    { chatRoomId, fromIndex = 0, toIndex = 1 }: Params,
+): Promise<{
     data: ChatMessage[]
 }> {
-    // Generates mock chat messages for the specified range (지정된 범위에 대한 가짜 채팅 메시지를 생성)
-    const data: ChatMessage[] = Array.from({ length: toIndex - fromIndex }).map(
-        (_, idx) =>
+    // Generates mock chat messages for the specified range
+    if (process.env.USE_MOCK_DATA === 'true') {
+        const { getMockChatMessageData } = await import('@/utils/mock')
+        const data: ChatMessage[] = Array.from({
+            length: toIndex - fromIndex,
+        }).map((_, idx) =>
             getMockChatMessageData({
                 chatRoom: chatRoomId,
                 message: `fromIndex: ${fromIndex}, toIndex: ${toIndex}, curIndex: ${idx}`,
             }),
-    )
+        )
+        return { data }
+    }
 
-    // Resolves with the generated mock chat messages (생성된 가짜 채팅 메시지로 Promise 반환)
-    return Promise.resolve({ data })
+    const { data, error } = await supabase
+        .from('chat_messages')
+        .select('*')
+        .eq('chat_room', chatRoomId)
+        .range(fromIndex, toIndex)
+        .order('created_at', { ascending: false })
+
+    if (error) {
+        throw error
+    }
+
+    return { data: camelcaseKeys(data) }
 }

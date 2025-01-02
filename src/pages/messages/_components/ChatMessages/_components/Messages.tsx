@@ -1,3 +1,4 @@
+import camelcaseKeys from 'camelcase-keys'
 import classNames from 'classnames'
 import Image from 'next/image'
 import dayjs from 'dayjs'
@@ -11,6 +12,7 @@ import getChatMessageCount from '@/repository/chatMessages/getChatMessageCount'
 import { getChatMessages } from '@/repository/chatMessages/getChatMessages'
 import { ChatMessage } from '@/types'
 import { checkIsImage } from '@/utils/image'
+import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
     chatRoomId: string // The ID of the chat room (채팅방 ID)
@@ -31,17 +33,18 @@ export default function Messages({
     const [firstItemIndex, setFirstItemIndex] = useState<number>() // Index of the first item in the list (리스트의 첫 번째 항목 인덱스)
     const [messages, setMessage] = useState<ChatMessage[]>([]) // Chat messages state (채팅 메시지 상태)
     const [isLoading, setIsLoading] = useState(false) // Loading state for fetching previous messages (이전 메시지 가져오기 로딩 상태)
+    const [hasNewMessage, setHasNewMessage] = useState(false) // Supabase Realtime on
 
     useEffect(() => {
         // Fetch initial messages and message count when the chat room changes (채팅방이 변경될 때 초기 메시지와 메시지 수 가져오기)
         ;(async () => {
             const [{ data: messages }, { data: count }] = await Promise.all([
-                getChatMessages({
+                getChatMessages(supabase, {
                     chatRoomId,
                     fromIndex: 0,
                     toIndex: 10,
                 }),
-                getChatMessageCount(chatRoomId),
+                getChatMessageCount(supabase, chatRoomId),
             ])
             setMessage([...messages.reverse()]) // Reverse messages for correct order (올바른 순서를 위해 메시지 반전)
             const firstItemIndex = count - messages.length
@@ -56,6 +59,36 @@ export default function Messages({
         })()
     }, [chatRoomId])
 
+    // Supabase Realtime on
+    useEffect(() => {
+        const subscribeChat = supabase.channel(`chat_on_${chatRoomId}`).on(
+            'postgres_changes',
+            {
+                event: 'INSERT',
+                schema: 'public',
+                table: 'chat_messages',
+                filter: `chat_room=eq.${chatRoomId}`,
+            },
+            (payload) => {
+                setMessage((prev) => [
+                    ...prev,
+                    camelcaseKeys(payload.new) as ChatMessage,
+                ])
+                setCount((prev = 0) => prev + 1)
+                setHasNewMessage(true)
+                setTimeout(() => {
+                    setHasNewMessage(false)
+                }, 3000)
+            },
+        )
+
+        subscribeChat.subscribe()
+
+        return () => {
+            subscribeChat.unsubscribe()
+        }
+    }, [chatRoomId])
+
     const handleGetPrevMessage = async (index: number) => {
         // Fetch previous messages when reaching the top (상단에 도달할 때 이전 메시지 가져오기)
         if (count === undefined) return
@@ -65,7 +98,7 @@ export default function Messages({
 
         setIsLoading(true)
 
-        const { data } = await getChatMessages({
+        const { data } = await getChatMessages(supabase, {
             chatRoomId,
             fromIndex,
             toIndex,
@@ -88,6 +121,26 @@ export default function Messages({
                     </div>
                 </div>
             )}
+
+            {/* Supabase Reatlime */}
+            {hasNewMessage && (
+                <div className="absolute bottom-1 left-0 w-full z-30">
+                    <button
+                        type="button"
+                        className="rounded bg-black text-center w-full m-auto opacity-50"
+                        onClick={() => {
+                            virtuoso.current?.scrollToIndex({
+                                index: messages.length - 1,
+                                align: 'end',
+                            })
+                            setHasNewMessage(false)
+                        }}
+                    >
+                        <Text color="grey"> See New Messages </Text>
+                    </button>
+                </div>
+            )}
+
             {/* Show placeholder if there are no messages (메시지가 없는 경우 안내 메시지 표시) */}
             {messages.length === 0 ? (
                 <div className="flex justify-center items-center h-full">
