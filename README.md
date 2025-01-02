@@ -282,10 +282,18 @@
         -   Updated the banner by fetching images from GitHub/ld5ehom and implemented automatic sliding every 5 seconds.
         -   Resolved the issue of duplicate products on the Main page.
 
-    -   **Integrated Supabase for chat functionality, enabling real-time updates for chat messages and images.**
+    -   **Integrated Supabase for chat functionality, enabling real-time updates for chat messages and images.** [bfad123](https://github.com/ld5ehom/market-web/commit/bfad1233d4ac9afc82620682a897a86e45d881e1)
         -   Configured Supabase's realtime.on to enable real-time updates.
 
 **Task 10: Deploying the Project**
+
+-   **Issues** : [task-10-deploy](https://github.com/ld5ehom/market-web/tree/task-10-deploy)
+-   **Details** :
+    -   **Integrating Deployment with Vercel**
+        -   Resolved issues during Static Site Generation (SSG): Fixed errors that occurred while generating static pages for certain components and paths.
+        ```
+        npm run build:mock
+        ```
 
 ---
 
@@ -301,6 +309,12 @@ npm install --legacy-peer-deps
 
 ```
 npm run dev
+```
+
+-   Mock data start
+
+```
+npm run dev:mock
 ```
 
 -   **storybook start**:

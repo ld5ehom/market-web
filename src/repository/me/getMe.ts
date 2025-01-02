@@ -9,7 +9,7 @@ export async function getMe(
     // return Promise.resolve({ data: { shopId: null } })
 
     if (process.env.USE_MOCK_DATA === 'true') {
-        return Promise.resolve({ data: { shopId: 'mock-shop-id' } })
+        return { data: { shopId: 'mock-shop-id' } }
     }
     const {
         data: { user },

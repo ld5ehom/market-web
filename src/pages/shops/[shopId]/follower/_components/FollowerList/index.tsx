@@ -7,7 +7,7 @@ import { Follow } from '@/types'
 import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
-    initialFollower: Follow[] // Initial follower data (초기 팔로워 데이터)
+    initialFollower?: Follow[] // Initial follower data (초기 팔로워 데이터)
     count: number // Total follower count (전체 팔로워 수)
     shopId: string // Shop ID (상점 ID)
 }
@@ -15,7 +15,7 @@ type Props = {
 // FollowerList Component - Display list of followers with pagination
 // (FollowerList 컴포넌트 - 페이지네이션을 포함한 팔로워 리스트 표시)
 export default function FollowerList({
-    initialFollower,
+    initialFollower = [],
     count,
     shopId,
 }: Props) {

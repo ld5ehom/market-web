@@ -24,7 +24,7 @@ type Tabs = 'products' | 'reviews' | 'likes' | 'following' | 'follower'
 
 type Props = {
     isMyShop: boolean // Check my shop
-    shop: Shop // Shop information
+    shop?: Shop // Shop information
     productCount: number // Total product count
     reviewCount: number // Total review count
     likeCount: number // Total like count
@@ -53,9 +53,9 @@ export default function ShopLayout({
     children,
 }: Props) {
     // Supabase
-    const [shopName, setShopName] = useState(shop.name)
-    const [shopIntroduce, setShopIntroduce] = useState(shop.introduce)
-    const [shopImageUrl, setShopImageUrl] = useState(shop.imageUrl)
+    const [shopName, setShopName] = useState(shop?.name || '')
+    const [shopIntroduce, setShopIntroduce] = useState(shop?.introduce || '')
+    const [shopImageUrl, setShopImageUrl] = useState(shop?.imageUrl || '')
 
     // Shop edit
     const [shopNameStatus, setShopNameState] = useState<EDIT_STUATUS>('IDLE')
@@ -64,8 +64,13 @@ export default function ShopLayout({
 
     // Supabase update my store(shop) name
     const handleSubmitShopName = async (e: FormEvent<HTMLFormElement>) => {
+        if (!shop) {
+            return
+        }
+
         try {
             e.preventDefault()
+
             setShopNameState('LOADING')
 
             const formData = new FormData(e.currentTarget)
@@ -82,8 +87,13 @@ export default function ShopLayout({
 
     // Supabase update my store introduce
     const handleSubmitShopIntroduce = async (e: FormEvent<HTMLFormElement>) => {
+        if (!shop) {
+            return
+        }
+
         try {
             e.preventDefault()
+
             setShopIntroduceState('LOADING')
 
             const formData = new FormData(e.currentTarget)
@@ -102,6 +112,10 @@ export default function ShopLayout({
     const handleSubmitShopProfileImage = async (
         e: FormEvent<HTMLFormElement>,
     ) => {
+        if (!shop) {
+            return
+        }
+
         try {
             e.preventDefault()
             const formData = new FormData(e.currentTarget)
@@ -116,6 +130,10 @@ export default function ShopLayout({
         } catch (e) {
             alert('Failed to update the profile image.')
         }
+    }
+
+    if (!shop) {
+        return
     }
 
     return (

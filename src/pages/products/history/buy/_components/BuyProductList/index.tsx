@@ -7,13 +7,13 @@ import { Product } from '@/types'
 import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
-    initialProducts: Product[]
+    initialProducts?: Product[]
     count: number
     shopId: string
 }
 
 export default function BuyProductList({
-    initialProducts,
+    initialProducts = [],
     count,
     shopId,
 }: Props) {

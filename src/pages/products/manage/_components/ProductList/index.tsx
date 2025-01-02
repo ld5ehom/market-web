@@ -13,7 +13,7 @@ import Image from 'next/image' // Use next/image for optimized image handling (�
 import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
-    initialProducts: Product[] // Initial product list (초기 상품 리스트)
+    initialProducts?: Product[] // Initial product list (초기 상품 리스트)
     count: number // Total product count (전체 상품 수)
     shopId: string // Shop ID (상점 ID)
 }
@@ -22,7 +22,11 @@ dayjs.extend(relativeTime).locale('en')
 
 // Fetch and display products for a shop with options to edit or delete products.
 // (핵심내용: 상점 상품을 가져와 표시하며, 수정 및 삭제 옵션을 제공.)
-export default function ProductList({ initialProducts, count, shopId }: Props) {
+export default function ProductList({
+    initialProducts = [],
+    count,
+    shopId,
+}: Props) {
     const [currentPage, setCurrentPage] = useState(1) // Current page state (현재 페이지 상태)
     const [products, setProducts] = useState(initialProducts) // Product list state (상품 리스트 상태)
 

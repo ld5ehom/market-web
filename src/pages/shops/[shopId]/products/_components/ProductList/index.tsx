@@ -8,7 +8,7 @@ import { Product as TProduct } from '@/types'
 import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
-    initialProducts: TProduct[] // Initial list of products fetched via server-side rendering (SSR) (서버사이드 렌더링으로 가져온 초기 상품 목록)
+    initialProducts?: TProduct[] // Initial list of products fetched via server-side rendering (SSR) (서버사이드 렌더링으로 가져온 초기 상품 목록)
     count: number // Total number of products in the shop (상점 내 총 상품 수)
     shopId: string // Shop ID for fetching products (상품 데이터를 가져올 상점 ID)
 }
@@ -18,7 +18,11 @@ type Props = {
  * Displays a paginated list of products for a shop, with dynamic data fetching based on the selected page.
  * (상점의 상품 목록을 페이징하여 표시하며, 선택한 페이지에 따라 동적으로 데이터를 가져옵니다.)
  */
-export default function ProductList({ initialProducts, count, shopId }: Props) {
+export default function ProductList({
+    initialProducts = [],
+    count,
+    shopId,
+}: Props) {
     // State to manage the current page (UI starts at 1, API starts at 0)
     // 현재 페이지를 관리하는 상태 (UI는 1부터 시작, API는 0부터 시작)
     const [currentPage, setCurrentPage] = useState(1)

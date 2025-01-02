@@ -7,10 +7,10 @@ import Image from 'next/image'
 import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
-    id: string
-    title: string
-    price: number
-    imageUrl: string
+    id?: string
+    title?: string
+    price?: number
+    imageUrl?: string
 }
 
 export default function BuyProductItem({ id, title, price, imageUrl }: Props) {
@@ -19,8 +19,10 @@ export default function BuyProductItem({ id, title, price, imageUrl }: Props) {
     // Checks if a review has been posted for the product (상품에 대한 리뷰가 작성되었는지 확인)
     useEffect(() => {
         ;(async () => {
-            const { data } = await getReviewByProductId(supabase, id) // Fetches review data for the product (상품의 리뷰 데이터를 가져옴)
-            setIsReviewPosted(!!data) // Updates state based on the review existence (리뷰 존재 여부에 따라 상태 업데이트)
+            if (id) {
+                const { data } = await getReviewByProductId(supabase, id) // Fetches review data for the product (상품의 리뷰 데이터를 가져옴)
+                setIsReviewPosted(!!data) // Updates state based on the review existence (리뷰 존재 여부에 따라 상태 업데이트)
+            }
         })()
     }, [id])
 
@@ -28,12 +30,7 @@ export default function BuyProductItem({ id, title, price, imageUrl }: Props) {
         <div className="flex text-center border-y-2 my-4 py-2">
             {/* Product Image (상품 이미지) */}
             <div className="w-28 h-28 relative">
-                <Image
-                    src={imageUrl}
-                    alt={title}
-                    fill
-                    className="object-cover"
-                />
+                <img src={imageUrl} alt={title} className="w-full h-full" />
             </div>
 
             {/* Product Title (상품 제목) */}
@@ -45,7 +42,7 @@ export default function BuyProductItem({ id, title, price, imageUrl }: Props) {
 
             {/* Product Price (상품 가격) */}
             <div className="w-28 flex justify-center items-center">
-                <Text>{price.toLocaleString()}</Text>
+                <Text>{price?.toLocaleString()}</Text>
             </div>
 
             {/* Review Button (리뷰 작성 버튼) */}

@@ -9,12 +9,12 @@ import { Like } from '@/types'
 import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
-    initialLikes: Like[] // The initial list of liked items (초기 찜한 상품 목록)
+    initialLikes?: Like[] // The initial list of liked items (초기 찜한 상품 목록)
     count: number // The total count of liked items (찜한 상품의 총 개수)
     shopId: string // The ID of the shop (상점 ID)
 }
 
-export default function LikeList({ initialLikes, count, shopId }: Props) {
+export default function LikeList({ initialLikes = [], count, shopId }: Props) {
     // The page number visible to the user starts from 1, but the API starts from 0
     // 화면에 보이는 페이지 번호는 1부터 시작하지만 API는 0부터 시작합니다.
     const [currentPage, setCurrentPage] = useState(1)

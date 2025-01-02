@@ -7,7 +7,7 @@ import { Review } from '@/types'
 import supabase from '@/utils/supabase/browserSupabase'
 
 type Props = {
-    initialReviews: Review[] // Preloaded reviews from SSR (서버사이드 렌더링으로 미리 불러온 리뷰)
+    initialReviews?: Review[] // Preloaded reviews from SSR (서버사이드 렌더링으로 미리 불러온 리뷰)
     count: number // Total number of reviews (총 리뷰 개수)
     shopId: string // Shop ID to fetch reviews (리뷰를 가져오기 위한 상점 ID)
 }
@@ -17,7 +17,11 @@ type Props = {
  * Dynamically displays a paginated list of reviews for a shop.
  * (상점을 위한 리뷰 목록을 동적으로 페이지네이션과 함께 표시)
  */
-export default function ReviewList({ initialReviews, count, shopId }: Props) {
+export default function ReviewList({
+    initialReviews = [],
+    count,
+    shopId,
+}: Props) {
     // Current visible page for UI starts at 1; API pages start at 0
     // 화면에서 보이는 페이지는 1부터 시작, API 페이지는 0부터 시작
     const [currentPage, setCurrentPage] = useState(1) // Current page state (현재 페이지 상태)
