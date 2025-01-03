@@ -29,11 +29,16 @@ export default function RecentItem({ id, title, price, imageUrl }: Props) {
                 {/* Default view: Thumbnail image (기본 뷰: 썸네일 이미지) */}
                 {!isHover ? (
                     <div className="w-16 h-16 border border-lightestBlue relative">
-                        <Image
+                        {/* <Image
                             src={imageUrl}
                             alt={title}
                             fill // Fill parent container (부모 컨테이너를 채움)
                             className="object-cover" // Maintain aspect ratio and cover the area (비율을 유지하며 영역을 채움)
+                        /> */}
+                        <img
+                            src={imageUrl}
+                            alt={title}
+                            className="w-full h-full"
                         />
                     </div>
                 ) : (

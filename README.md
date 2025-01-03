@@ -299,6 +299,9 @@
 
 ### Milestone 3: Bug Fixes and Updates
 
+-   **Issues** : [update](https://github.com/ld5ehom/market-web/tree/update)
+-   **Resolved image update errors**
+
 ---
 
 ## Start
